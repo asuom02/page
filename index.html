@@ -578,6 +578,9 @@
     /* ---------- About: 큰 제목 탭 + 슬라이드 패널 ---------- */
     /* 탭은 상단 메뉴(작은 네모 버튼)와 구분되게 본문 제목 크기의 글자로 표시.
        선택된 탭만 흰색, 나머지는 흐리게 → 다른 내용도 볼 수 있다는 게 바로 보임 */
+    /* About 내용(탭+패널)은 폭이 넓지 않아 1040px로 묶어 가운데 정렬. 제목줄은 다른 섹션처럼 전체 폭 */
+    .about-layout { max-width: 1040px; margin: 0 auto; }
+
     .subnav {
       position: relative;
       display: flex;
@@ -622,21 +625,18 @@
 
     .about-panel { flex: 0 0 100%; min-width: 0; }
 
-    /* 프로필: 사진 없이 글만, 다른 탭 제목과 같은 왼쪽 선에 정렬.
-       소개 3문장이 각각 한 줄에 들어가는 폭(가장 긴 문장 약 772px + 여유) */
-    .profile { max-width: 52em; }
-
+    /* 프로필: 사진 없이 글만. 소개 3문장이 각각 한 줄에 들어가도록 About 묶음 폭(1040px) 안에 배치 */
     .profile h2 {
-      font-size: 28px;
+      font-size: 34px;
       font-weight: 400;
       margin-bottom: 12px;
       color: #fff;
     }
 
-    .profile .role { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+    .profile .role { font-size: 16px; color: var(--muted); margin-bottom: 24px; }
 
     .profile .bio {
-      font-size: 15px;
+      font-size: clamp(15px, 1.05vw, 17px);
       color: #c4cdd8;
       white-space: pre-line;
       margin-bottom: 28px;
@@ -645,9 +645,9 @@
 
     .profile dl {
       display: grid;
-      grid-template-columns: 80px minmax(0, 1fr);
-      gap: 12px 16px;
-      font-size: 14px;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 14px 20px;
+      font-size: 16px;
       border-top: 1px solid var(--line);
       padding-top: 24px;
     }
