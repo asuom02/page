@@ -575,35 +575,43 @@
       .craft-item p { font-size: clamp(14px, 1.7svh, 16px); }
     }
 
-    /* ---------- About: 왼쪽 탭 + 슬라이드 패널 ---------- */
-    .about-layout {
-      display: grid;
-      grid-template-columns: 220px minmax(0, 1fr);
-      gap: 64px;
-      align-items: start;
+    /* ---------- About: 큰 제목 탭 + 슬라이드 패널 ---------- */
+    /* 탭은 상단 메뉴(작은 네모 버튼)와 구분되게 본문 제목 크기의 글자로 표시.
+       선택된 탭만 흰색, 나머지는 흐리게 → 다른 내용도 볼 수 있다는 게 바로 보임 */
+    .subnav {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 40px;
+      margin-bottom: 32px;
     }
 
-    .subnav {
-      position: sticky;
-      top: 100px;
-      display: grid;
-      border-left: 1px solid var(--line);
+    /* 선택된 탭 밑 흰 막대: 다른 탭을 누르면 그쪽으로 미끄러져 이동(JS가 위치·폭 설정) */
+    .subnav::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: var(--bar-w, 0px);
+      height: 2px;
+      background: #fff;
+      transform: translate(var(--bar-x, 0px), var(--bar-y, 0px));
+      transition: transform .45s cubic-bezier(.2,.7,.25,1), width .45s cubic-bezier(.2,.7,.25,1);
     }
 
     .subnav button {
-      text-align: left;
+      padding: 0 0 10px;
       border: 0;
       background: none;
-      padding: 12px 18px;
-      font-size: 14px;
-      color: var(--muted);
-      border-left: 2px solid transparent;
-      margin-left: -1px;
-      transition: color .2s, border-color .2s;
+      font-size: 24px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: rgba(226,231,239,.32);
+      transition: color .25s;
     }
 
-    .subnav button:hover { color: #fff; }
-    .subnav button[aria-selected=true] { color: #fff; font-weight: 500; border-left-color: #fff; }
+    .subnav button:hover { color: rgba(226,231,239,.75); }
+    .subnav button[aria-selected=true] { color: #fff; }
 
     .about-viewport { overflow: hidden; min-width: 0; }
 
@@ -613,13 +621,6 @@
     }
 
     .about-panel { flex: 0 0 100%; min-width: 0; }
-
-    .about-panel > h2 {
-      font-size: 24px;
-      font-weight: 400;
-      margin-bottom: 28px;
-      color: #fff;
-    }
 
     /* 프로필: 사진 없이 글만, 다른 탭 제목과 같은 왼쪽 선에 정렬.
        소개 3문장이 각각 한 줄에 들어가는 폭(가장 긴 문장 약 772px + 여유) */
@@ -842,27 +843,6 @@
     .dialog-body .media-placeholder { min-height: 320px; font-size: 20px; }
 
     /* ---------- 반응형 ---------- */
-    @media (max-width: 1024px) {
-      .about-layout { grid-template-columns: 1fr; gap: 32px; }
-
-      .subnav {
-        position: static;
-        display: flex;
-        border-left: 0;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .subnav button {
-        border-left: 0;
-        border-bottom: 2px solid transparent;
-        padding: 10px 14px;
-        margin-left: 0;
-        margin-bottom: -1px;
-      }
-
-      .subnav button[aria-selected=true] { border-bottom-color: #fff; }
-    }
-
     @media (max-width: 900px) {
       .works-stage { gap: 20px; }
       .thumbnails { flex-basis: 160px; }
@@ -907,6 +887,8 @@
       .pdf-links a { padding: 5px 9px; font-size: 12px; }
 
       .credentials li { grid-template-columns: 1fr; gap: 6px; }
+      .subnav { gap: 6px 16px; }
+      .subnav button { font-size: 16px; }
       .dialog-body .media-placeholder { min-height: 220px; }
     }
     /* 표지 모션그래픽: 캔버스가 표지 전체를 채우고, 아래쪽만 어둡게 해 문구를 읽기 쉽게 함 */
@@ -1073,7 +1055,7 @@
         <div class="shell">
           <h2 class="section-title">About</h2>
           <div class="about-layout">
-            <div class="subnav" role="tablist" aria-orientation="vertical">
+            <div class="subnav" role="tablist" aria-label="소개 항목">
               <button type="button" role="tab" id="about-tab-0" aria-controls="about-panel-0" aria-selected="true" tabindex="0">Profile</button>
               <button type="button" role="tab" id="about-tab-1" aria-controls="about-panel-1" aria-selected="false" tabindex="-1">자격 사항</button>
               <button type="button" role="tab" id="about-tab-2" aria-controls="about-panel-2" aria-selected="false" tabindex="-1">수상 내역</button>
@@ -1092,7 +1074,7 @@
                         <dt>학력</dt>
                         <dd>한신대학교 · 디지털영상문화콘텐츠학 (2027년 2월 졸업예정)</dd>
                         <dt>전문 분야</dt>
-                        <dd>인포그래픽 모션 / AI 콘텐츠 파이프라인 / 비주얼 리서치</dd>
+                        <dd>AI 영상 제작 / 편집·후반 작업 / 콘텐츠 기획</dd>
                         <dt>거주지</dt>
                         <dd>서울특별시 은평구</dd>
                       </dl>
@@ -1101,7 +1083,6 @@
                 </section>
                 <!-- 자격증 -->
                 <section class="about-panel" id="about-panel-1" role="tabpanel" aria-labelledby="about-tab-1" inert aria-hidden="true">
-                  <h2>자격 및 면허</h2>
                   <ul class="credentials records">
                     <li>
                       <time datetime="2021-07-01">2021.07.01</time>
@@ -1148,7 +1129,6 @@
                 </section>
                 <!-- 수상 -->
                 <section class="about-panel" id="about-panel-2" role="tabpanel" aria-labelledby="about-tab-2" inert aria-hidden="true">
-                  <h2>수상 내역</h2>
                   <ul class="credentials records">
                     <li>
                       <time datetime="2026-01">2026.01</time>
@@ -1189,7 +1169,6 @@
                 </section>
                 <!-- 툴 -->
                 <section class="about-panel" id="about-panel-3" role="tabpanel" aria-labelledby="about-tab-3" inert aria-hidden="true">
-                  <h2>활용 소프트웨어</h2>
                   <div class="tool-row">
                     <h4>기획·리서치</h4>
                     <div class="tool-list">
@@ -1456,7 +1435,20 @@
         v.addEventListener(ev, () => { if (v === curVideo) renderHud(); })));
 
       tabs(works, '.thumbnail', '.film-track', '.film', { beforeChange: pauseFilms, onChange: setPlayer });
-      tabs(document.querySelector('#about'), '.subnav button', '.about-track', '.about-panel', { slide: true });
+      // About 탭 밑 막대를 선택된 탭 아래로 이동
+      const aboutNav = document.querySelector('#about .subnav');
+      let aboutIdx = 0;
+      function moveTabBar(i = aboutIdx) {
+        if (!aboutNav) return;
+        aboutIdx = i;
+        const btn = aboutNav.querySelectorAll('button')[i];
+        aboutNav.style.setProperty('--bar-x', btn.offsetLeft + 'px');
+        aboutNav.style.setProperty('--bar-w', btn.offsetWidth + 'px');
+        aboutNav.style.setProperty('--bar-y', (btn.offsetTop + btn.offsetHeight - aboutNav.offsetHeight) + 'px');
+      }
+      tabs(document.querySelector('#about'), '.subnav button', '.about-track', '.about-panel', { slide: true, onChange: moveTabBar });
+      window.addEventListener('resize', () => moveTabBar());
+      if (document.fonts) document.fonts.ready.then(() => moveTabBar());
 
       // 한 번에 한 영상만 재생, Works를 벗어나면 정지
       filmVideos.forEach(v => v.addEventListener('play', () => filmVideos.forEach(o => { if (o !== v) o.pause(); })));
