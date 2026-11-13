@@ -665,7 +665,7 @@
     /* 1200px 이상: 2단(위→아래 순서)으로 나눠 노트북에서도 자격 사항 전체가 한 화면에 */
     @media (min-width: 1200px) {
       .credentials {
-        grid-template-rows: repeat(3, auto);
+        grid-template-rows: repeat(var(--rows, 3), auto); /* 한 단에 들어갈 줄 수(목록마다 style로 지정 가능) */
         grid-auto-flow: column;
         grid-auto-columns: minmax(0, 1fr);
         column-gap: 48px;
@@ -1083,7 +1083,14 @@
                 </section>
                 <!-- 자격증 -->
                 <section class="about-panel" id="about-panel-1" role="tabpanel" aria-labelledby="about-tab-1" inert aria-hidden="true">
-                  <ul class="credentials records">
+                  <ul class="credentials records" style="--rows: 4;">
+                    <li>
+                      <time datetime="2026-10">2026.10</time>
+                      <div class="record-info">
+                        <h3>그래픽기술자격(GTQ) 1급</h3>
+                        <small>한국생산성본부</small>
+                      </div>
+                    </li>
                     <li>
                       <time datetime="2021-07-01">2021.07.01</time>
                       <div class="record-info">
@@ -1192,6 +1199,8 @@
                   <div class="tool-row">
                     <h4>AI 생성</h4>
                     <div class="tool-list">
+                      <span class="tool">
+                        <img src="assets/icons/higgsfield.png" alt="" width="32" height="32">Higgsfield</span>
                       <span class="tool">
                         <img src="assets/icons/midjourney.png" alt="" width="32" height="32">Midjourney</span>
                       <span class="tool">
