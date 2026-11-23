@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>보이지 않는 위협, 간접흡연 — 금연 공익광고 시리즈</title>
+<meta name="description" content="동화 오마주 금연 공익광고 시리즈 2편 포트폴리오">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231B2A4A'/%3E%3Ccircle cx='16' cy='17' r='7' fill='%23B8312F'/%3E%3C/svg%3E">
+<style>
+  @font-face { font-family: 'Archivo Expanded'; src: url(fonts/ArchivoExpanded-Black.ttf) format('truetype'); font-weight: 900; font-display: swap; }
+  @font-face { font-family: 'Pretendard'; src: url(fonts/Pretendard-Black.woff2) format('woff2'); font-weight: 900; font-display: swap; }
+  @font-face { font-family: 'Pretendard'; src: url(fonts/Pretendard-Bold.woff2) format('woff2'); font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'Pretendard'; src: url(fonts/Pretendard-Regular.woff2) format('woff2'); font-weight: 400; font-display: swap; }
+
+  :root {
+    --bg: #0E1626; --bg2: #13203A; --card: #17243F; --line: rgba(201, 204, 209, .14);
+    --navy: #1B2A4A; --moon: #6F8FBF; --smoke: #C9CCD1; --red: #B8312F; --red2: #D9473F; --beige: #D9C7A7;
+    --ink: #EEF0F4; --mute: #9AA6BA;
+    --pad: clamp(20px, 5vw, 80px);
+    --num: 'Archivo Expanded', 'Pretendard', sans-serif;
+    --kr: 'Pretendard', system-ui, sans-serif;
+    --r: 20px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (max-width: 1100px), (max-height: 639px) { html { scroll-snap-type: y proximity; } }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--kr); -webkit-font-smoothing: antialiased; word-break: keep-all; overflow-wrap: break-word; }
+  h1, h2, p { text-wrap: balance; }
+  img, video { display: block; max-width: 100%; }
+  .ln { display: block; }
+  @media (min-width: 641px) { .ln { white-space: nowrap; } }
+
+  section { position: relative; min-height: 100svh; scroll-snap-align: start; scroll-snap-stop: always;
+    padding: clamp(48px, 7vh, 84px) var(--pad) clamp(56px, 8vh, 90px); display: flex; flex-direction: column; justify-content: center; }
+  section:nth-of-type(even) { background: var(--bg2); }
+  .wrap { width: min(100%, 1320px); margin: 0 auto; }
+  .hd { margin-bottom: clamp(18px, 3vh, 32px); }
+  .eyebrow { font-family: var(--num); font-size: 13px; letter-spacing: .14em; display: flex; align-items: center; gap: 12px; text-transform: uppercase; color: var(--smoke); }
+  .eyebrow::before { content: ''; width: 36px; height: 10px; border-radius: 5px; background: var(--red); }
+  h2 { font-weight: 900; font-size: clamp(32px, 3.4vw, 52px); line-height: 1.15; letter-spacing: -.03em; margin: 12px 0 0; }
+  h2 em { font-style: normal; color: var(--red2); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); }
+  .pno { position: absolute; left: var(--pad); right: var(--pad); bottom: clamp(18px, 3vh, 30px); display: flex; justify-content: space-between; font-family: var(--num); font-size: 12px; letter-spacing: .18em; color: var(--mute); pointer-events: none; }
+  .pno b { color: var(--ink); }
+
+  /* 1. 표지 */
+  .cover .wrap { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(28px, 4vw, 64px); align-items: center; }
+  .cover h1 { font-weight: 900; font-size: clamp(44px, 5.2vw, 86px); line-height: 1.08; letter-spacing: -.04em; margin: 20px 0 20px; }
+  .cover h1 em { font-style: normal; color: var(--red2); }
+  .cover .sub { font-size: clamp(16px, 1.3vw, 19px); font-weight: 700; color: var(--smoke); line-height: 1.7; margin: 0; }
+  .meta { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 0; padding: 0; list-style: none; }
+  .meta li { font-weight: 700; font-size: 15px; padding: 9px 15px; border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid var(--line); }
+  .meta li b { font-family: var(--num); margin-right: 6px; }
+  .player { position: relative; }
+  .player::before { content: ''; position: absolute; inset: 0; transform: translate(18px, 18px); background: var(--red); border-radius: var(--r); }
+  .player video { position: relative; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--r); background: #000; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
+  .eps { position: absolute; z-index: 3; left: 50%; bottom: 14px; transform: translateX(-50%); display: inline-flex; gap: 4px; padding: 5px; border-radius: 999px; background: rgba(14,22,38,.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 8px 20px rgba(0,0,0,.4); }
+  .eps button { border: 0; background: transparent; border-radius: 999px; padding: 9px 18px; font: 900 15px var(--kr); color: var(--smoke); cursor: pointer; transition: background .2s, color .2s; }
+  .eps button b { font-family: var(--num); font-size: 11px; margin-right: 8px; opacity: .7; }
+  .eps button:hover { color: #fff; }
+  .eps button.on { background: var(--red); color: #fff; }
+
+  .sound { position: fixed; z-index: 50; right: clamp(16px, 2.6vw, 32px); bottom: clamp(56px, 8vh, 80px); width: 52px; height: 52px; border-radius: 50%;
+    border: 1px solid var(--line); background: rgba(14,22,38,.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    color: var(--ink); cursor: pointer; display: grid; place-items: center; transition: transform .2s, background .2s, opacity .25s, visibility .25s; }
+  .sound:hover { transform: scale(1.06); }
+  .sound.off { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(.8); }
+  .sound svg { width: 22px; height: 22px; }
+  .sound .eq { display: none; gap: 3px; align-items: flex-end; height: 18px; }
+  .sound .eq i { width: 3px; background: #fff; border-radius: 2px; animation: eq .9s ease-in-out infinite; }
+  .sound .eq i:nth-child(2) { animation-delay: -.3s; } .sound .eq i:nth-child(3) { animation-delay: -.6s; } .sound .eq i:nth-child(4) { animation-delay: -.15s; }
+  @keyframes eq { 0%, 100% { height: 4px; } 50% { height: 18px; } }
+  .sound.on { background: var(--red); border-color: var(--red); }
+  .sound.on svg { display: none; } .sound.on .eq { display: flex; }
+
+  /* 2. 개요 */
+  .ov { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+  .msg { padding: clamp(26px, 3vw, 40px); display: flex; flex-direction: column; justify-content: space-between; gap: 24px; background: var(--navy); }
+  .msg .k { font-family: var(--num); font-size: 12px; letter-spacing: .16em; color: var(--moon); }
+  .msg q { display: block; font-weight: 900; font-size: clamp(30px, 3.2vw, 48px); line-height: 1.25; letter-spacing: -.03em; quotes: '“' '”'; }
+  .msg q em { font-style: normal; color: var(--red2); }
+  .msg dl { display: grid; grid-template-columns: auto 1fr; gap: 10px 22px; margin: 0; font-size: clamp(15px, 1.15vw, 17px); }
+  .msg dt { color: var(--moon); font-weight: 700; }
+  .msg dd { margin: 0; font-weight: 700; }
+  .why { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .wi { padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; }
+  .wi .n { font-family: var(--num); font-size: 13px; color: var(--red2); }
+  .wi h3 { margin: 0; font-size: clamp(18px, 1.5vw, 22px); font-weight: 900; letter-spacing: -.02em; }
+  .wi p { margin: 0; font-size: clamp(14px, 1.05vw, 16px); line-height: 1.6; font-weight: 700; color: var(--mute); }
+
+  /* 3. 에피소드 */
+  .ep { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 20px; align-items: center; }
+  .ep + .ep { margin-top: clamp(18px, 3vh, 28px); padding-top: clamp(18px, 3vh, 28px); border-top: 1px solid var(--line); }
+  .ep .meta2 .no { font-family: var(--num); font-size: 13px; letter-spacing: .14em; color: var(--red2); }
+  .ep .meta2 h3 { margin: 8px 0 4px; font-size: clamp(22px, 1.9vw, 28px); font-weight: 900; letter-spacing: -.02em; }
+  .ep .meta2 .om { font-size: 15px; font-weight: 700; color: var(--mute); }
+  .ep .meta2 .copy { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: rgba(184,49,47,.16); border-left: 4px solid var(--red); font-weight: 900; font-size: 16px; line-height: 1.45; }
+  .ep .sw { display: flex; gap: 6px; margin-top: 12px; }
+  .ep .sw i { width: 22px; height: 22px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
+  .cuts { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+  .cut { border: 0; padding: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: zoom-in; min-width: 0; }
+  .cut img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; transition: transform .25s; }
+  .cut:hover img { transform: translateY(-3px); }
+  .cut span { display: block; margin-top: 7px; font-size: 13px; font-weight: 700; color: var(--smoke); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cut span b { font-family: var(--num); font-size: 11px; color: var(--red2); margin-right: 6px; }
+  dialog { border: 0; padding: 0; background: transparent; max-width: min(1200px, 94vw); width: 100%; overflow: visible; }
+  dialog::backdrop { background: rgba(5,8,14,.92); }
+  dialog img { width: 100%; border-radius: 14px; }
+  .lb-cap { margin-top: 14px; font-weight: 700; font-size: 17px; color: #fff; }
+  .lb-close { position: absolute; right: 0; top: -46px; background: none; border: 0; color: #fff; font: 900 28px var(--kr); cursor: pointer; }
+
+  /* 4. 담당 역할 */
+  .role { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 20px; align-items: stretch; }
+  .me { padding: clamp(24px, 3vw, 36px); display: flex; flex-direction: column; justify-content: center; gap: 14px; background: var(--navy); }
+  .me .k { font-family: var(--num); font-size: 12px; letter-spacing: .16em; color: var(--moon); }
+  .me .nm { font-weight: 900; font-size: clamp(30px, 2.8vw, 42px); letter-spacing: -.03em; }
+  .me .nm small { font-size: .45em; color: var(--mute); margin-left: 10px; letter-spacing: 0; }
+  .me p { margin: 0; font-size: clamp(15px, 1.2vw, 18px); line-height: 1.65; font-weight: 700; color: var(--smoke); }
+  .me p b { color: var(--red2); }
+  .tasks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .task { padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+  .task .ic { width: 44px; height: 44px; border-radius: 12px; background: rgba(184,49,47,.18); color: var(--red2); display: grid; place-items: center; }
+  .task .ic svg { width: 22px; height: 22px; }
+  .task h3 { margin: 0; font-size: clamp(18px, 1.5vw, 22px); font-weight: 900; letter-spacing: -.02em; }
+  .task p { margin: 0; font-size: clamp(14px, 1.05vw, 16px); line-height: 1.6; font-weight: 700; color: var(--mute); }
+
+
+  /* 텍스트 클릭 시 깜빡이는 커서 숨김 (브라우저 캐럿 브라우징 대비) */
+  body { caret-color: transparent; }
+  /* 화면을 채우는 배경 이미지 */
+  .cover { background: radial-gradient(ellipse at 75% 50%, rgba(14,22,38,.55), var(--bg) 70%), linear-gradient(90deg, var(--bg) 30%, rgba(14,22,38,.82)), url(frames/e1_5.jpg) right center / cover no-repeat; }
+  .msg { position: relative; overflow: hidden; background: linear-gradient(90deg, var(--navy) 45%, rgba(27,42,74,.55)), url(frames/e2_3.jpg) right center / cover no-repeat; }
+  .msg > * { position: relative; }
+  #role { background: linear-gradient(180deg, rgba(19,32,58,.94), rgba(19,32,58,.98)), url(frames/e2_5.jpg) center / cover no-repeat; }
+
+  /* 카피 타이포그래피 */
+  .ty-badge { display: inline-flex; align-items: center; gap: 8px; margin-left: 14px; padding: 6px 12px; border-radius: 999px; background: var(--red); color: #fff; font: 900 13px var(--kr); vertical-align: middle; letter-spacing: 0; }
+  .typo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .tf { overflow: hidden; display: flex; flex-direction: column; }
+  .tf button { border: 0; padding: 0; background: #000; cursor: zoom-in; display: block; }
+  .tf img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; transition: transform .4s; }
+  .tf button:hover img { transform: scale(1.02); }
+  .tf .bd { padding: 18px 22px 20px; display: grid; gap: 10px; }
+  .tf .bd .t { display: flex; align-items: baseline; gap: 10px; }
+  .tf .bd .t b { font-family: var(--num); font-size: 12px; color: var(--red2); letter-spacing: .12em; }
+  .tf .bd .t span { font-weight: 900; font-size: clamp(17px, 1.4vw, 20px); }
+  .tf ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: clamp(14px, 1.05vw, 16px); font-weight: 700; color: var(--smoke); }
+  .tf li::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); margin: 0 10px 3px 0; vertical-align: middle; }
+
+  /* 역할 5개: 타이포그래피 카드를 넓게 */
+  .tasks .task.wide { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 18px; background: linear-gradient(90deg, rgba(184,49,47,.22), var(--card) 70%); border-color: rgba(217,71,63,.4); }
+  .tasks .task.wide .tx { display: grid; gap: 6px; flex: 1; }
+  .tasks .task.wide img { width: 34%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; }
+  .tasks .task { padding: 18px 20px; }
+
+
+  /* 4. 역할 + 타이포그래피 (한 페이지) */
+  .role2 { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: stretch; }
+  .typo-box { padding: 20px; display: flex; flex-direction: column; gap: 14px; border-color: rgba(217,71,63,.35); background: linear-gradient(160deg, rgba(184,49,47,.16), var(--card) 55%); }
+  .tb-h { display: flex; align-items: center; gap: 12px; }
+  .tb-h h3 { margin: 0; font-size: clamp(20px, 1.7vw, 26px); font-weight: 900; letter-spacing: -.02em; }
+  .typo-box .ty-badge { margin: 0; }
+  .typo-box .typo { gap: 14px; flex: 1; }
+  .typo-box .tf { border-radius: 14px; overflow: hidden; background: rgba(0,0,0,.25); }
+  .typo-box .tf button { flex: 1; min-height: 0; }
+  .typo-box .tf img { height: 100%; aspect-ratio: auto; min-height: 180px; }
+  .typo-box .tf .bd { padding: 12px 14px 14px; gap: 8px; }
+  .typo-box .tf .bd .t { flex-direction: column; gap: 4px; }
+  .typo-box .tf .bd .t span { font-size: clamp(14px, 1.1vw, 16px); }
+  .typo-box .tf ul { font-size: clamp(13px, .95vw, 14px); }
+  .side { display: grid; grid-template-rows: auto 1fr; gap: 14px; }
+  .side .me { padding: 22px 24px; gap: 10px; }
+  .side .me .nm { font-size: clamp(26px, 2.3vw, 34px); }
+  .side .me p { font-size: clamp(14px, 1.1vw, 16px); }
+  .side .tasks { gap: 12px; }
+  .side .task { padding: 16px 18px; gap: 8px; }
+  .side .task .ic { width: 38px; height: 38px; }
+  .side .task h3 { font-size: clamp(16px, 1.25vw, 19px); }
+  .side .task p { font-size: clamp(13px, .95vw, 14px); line-height: 1.5; }
+
+  :focus-visible { outline: 3px solid var(--red2); outline-offset: 3px; }
+  section.on .wrap > * { animation: rise .6s cubic-bezier(.2,.7,.2,1) both; }
+  section.on .wrap > *:nth-child(2) { animation-delay: .08s; }
+  section.on .wrap > *:nth-child(3) { animation-delay: .16s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+
+  @media (max-width: 1100px) {
+    .cover .wrap, .ov, .role, .role2, .ep, .typo { grid-template-columns: minmax(0, 1fr); }
+    .tasks .task.wide { flex-direction: column; align-items: flex-start; }
+    .tasks .task.wide img { width: 100%; }
+    .cuts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pno { display: none; }
+  }
+  @media (max-width: 640px) {
+    .why, .tasks { grid-template-columns: minmax(0, 1fr); }
+    .cuts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .player::before { transform: translate(10px, 10px); }
+    .eps button { padding: 8px 12px; font-size: 13px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .sound .eq i { animation: none; }
+    section.on .wrap > * { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. 표지 -->
+<section class="cover" id="cover">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Public Campaign · Team Project</div>
+      <h1>보이지 않는 위협,<br><em>간접흡연</em></h1>
+      <p class="sub"><span class="ln">익숙한 동화를 현실의 가족 일상에 옮겨</span><span class="ln">담배가 사랑하는 사람에게 남기는 것을 보여주는</span><span class="ln">금연 공익광고 시리즈입니다.</span></p>
+      <ul class="meta"><li><b>2</b>편 시리즈</li><li><b>33</b>초 · <b>34</b>초</li><li>AI 실사풍 시네마틱</li></ul>
+    </div>
+    <div class="player">
+      <video id="main" src="../ep01.mp4" poster="../ep01.jpg" autoplay muted playsinline aria-label="금연 공익광고 영상"></video>
+      <div class="eps" role="tablist" aria-label="편 선택">
+        <button class="on" data-src="../ep01.mp4" data-poster="../ep01.jpg" role="tab" aria-selected="true"><b>EP.01</b>신혼 부부</button>
+        <button data-src="../ep02.mp4" data-poster="../ep02.jpg" role="tab" aria-selected="false"><b>EP.02</b>독사과</button>
+      </div>
+    </div>
+  </div>
+  <div class="pno"><span>금연 공익광고 시리즈</span><span><b>01</b> / 04</span></div>
+</section>
+<button class="sound" id="sound" aria-pressed="false" aria-label="영상 소리 켜기">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z" fill="currentColor" stroke="none"/><path d="M16 9.5l4.5 5M20.5 9.5l-4.5 5"/></svg>
+  <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+</button>
+
+<!-- 2. 개요 -->
+<section id="overview">
+  <div class="wrap">
+    <div class="hd"><div class="eyebrow">Overview</div><h2>괜찮다는 착각에 <em>질문</em>을 던지다</h2></div>
+    <div class="ov">
+      <div class="msg card">
+        <div><span class="k">KEY MESSAGE</span><q style="margin-top:14px">담배는 가족과<br><em>멀어지게</em> 합니다</q></div>
+        <dl>
+          <dt>형식</dt><dd>AI 실사풍 시네마틱 · 동화 오마주</dd>
+          <dt>러닝타임</dt><dd>33초 · 34초 (총 2편)</dd>
+          <dt>타깃</dt><dd>금연하지 못하는 흡연자</dd>
+        </dl>
+      </div>
+      <div class="why">
+        <div class="wi card"><span class="n">01</span><h3>문제 제기</h3><p><span class="ln">궐련형 담배도 연초도 괜찮다는</span><span class="ln">잘못된 인식에 질문합니다.</span></p></div>
+        <div class="wi card"><span class="n">02</span><h3>익숙한 동화의 오마주</h3><p><span class="ln">잠자는 숲속의 공주와 백설공주를</span><span class="ln">현실의 일상에 접목했습니다.</span></p></div>
+        <div class="wi card"><span class="n">03</span><h3>상징적인 장면</h3><p><span class="ln">물러서는 남편, 폐 모양으로 썩는</span><span class="ln">독사과로 유해성을 보여줍니다.</span></p></div>
+        <div class="wi card"><span class="n">04</span><h3>행동 유도</h3><p><span class="ln">배우자와 아이에게 미칠 영향을</span><span class="ln">떠올리게 해 금연을 권합니다.</span></p></div>
+      </div>
+    </div>
+  </div>
+  <div class="pno"><span>기획 의도</span><span><b>02</b> / 04</span></div>
+</section>
+
+<!-- 3. 에피소드 -->
+<section id="episodes">
+  <div class="wrap">
+    <div class="hd"><div class="eyebrow">Episodes</div><h2>두 편의 동화, 하나의 <em>반전</em></h2></div>
+    <div class="ep">
+      <div class="meta2">
+        <span class="no">EP.01</span>
+        <h3>신혼 부부의 일상</h3>
+        <span class="om">잠자는 숲속의 공주 오마주</span>
+        <div class="copy">사랑을 멀어지게 한 건,<br>담배였습니다.</div>
+        <div class="sw" aria-label="컬러"><i style="--c:#1B2A4A"></i><i style="--c:#6F8FBF"></i><i style="--c:#C9CCD1"></i></div>
+      </div>
+      <div class="cuts" data-ep="1"></div>
+    </div>
+    <div class="ep">
+      <div class="meta2">
+        <span class="no">EP.02</span>
+        <h3>독사과</h3>
+        <span class="om">백설공주 오마주</span>
+        <div class="copy">그 독사과를 받은 건,<br>아이입니다.</div>
+        <div class="sw" aria-label="컬러"><i style="--c:#B8312F"></i><i style="--c:#8FB2D9"></i><i style="--c:#D9C7A7"></i></div>
+      </div>
+      <div class="cuts" data-ep="2"></div>
+    </div>
+  </div>
+  <div class="pno"><span>스토리보드</span><span><b>03</b> / 04</span></div>
+</section>
+
+<!-- 4. 담당 역할 + 카피 타이포그래피 -->
+<section id="role">
+  <div class="wrap">
+    <div class="hd"><div class="eyebrow">My Role</div><h2>영상의 <em>퀄리티</em>와 마지막 한 줄을 책임지다</h2></div>
+    <div class="role2">
+      <div class="typo-box card">
+        <div class="tb-h"><span class="ty-badge">직접 제작</span><h3>카피 타이포그래피</h3></div>
+        <div class="typo">
+          <article class="tf"><button data-src="frames/typo1.jpg" data-cap="EP.01 엔딩 카피 · 사랑을 멀어지게 한 건, 담배였습니다."><img src="frames/typo1.jpg" alt="EP.01 엔딩 카피 타이포그래피" loading="lazy"></button>
+            <div class="bd"><div class="t"><b>EP.01</b><span>사랑을 멀어지게 한 건, 담배였습니다.</span></div>
+              <ul><li>‘사 랑’ 자간을 벌려 멀어진 거리 표현</li><li>‘담배’만 굵게, 붉은 마침표로 경고</li></ul></div></article>
+          <article class="tf"><button data-src="frames/typo2.jpg" data-cap="EP.02 엔딩 카피 · 그 독사과를 받은 건, 아이입니다."><img src="frames/typo2.jpg" alt="EP.02 엔딩 카피 타이포그래피" loading="lazy" style="object-position: 92% center"></button>
+            <div class="bd"><div class="t"><b>EP.02</b><span>그 독사과를 받은 건, 아이입니다.</span></div>
+              <ul><li>세로쓰기로 동화책 같은 리듬</li><li>‘독사과’와 ‘아이’를 크게 대비</li></ul></div></article>
+        </div>
+      </div>
+      <div class="side">
+        <div class="me card">
+          <span class="k">3인 팀 프로젝트</span>
+          <div class="nm">윤동현<small>기술 · 퀄리티 담당</small></div>
+          <p><span class="ln">프롬프트 설계부터 카피 타이포그래피,</span><span class="ln">업스케일링까지 <b>영상의 완성도</b>를 맡았습니다.</span></p>
+        </div>
+        <div class="tasks">
+          <div class="task card"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 6l3 3"/></svg></span><h3>프롬프트 설계</h3><p>장면·조명·카메라를 세밀하게 써서 영상 품질 향상</p></div>
+          <div class="task card"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10.5c0-1 1-1.5 2.5-1.5s2.5.6 2.5 1.6c0 2.4-5 1.2-5 3.6 0 1 1 1.8 2.5 1.8s2.5-.6 2.5-1.5"/></svg></span><h3>크레딧 관리</h3><p>생성 크레딧을 관리해 필요한 장면에 집중</p></div>
+          <div class="task card"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 15l3-3 2 2 3-3"/><path d="M16 9h2v2"/></svg></span><h3>업스케일링 마무리</h3><p>완성 컷을 업스케일링해 최종 화질 마무리</p></div>
+          <div class="task card"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10v7H8l-4 3z"/><path d="M14 10h6v7l-3-2h-3"/></svg></span><h3>의견 조율</h3><p>팀원 의견을 조율해 한 방향으로 정리</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pno"><span>포트폴리오용 가상 캠페인 · 실제 공익광고 아님</span><span><b>04</b> / 04</span></div>
+</section>
+
+<dialog id="lb" aria-label="컷 크게 보기">
+  <button class="lb-close" id="lbClose" aria-label="닫기">✕</button>
+  <img id="lbImg" alt="">
+  <p class="lb-cap" id="lbCap"></p>
+</dialog>
+
+<script>
+  const CUTS = {
+    1: ['퇴근길, 담배 피우는 아내', '아내를 반기는 남편', '잠든 아내에게 다가간다', '뽀뽀하려는 남편', '냄새에 방을 나간 남편', '엔딩 카피'],
+    2: ['“아빠 나 이거 따줘”', '담배 피던 아빠', '사과를 따는 아빠', '사과를 건네는 아빠', '눈동자 속 아빠가 마녀로', '폐 모양으로 썩은 사과'],
+  };
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lb = document.getElementById('lb');
+  document.querySelectorAll('.cuts').forEach((box) => {
+    const ep = box.dataset.ep;
+    box.innerHTML = CUTS[ep].map((c, k) => `<button class="cut" data-ep="${ep}" data-k="${k + 1}"><img src="frames/e${ep}_${k + 1}.jpg" alt="EP.0${ep} ${c}" loading="lazy"><span><b>${String(k + 1).padStart(2, '0')}</b>${c}</span></button>`).join('');
+    box.addEventListener('click', (e) => {
+      const b = e.target.closest('.cut'); if (!b) return;
+      const img = document.getElementById('lbImg'), c = CUTS[b.dataset.ep][b.dataset.k - 1];
+      img.src = `frames/e${b.dataset.ep}_${b.dataset.k}.jpg`; img.alt = c;
+      document.getElementById('lbCap').textContent = `EP.0${b.dataset.ep} · ${c}`;
+      lb.showModal();
+    });
+  });
+  document.querySelectorAll('.tf button').forEach((b) => b.addEventListener('click', () => {
+    const img = document.getElementById('lbImg'); img.src = b.dataset.src; img.alt = b.dataset.cap;
+    document.getElementById('lbCap').textContent = b.dataset.cap; lb.showModal();
+  }));
+  document.getElementById('lbClose').onclick = () => lb.close();
+  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+
+  // 영상: EP 전환 + 소리 (스피커는 1페이지에서만, 다른 페이지로 가면 음소거)
+  const main = document.getElementById('main'), snd = document.getElementById('sound');
+  const epBtns = [...document.querySelectorAll('.eps button')];
+  const pickEp = (b) => {
+    epBtns.forEach((o) => { o.classList.toggle('on', o === b); o.setAttribute('aria-selected', String(o === b)); });
+    main.src = b.dataset.src; main.poster = b.dataset.poster; main.currentTime = 0;
+    if (!reduce) main.play().catch(() => {});
+  };
+  epBtns.forEach((b) => (b.onclick = () => { if (!b.classList.contains('on')) pickEp(b); }));
+  // 한 편이 끝나면 다음 편으로 (EP.01 → EP.02 → EP.01 …)
+  main.addEventListener('ended', () => { const k = epBtns.findIndex((o) => o.classList.contains('on')); pickEp(epBtns[(k + 1) % epBtns.length]); });
+  const setSnd = (on) => {
+    main.muted = !on; snd.classList.toggle('on', on);
+    snd.setAttribute('aria-pressed', String(on)); snd.setAttribute('aria-label', on ? '영상 소리 끄기' : '영상 소리 켜기');
+  };
+  let first = true;
+  snd.onclick = () => { const on = main.muted; if (on && first) { main.currentTime = 0; first = false; } setSnd(on); if (on) main.play().catch(() => {}); };
+  if (reduce) main.pause();
+  const coverSec = document.getElementById('cover');
+  const syncSound = () => {
+    const r = coverSec.getBoundingClientRect();
+    const onCover = r.bottom > innerHeight * 0.5 && r.top < innerHeight * 0.5;
+    snd.classList.toggle('off', !onCover); snd.tabIndex = onCover ? 0 : -1;
+    if (!onCover && !main.muted) setSnd(false);
+  };
+  addEventListener('scroll', syncSound, { passive: true }); addEventListener('resize', syncSound); syncSound();
+
+  // 등장 애니메이션
+  const secs = [...document.querySelectorAll('section')];
+  const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add('on')), { threshold: 0.35 });
+  secs.forEach((s) => io.observe(s));
+
+  // 데스크톱: 휠 한 번 / 키 한 번 = 한 페이지
+  const desk = matchMedia('(min-width: 1101px) and (min-height: 640px)');
+  let lock = false, acc = 0;
+  const current = () => secs.reduce((best, p, i) => (Math.abs(p.getBoundingClientRect().top) < Math.abs(secs[best].getBoundingClientRect().top) ? i : best), 0);
+  const go = (dir) => {
+    lock = true;
+    secs[Math.max(0, Math.min(secs.length - 1, current() + dir))].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    setTimeout(() => { lock = false; acc = 0; }, 950);
+  };
+  addEventListener('wheel', (e) => {
+    if (!desk.matches || lb.open) return;
+    e.preventDefault(); if (lock) return;
+    acc += e.deltaY; if (Math.abs(acc) > 30) go(acc > 0 ? 1 : -1);
+  }, { passive: false });
+  addEventListener('keydown', (e) => {
+    if (!desk.matches || lb.open) return;
+    if (['ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); if (!lock) go(1); }
+    if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); if (!lock) go(-1); }
+  });
+</script>
+</body>
+</html>

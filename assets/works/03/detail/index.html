@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spotify Wrapped 2026 — Concept Ad</title>
+<meta name="description" content="2026 연말결산 공개를 알리는 컨셉 프로모션 영상">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23121114'/%3E%3Cpath d='M12 9l12 7-12 7z' fill='%23d4ff3f'/%3E%3C/svg%3E">
+<style>
+  @font-face { font-family: 'Archivo Expanded'; src: url(fonts/ArchivoExpanded-Black.ttf) format('truetype'); font-weight: 900; font-display: swap; }
+  @font-face { font-family: 'Pretendard'; src: url(fonts/Pretendard-Black.woff2) format('woff2'); font-weight: 900; font-display: swap; }
+  @font-face { font-family: 'Pretendard'; src: url(fonts/Pretendard-Bold.woff2) format('woff2'); font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'Pretendard'; src: url(fonts/Pretendard-Regular.woff2) format('woff2'); font-weight: 400; font-display: swap; }
+
+  :root {
+    --bg: #121114; --bg2: #1a191e; --line: #2e2c34;
+    --paper: #f4f1ea; --mute: #9a97a4; --dim: #5f5c68;
+    --lime: #d4ff3f; --green: #1ed760; --purple: #8e3bff; --orange: #ff7a1a; --cobalt: #2f5bff;
+    --pad: clamp(20px, 5vw, 80px);
+    --num: 'Archivo Expanded', 'Pretendard', sans-serif;
+    --kr: 'Pretendard', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  /* 데스크톱: 한 번 스크롤 = 한 페이지 (mandatory). 작은 화면은 내용이 길어 proximity로 완화 */
+  @media (max-width: 1100px), (max-height: 639px) { html { scroll-snap-type: y proximity; } }
+  section { scroll-snap-align: start; scroll-snap-stop: always; }
+  body { margin: 0; background: var(--bg); color: var(--paper); font-family: var(--kr); -webkit-font-smoothing: antialiased; word-break: keep-all; overflow-wrap: break-word; }
+  h1, h2, .lead, .one { text-wrap: balance; }
+  p, .cp { text-wrap: pretty; }
+  img, video { display: block; max-width: 100%; }
+  .eyebrow { font-family: var(--num); font-size: 13px; letter-spacing: 0.12em; color: var(--lime); display: flex; align-items: center; gap: 12px; }
+  .eyebrow::before { content: ''; width: 36px; height: 4px; background: var(--lime); }
+  /* 각 섹션 = 한 페이지 */
+  section { min-height: 100svh; box-sizing: border-box; padding: clamp(72px, 11vh, 120px) var(--pad); display: flex; flex-direction: column; justify-content: center; }
+  h2 { font-family: var(--num); font-weight: 900; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.1; margin: 12px 0 14px; } /* 세 페이지 큰제목 공통 크기 */
+  .lead { font-size: clamp(16px, 1.5vw, 20px); font-weight: 700; color: var(--mute); margin: 0; max-width: 60ch; line-height: 1.55; }
+
+  /* ---------- 1. 표지: 배경 영상 + 타이틀 ---------- */
+  .cover { position: relative; overflow: hidden; justify-content: flex-end; padding-bottom: clamp(48px, 10vh, 110px); }
+  .cover video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  /* 영상 위 타이틀 가독성: 왼쪽 아래를 어둡게 */
+  .cover::after { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(90deg, rgba(18,17,20,0.96) 0%, rgba(18,17,20,0.88) 36%, rgba(18,17,20,0.5) 62%, rgba(18,17,20,0.2) 100%),
+                linear-gradient(0deg, var(--bg) 0%, rgba(18,17,20,0) 35%); }
+  .cover-inner { position: relative; z-index: 2; max-width: 760px; }
+  .cover h1 { font-family: var(--num); font-weight: 900; font-size: clamp(40px, 7.6vw, 120px); line-height: 0.95; margin: 18px 0 22px; white-space: nowrap; overflow-wrap: normal; width: max-content; max-width: none; }
+  .cover h1 em { font-style: normal; color: var(--lime); }
+  @media (max-width: 640px) { .cover h1 em { display: block; } }
+  .cover .one { font-size: clamp(18px, 1.9vw, 24px); font-weight: 900; margin: 0 0 24px; line-height: 1.45; }
+  .meta { margin: 0; display: flex; gap: 22px; font-family: var(--num); font-size: 15px; letter-spacing: 0.06em; color: var(--mute); }
+  .meta span + span::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--lime); margin: 0 22px 3px 0; vertical-align: middle; }
+
+  /* 소리 버튼: 스크롤해도 오른쪽 아래에 고정 */
+  .sound { position: fixed; z-index: 50; right: clamp(16px, 2.6vw, 32px); bottom: clamp(16px, 2.6vw, 32px); width: 52px; height: 52px; border-radius: 50%;
+    border: 1px solid rgba(244,241,234,0.22); background: rgba(18,17,20,0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    color: var(--paper); cursor: pointer; display: grid; place-items: center; transition: border-color .2s, background .2s, transform .2s; }
+  .sound:hover { border-color: rgba(244,241,234,0.5); transform: scale(1.05); }
+  .sound svg { width: 22px; height: 22px; }
+  .sound .eq { display: none; gap: 3px; align-items: flex-end; height: 18px; }
+  .sound .eq i { width: 3px; background: var(--lime); border-radius: 2px; animation: eq 0.9s ease-in-out infinite; }
+  .sound .eq i:nth-child(2) { animation-delay: -0.3s; } .sound .eq i:nth-child(3) { animation-delay: -0.6s; } .sound .eq i:nth-child(4) { animation-delay: -0.15s; }
+  @keyframes eq { 0%, 100% { height: 4px; } 50% { height: 18px; } }
+  .sound.on { border-color: rgba(212,255,63,0.6); }
+  .sound.on svg { display: none; }
+  .sound.on .eq { display: flex; }
+  .sound .tip { position: absolute; right: 62px; white-space: nowrap; font: 700 13px var(--kr); color: var(--paper); background: rgba(18,17,20,0.85); padding: 6px 10px; border-radius: 8px; opacity: 0; transform: translateX(6px); transition: opacity .2s, transform .2s; pointer-events: none; }
+  .sound:hover .tip, .sound:focus-visible .tip { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .sound .eq i { animation: none; height: 12px; } }
+  .sound:focus-visible, .frame:focus-visible, .lb-close:focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; }
+
+  /* ---------- 2. 5단계 구성 ---------- */
+  .wov { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr) minmax(0, 1fr); gap: 16px; margin-top: 22px; }
+  .wb { background: var(--bg2); border-radius: 16px; padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; }
+  .wb .wk { font-family: var(--num); font-size: 12px; letter-spacing: .12em; color: var(--mute); }
+  .wb p { margin: 0; font-weight: 700; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.6; color: #d9d6de; }
+  .wb p b { color: var(--paper); }
+  .wb.main { border-top: 6px solid var(--lime); }
+  .wb.main .wk { color: var(--lime); }
+  .arc-h { margin-top: 28px; display: flex; align-items: center; gap: 12px; font-family: var(--num); font-size: 13px; letter-spacing: .1em; color: var(--mute); }
+  .arc-h::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .arc { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+  #arc .card .meta { padding: 12px 14px 14px; gap: 4px; }
+  #arc .card .name { font-size: 15px; }
+  #arc .card p { margin-top: 4px; font-size: 14px; }
+  .card { background: var(--bg2); border-radius: 16px; overflow: hidden; border-top: 6px solid var(--c); display: flex; flex-direction: column; }
+  .card video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #000; }
+  .card .meta { padding: 18px 18px 22px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .card .name { font-family: var(--num); font-size: 18px; color: var(--c); }
+  .card .time { font-family: var(--num); font-size: 12px; letter-spacing: 0.06em; color: var(--mute); }
+  .card p { margin: 8px 0 0; font-weight: 700; font-size: 16px; line-height: 1.45; }
+
+  /* ---------- 3. 키 비주얼 및 UI 디자인: 커버(1:1)+폰 3장(360:630)을 같은 높이 한 줄, 다른 페이지와 같은 좌우 폭 ---------- */
+  #design { padding-top: clamp(40px, 6vh, 64px); padding-bottom: clamp(40px, 6vh, 64px); }
+  .d-wrap { width: min(100%, calc((100svh - 300px) * 1.74)); margin: 0 auto; } /* 스토리보드와 같은 폭 */
+  .row4 { display: grid; grid-template-columns: 1.75fr 1fr 1fr 1fr; gap: 16px; margin-top: 32px; }
+  .row4 figure { margin: 0; min-width: 0; }
+  .row4 img { display: block; width: 100%; border-radius: 12px; }
+  .row4 figcaption { margin-top: 14px; font-size: 16px; font-weight: 700; color: var(--mute); line-height: 1.45; }
+  .row4 figcaption b { display: block; color: var(--paper); font-size: 20px; font-weight: 900; margin-bottom: 4px; }
+  .chips { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 20px; margin-top: 28px; padding-top: 20px; border-top: 1px solid rgba(244,241,234,0.1); }
+  .chipc { display: flex; align-items: center; gap: 10px; font-family: var(--num); font-size: 15px; color: var(--paper); }
+  .chipc i { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(244,241,234,0.18); }
+
+  /* ---------- 4. 스토리보드: 한 페이지 안에서 4컷(2×2)씩 3장 가로 슬라이드 ---------- */
+  #storyboard { padding-top: clamp(28px, 5vh, 48px); padding-bottom: clamp(20px, 3vh, 32px); }
+  /* 폭 = 2×2 그리드와 머리글·하단 줄이 한 화면에 들어오는 최대 폭 */
+  .sb-wrap { width: min(100%, calc((100svh - 300px) * 1.74)); margin: 0 auto; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .sb-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .sb-head h2 { margin-bottom: 0; }
+  .ctrl { display: flex; align-items: center; gap: 18px; }
+  .prog { display: grid; justify-items: end; gap: 10px; }
+  .prog .pn { font-family: var(--num); font-size: 18px; color: var(--mute); }
+  .prog .pn b { color: var(--paper); font-weight: 900; }
+  .prog .bar { display: grid; grid-template-columns: repeat(3, 28px); gap: 6px; }
+  .prog .bar button { height: 4px; padding: 0; border: 0; border-radius: 2px; background: rgba(244,241,234,0.18); cursor: pointer; transition: background .25s; }
+  .prog .bar button.on { background: var(--lime); }
+  .arw { width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(244,241,234,0.22); background: rgba(244,241,234,0.04); color: var(--paper); display: grid; place-items: center; cursor: pointer; transition: border-color .2s, background .2s, color .2s, opacity .2s; }
+  .arw svg { width: 20px; height: 20px; }
+  .arw:hover:not(:disabled) { border-color: var(--lime); color: var(--lime); }
+  .arw:disabled { opacity: .3; cursor: default; }
+  .arw:focus-visible, .prog .bar button:focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; }
+  .sb-view { overflow: hidden; margin-top: 22px; }
+  .sb-track { display: flex; transition: transform .7s cubic-bezier(.65, 0, .35, 1); }
+  .sb-page { flex: 0 0 100%; min-width: 0; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 28px; }
+  .frame { border: 0; padding: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: zoom-in; min-width: 0; }
+  .frame img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; transition: opacity .25s; }
+  .frame:hover img { opacity: .8; }
+  .frame .capl { display: flex; align-items: baseline; gap: 12px; margin-top: 12px; min-width: 0; }
+  .frame .n { font-family: var(--num); font-size: 15px; color: var(--lime); }
+  .frame .tc { font-family: var(--num); font-size: 12px; color: var(--mute); }
+  .frame .cp { font-weight: 700; font-size: 18px; color: var(--paper); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sb-foot { margin-top: 22px; padding-top: 16px; border-top: 1px solid rgba(244,241,234,0.12); }
+  .disc { margin: 0; font-weight: 700; font-size: 15px; color: #b9b6be; text-align: center; }
+  @media (prefers-reduced-motion: reduce) { .sb-track { transition: none; } }
+  dialog { border: 0; padding: 0; background: transparent; color: var(--paper); max-width: min(1200px, 94vw); width: 100%; }
+  dialog::backdrop { background: rgba(10,10,12,0.92); }
+  dialog img { width: 100%; border-radius: 12px; }
+  .lb-cap { margin-top: 14px; font-weight: 700; font-size: 16px; }
+  .lb-cap .tc { font-family: var(--num); color: var(--lime); margin-right: 12px; }
+  .lb-close { position: absolute; right: 0; top: -46px; background: none; border: 0; color: var(--paper); font: 900 28px var(--kr); cursor: pointer; }
+
+  @media (max-width: 1100px) {
+    .wov { grid-template-columns: minmax(0, 1fr); }
+    .arc { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(250px, 72vw); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+    .card { scroll-snap-align: start; }
+    .row4 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .row4 figure:first-child { grid-column: 1 / -1; }
+    .chips { justify-content: flex-start; }
+    .ctrl { display: none; }
+    .sb-track { display: grid; gap: 20px; transform: none !important; }
+  }
+  @media (max-width: 560px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 560px) {
+    .palette { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cover::after { background: linear-gradient(0deg, rgba(18,17,20,0.95) 0%, rgba(18,17,20,0.75) 45%, rgba(18,17,20,0.2) 100%); }
+    .q { width: 86px; height: 86px; border-radius: 0 0 0 86px; } .r { width: 120px; } .h { width: 110px; height: 55px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<!-- 1. 표지 + 개요 + 메인 영상 (배경 재생) -->
+<section class="cover" id="cover">
+  <video id="main" src="../video.mp4" poster="media/poster.jpg" autoplay muted loop playsinline aria-label="메인 광고 영상"></video>
+  <div class="cover-inner">
+    <div class="eyebrow">CONCEPT AD · MOTION GRAPHIC</div>
+    <h1>SPOTIFY<br>WRAPPED <em>2026</em></h1>
+    <p class="one">2026 연말결산 공개를 알리는 컨셉 프로모션 영상</p>
+    <p class="meta"><span>30초</span><span>16:9</span></p>
+  </div>
+</section>
+<button class="sound" id="sound" aria-pressed="false" aria-label="메인 영상 소리 켜기">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z" fill="currentColor" stroke="none"/><path d="M16 9.5l4.5 5M20.5 9.5l-4.5 5"/></svg>
+  <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  <span class="tip">소리 켜기</span>
+</button>
+
+<!-- 2. 개요: Wrapped란? (5단계 구성은 아래에 곁들임) -->
+<section id="arc">
+  <div class="eyebrow">OVERVIEW</div>
+  <h2>Spotify Wrapped란?</h2>
+  <div class="wov">
+    <div class="wb"><span class="wk">SPOTIFY</span><p>세계 최대 규모의 음악 스트리밍 서비스.</p></div>
+    <div class="wb main"><span class="wk">WRAPPED · 연말결산</span><p>매년 연말, 1년 동안 <b>가장 많이 들은 노래·아티스트·장르</b>를 통계로 보여주고, 그해의 최애곡을 모은 <b>Top Songs 플레이리스트</b>를 자동으로 만들어 줍니다. 결과는 <b>숏폼처럼 넘겨 보는 세로 카드</b>로 공개되어 SNS 공유로 이어집니다.</p></div>
+    <div class="wb"><span class="wk">THIS PROJECT</span><p>2026 Wrapped 공개를 알리는 30초 컨셉 영상. 세로 카드로 넘겨 보던 결산 경험을 가로 광고 화면으로 옮겼습니다.</p></div>
+  </div>
+  <div class="arc-h"><span>30초 · 5개 구간으로 표현</span></div>
+  <div class="arc" id="arcCards"></div>
+</section>
+
+<!-- 3. 키 비주얼 및 UI 디자인 -->
+<section id="design">
+  <div class="d-wrap">
+    <div class="eyebrow">KEY VISUAL &amp; UI DESIGN</div>
+    <h2>키 비주얼 및 UI 디자인</h2>
+    <div class="row4">
+      <figure><img src="media/kv_cover.jpg" alt="2026 Your Top Songs 앨범 커버" loading="lazy"><figcaption><b>2026 앨범 커버</b>1년의 재생을 막대 타일로, 취향을 궤도 행성으로 표현</figcaption></figure>
+      <figure><img src="media/ui_song.jpg" alt="최애 곡 재생 화면" loading="lazy"><figcaption><b>최애 곡</b>재생 화면 UI</figcaption></figure>
+      <figure><img src="media/ui_artist.jpg" alt="최애 아티스트 카드" loading="lazy"><figcaption><b>아티스트</b>랭킹 카드 UI</figcaption></figure>
+      <figure><img src="media/ui_genre.jpg" alt="음악 스타일 리포트 카드" loading="lazy"><figcaption><b>음악 스타일</b>장르 리포트 UI</figcaption></figure>
+    </div>
+    <div class="chips" aria-label="컬러 팔레트">
+      <span class="chipc"><i style="--c:#131216"></i>#131216</span>
+      <span class="chipc"><i style="--c:#f4f1ea"></i>#F4F1EA</span>
+      <span class="chipc"><i style="--c:#d4ff3f"></i>#D4FF3F</span>
+      <span class="chipc"><i style="--c:#8f6bff"></i>#8F6BFF</span>
+      <span class="chipc"><i style="--c:#c9b8ff"></i>#C9B8FF</span>
+      <span class="chipc"><i style="--c:#ff5a1f"></i>#FF5A1F</span>
+      <span class="chipc"><i style="--c:#3d5bff"></i>#3D5BFF</span>
+    </div>
+  </div>
+</section>
+
+<!-- 4. 스토리보드: 한 페이지에서 4컷씩 3장 가로 슬라이드 (휠·화살표·막대) -->
+<section id="storyboard">
+  <div class="sb-wrap">
+    <div class="sb-head">
+      <div><div class="eyebrow">STORYBOARD</div><h2>스토리보드</h2></div>
+      <div class="ctrl">
+        <div class="prog"><span class="pn" aria-live="polite"><b id="sbNum">01</b> / 03</span>
+          <span class="bar"><button class="on" aria-label="1–4컷"></button><button aria-label="5–8컷"></button><button aria-label="9–12컷"></button></span></div>
+        <button class="arw" id="sbPrev" aria-label="이전 컷"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="arw" id="sbNext" aria-label="다음 컷"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+    <div class="sb-view"><div class="sb-track" id="sbTrack">
+      <div class="sb-page"><div class="grid" data-from="0"></div></div>
+      <div class="sb-page"><div class="grid" data-from="4"></div></div>
+      <div class="sb-page"><div class="grid" data-from="8"></div></div>
+    </div></div>
+    <div class="sb-foot"><p class="disc">포트폴리오용 컨셉 작업으로, 공식 스포티파이 광고가 아닙니다.</p></div>
+  </div>
+</section>
+
+<dialog id="lb" aria-label="스토리보드 컷 크게 보기">
+  <button class="lb-close" id="lbClose" aria-label="닫기">✕</button>
+  <img id="lbImg" alt="">
+  <p class="lb-cap" id="lbCap"></p>
+</dialog>
+
+<script>
+  const SEC = [
+    { id: 'HOOK', c: 'var(--purple)', time: '0–5초', clip: 'hook', text: '로고와 PLAY 타이포그래피로 도입부 시선 집중' },
+    { id: 'BRIDGE', c: 'var(--lime)', time: '5–9초', clip: 'bridge', text: '리퀴드 와이프 전환과 함께 2026 키 비주얼 공개' },
+    { id: 'PROOF', c: 'var(--green)', time: '9–17초', clip: 'proof', text: '모바일 UI 모션으로 최애 곡 · 아티스트 · 음악 스타일 제시' },
+    { id: 'ARCHIVE', c: 'var(--orange)', time: '17–23초', clip: 'archive', text: '역대 연말결산 커버 스크롤 후 2026 커버 플립 공개' },
+    { id: 'CTA', c: 'var(--cobalt)', time: '23–30초', clip: 'cta', text: '2027 시즌 예고 카드와 재생 유도 버튼으로 마무리' },
+  ];
+  // 스토리보드: 타임코드 · 구간 · 화면 자막만
+  const SHOTS = [
+    [0.5, 'HOOK', '스포티파이 로고'], [3.3, 'HOOK', '멈추지 않았던 당신의 1년'], [6.6, 'BRIDGE', 'Spotify가 다 기록해 뒀어요'], [8.3, 'BRIDGE', '2026 Wrapped 연말결산'],
+    [10.7, 'PROOF', '2026 나의 최애 곡'], [13.3, 'PROOF', '가장 많이 찾은 아티스트'], [15.7, 'PROOF', '한눈에 보는 내 음악 스타일'], [17.9, 'ARCHIVE', '올해도 어김없이 돌아온 이 순간'],
+    [21.6, 'ARCHIVE', '2026년, 나만의 플레이리스트를 열어보세요'], [24.95, 'CTA', '미공개 2027 커버'], [26.8, 'CTA', '내년에도 함께해요!'], [29.0, 'CTA', '로고'],
+  ];
+  const color = (id) => SEC.find((s) => s.id === id).c;
+  const tc = (t) => `00:${t.toFixed(1).padStart(4, '0')}`;
+  const fname = (t) => (Number.isInteger(t) ? t.toFixed(1) : String(t)); // 29.0 → "29.0" (파일명 t29.0.jpg)
+
+  // 소리 버튼 (화면 오른쪽 아래 고정) — 처음 켤 때 영상을 처음부터
+  const main = document.getElementById('main'), snd = document.getElementById('sound');
+  let first = true;
+  snd.onclick = () => {
+    main.muted = !main.muted;
+    if (!main.muted) { if (first) { main.currentTime = 0; first = false; } main.play(); }
+    snd.classList.toggle('on', !main.muted);
+    snd.querySelector('.tip').textContent = main.muted ? '소리 켜기' : '소리 끄기';
+    snd.setAttribute('aria-pressed', String(!main.muted));
+    snd.setAttribute('aria-label', main.muted ? '메인 영상 소리 켜기' : '메인 영상 소리 끄기');
+  };
+
+  // 5단계 카드 (보일 때만 재생)
+  const arc = document.getElementById('arcCards');
+  SEC.forEach((s) => arc.insertAdjacentHTML('beforeend', `<article class="card" style="--c:${s.c}">
+    <video src="media/${s.clip}.mp4" muted loop playsinline preload="auto" aria-label="${s.id} 구간 미리보기"></video>
+    <div class="meta"><span class="name">${s.id}</span><span class="time">${s.time}</span><p>${s.text}</p></div></article>`));
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) main.pause();
+  const io = new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting && !reduce ? e.target.play().catch(() => {}) : e.target.pause())), { threshold: 0.3 });
+  arc.querySelectorAll('video').forEach((v) => io.observe(v));
+
+  // 스토리보드 + 라이트박스
+  const lb = document.getElementById('lb');
+  document.querySelectorAll('#storyboard .grid').forEach((grid) => {
+    const from = +grid.dataset.from;
+    SHOTS.slice(from, from + 4).forEach(([t, , copy], k) => {
+      const i = from + k, n = String(i + 1).padStart(2, '0');
+      grid.insertAdjacentHTML('beforeend', `<button class="frame" data-i="${i}">
+        <img src="frames/t${fname(t)}.jpg" alt="${n} ${copy}" loading="lazy">
+        <span class="capl"><span class="n">${n}</span><span class="tc">${tc(t)}</span><span class="cp">${copy}</span></span></button>`);
+    });
+    grid.addEventListener('click', (e) => {
+      const f = e.target.closest('.frame'); if (!f) return;
+      const [t, , copy] = SHOTS[+f.dataset.i];
+      const img = document.getElementById('lbImg');
+      img.src = `frames/t${fname(t)}.jpg`; img.alt = copy;
+      document.getElementById('lbCap').innerHTML = `<span class="tc">${String(+f.dataset.i + 1).padStart(2, '0')} · ${tc(t)}</span>${copy}`;
+      lb.showModal();
+    });
+  });
+  // 스토리보드 슬라이드: 0 → 1 → 2 (4컷씩)
+  const sbSec = document.getElementById('storyboard'), track = document.getElementById('sbTrack');
+  const bars = [...document.querySelectorAll('.prog .bar button')], prevB = document.getElementById('sbPrev'), nextB = document.getElementById('sbNext');
+  const pagesSb = [...track.children];
+  let slide = 0;
+  const setSlide = (i) => {
+    slide = Math.max(0, Math.min(2, i));
+    track.style.transform = `translateX(${-100 * slide}%)`;
+    bars.forEach((b, k) => b.classList.toggle('on', k === slide));
+    document.getElementById('sbNum').textContent = '0' + (slide + 1);
+    prevB.disabled = slide === 0; nextB.disabled = slide === 2;
+    const wide = matchMedia('(min-width: 1101px)').matches; // 모바일은 세로 목록이라 전부 활성
+    pagesSb.forEach((pg, k) => (pg.inert = wide && k !== slide)); // 안 보이는 장의 버튼은 탭 이동에서 제외
+  };
+  prevB.onclick = () => setSlide(slide - 1);
+  nextB.onclick = () => setSlide(slide + 1);
+  bars.forEach((b, k) => (b.onclick = () => setSlide(k)));
+  setSlide(0);
+  matchMedia('(min-width: 1101px)').addEventListener('change', () => setSlide(slide));
+  document.getElementById('lbClose').onclick = () => lb.close();
+  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+
+  // 페이지 넘김: 데스크톱에서 휠 한 번 / ↑↓ · PageUp/Down · Space 한 번 = 한 페이지
+  const pages = [...document.querySelectorAll('section')];
+  const desk = matchMedia('(min-width: 1101px) and (min-height: 640px)');
+  let lock = false, acc = 0;
+  const current = () => pages.reduce((best, p, i) => (Math.abs(p.getBoundingClientRect().top) < Math.abs(pages[best].getBoundingClientRect().top) ? i : best), 0);
+  const sbActive = () => desk.matches && pages[current()] === sbSec;
+  const go = (dir) => {
+    if (sbActive() && slide + dir >= 0 && slide + dir <= 2) {
+      lock = true; setSlide(slide + dir);
+      setTimeout(() => { lock = false; acc = 0; }, 750);
+      return;
+    }
+    const i = Math.max(0, Math.min(pages.length - 1, current() + dir));
+    lock = true;
+    pages[i].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    setTimeout(() => { lock = false; acc = 0; }, 950);
+  };
+  addEventListener('wheel', (e) => {
+    if (!desk.matches || lb.open) return;
+    e.preventDefault();
+    if (lock) return;
+    acc += e.deltaY;
+    if (Math.abs(acc) > 30) go(acc > 0 ? 1 : -1);
+  }, { passive: false });
+  addEventListener('keydown', (e) => {
+    if (!desk.matches || lb.open) return;
+    const k = e.key;
+    if (['ArrowDown', 'PageDown', ' '].includes(k)) { e.preventDefault(); if (!lock) go(1); }
+    if (['ArrowUp', 'PageUp'].includes(k)) { e.preventDefault(); if (!lock) go(-1); }
+    if (sbActive() && k === 'ArrowRight') { e.preventDefault(); setSlide(slide + 1); }
+    if (sbActive() && k === 'ArrowLeft') { e.preventDefault(); setSlide(slide - 1); }
+  });
+</script>
+</body>
+</html>

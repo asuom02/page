@@ -1,0 +1,2563 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <!-- 윤동현 포트폴리오: 사이트 HTML·디자인 CSS·동작 JavaScript가 모두 이 파일 하나에 있습니다. 사진·영상·PDF·아이콘은 assets 폴더를 사용합니다. -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>윤동현 포트폴리오</title>
+    <meta name="description" content="기획부터 촬영, 편집, AI 워크플로우까지. 영상 제작자 윤동현의 포트폴리오.">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg?v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png?v=2">
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <!-- ===== A. 디자인 수정: 색상 / 글꼴 / 크기 / 배치 / 애니메이션 ===== -->
+    <style>
+    /* ---------- 기본값: 색상 / 글꼴 ---------- */
+    :root {
+      --font-sans: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --bg: #0c0d10;
+      --line: rgba(255, 255, 255, 0.12);
+      --text: #f0f2f5;
+      --muted: #8c96a3;
+      --accent: #d8dee8;
+      /* 콘텐츠 폭: 1920 화면 기준 1440px, 좁은 화면에서는 좌우 40px 여백 */
+      --wrap: min(1440px, calc(100% - 80px));
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; background: var(--bg); }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    button:focus-visible, a:focus-visible { outline: 1px solid #fff; outline-offset: 4px; }
+    [hidden] { display: none !important; }
+    body.modal-open { overflow: hidden; }
+
+    /* ---------- 공통 레이아웃 ---------- */
+    /* 본문 배경(점 격자 + 진행 레일): 표지에서는 숨기고 Works부터 표시(JS가 그림) */
+    #flow {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      background: var(--bg);
+      opacity: 0;
+      transition: opacity .65s ease;
+    }
+
+    main, footer { position: relative; z-index: 10; }
+
+    .shell { width: var(--wrap); margin: auto; }
+
+    .section {
+      min-height: 100svh;
+      padding: 140px 0 100px;
+      scroll-margin-top: 60px;
+    }
+
+    #works, #craft, #about { isolation: isolate; }
+
+    /* About은 내용이 짧아 한 화면 높이를 강제하지 않음 → 바로 아래 Contact가 이어져 마지막 화면을 함께 채움 */
+    #about { min-height: 0; }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 40px;
+      color: #fff;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 16px;
+    }
+
+    .media-placeholder {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      background: rgba(18, 20, 26, 0.4);
+    }
+
+    /* 스크롤 당김 효과: 구간 길이는 그대로, 내용만 최대 90px 늦게 따라옴(JS가 --pull 설정).
+       top 대신 transform을 써서 스크롤할 때 페이지 전체 배치를 다시 계산하지 않음(랙 방지) */
+    .works-shell, .films-shell, #craft > .shell, #about > .shell, #contact > .shell {
+      position: relative;
+      transform: translateY(var(--pull, 0px));
+      transition: transform .7s cubic-bezier(.16,.7,.25,1);
+    }
+
+    /* ---------- 상단 메뉴: 오른쪽 위 개별 버튼 ---------- */
+    .menu-wrap {
+      position: fixed;
+      z-index: 100;
+      top: 18px;
+      right: max(40px, calc((100% - 1440px) / 2));
+    }
+
+    .menu { display: flex; align-items: center; justify-content: flex-end; }
+
+    .nav-links { display: flex; position: relative; gap: 8px; }
+
+    .nav-links a {
+      padding: 9px 14px;
+      line-height: 1.4;
+      font-size: 13px;
+      font-weight: 400;
+      color: #cbd2dd;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background: rgba(12,13,16,.35);
+      transition: color .2s, background .2s, border-color .2s;
+    }
+
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,.1); }
+
+    .nav-links a[aria-current="location"] {
+      color: #fff;
+      font-weight: 500;
+      background: rgba(255,255,255,.13);
+      border-color: rgba(255,255,255,.35);
+    }
+
+    /* ---------- 배경음악: 메뉴 옆 소리 버튼 ---------- */
+    .menu { gap: 8px; }
+    .sound-toggle {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 12px; line-height: 1.4;
+      font: 400 11px/1.4 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .12em;
+      color: #8f98a6; background: rgba(12,13,16,.35);
+      border: 1px solid rgba(255,255,255,.14); border-radius: 4px; cursor: pointer;
+      transition: color .2s, background .2s, border-color .2s;
+    }
+    .sound-toggle:hover { color: #fff; background: rgba(255,255,255,.1); }
+    .sound-toggle.is-on { color: #fff; border-color: rgba(255,255,255,.35); }
+    .sound-eq { display: inline-flex; align-items: flex-end; gap: 2px; width: 12px; height: 11px; }
+    .sound-eq i { width: 2px; height: 3px; background: currentColor; border-radius: 1px; transition: height .3s; }
+    .sound-toggle.is-on .sound-eq i { animation: eq 1.1s ease-in-out infinite; }
+    .sound-toggle.is-on .sound-eq i:nth-child(2) { animation-delay: -.45s; }
+    .sound-toggle.is-on .sound-eq i:nth-child(3) { animation-delay: -.8s; }
+    @keyframes eq { 0%, 100% { height: 3px; } 50% { height: 11px; } }
+    /* 소리는 켜져 있지만 영상 재생 중이라 음악이 잠시 멈춘 상태: 그래프를 한 모양으로 고정 */
+    .sound-toggle.is-on.is-held .sound-eq i { animation: none; }
+    .sound-toggle.is-on.is-held .sound-eq i:nth-child(1) { height: 6px; }
+    .sound-toggle.is-on.is-held .sound-eq i:nth-child(2) { height: 10px; }
+    .sound-toggle.is-on.is-held .sound-eq i:nth-child(3) { height: 4px; }
+
+    /* ---------- 입장 화면: 콘솔 부팅처럼 이름 → 로딩 → PRESS ENTER → 위아래로 갈라지며 표지 등장 ---------- */
+    .sound-gate { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; text-align: center; cursor: default; }
+    .gate-half {
+      position: absolute; left: 0; right: 0; height: 50.2%;
+      background: #060709;
+      background-image: radial-gradient(rgba(255,255,255,.055) 1px, transparent 1.4px);
+      background-size: 22px 22px;
+      transition: transform 1.25s cubic-bezier(.77,0,.18,1);
+    }
+    .gate-half.top { top: 0; background-position: 0 0; }
+    .gate-half.bottom { bottom: 0; background-position: 0 -11px; }
+    .gate-flash {
+      position: absolute; left: 50%; top: 50%; width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.95) 50%, transparent);
+      transform: translate(-50%, -50%) scaleX(0); opacity: 0;
+      box-shadow: 0 0 18px 2px rgba(190,215,255,.55);
+    }
+    .gate-inner { position: relative; display: grid; justify-items: center; transition: opacity .45s ease, transform .6s ease; }
+    .gate-sys {
+      font: 400 11px/1 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .32em; text-indent: .32em;
+      color: #6f7887; opacity: 0; animation: gate-in .8s .2s ease forwards;
+    }
+    .gate-name {
+      margin: 22px 0 34px;
+      font-size: clamp(30px, 3.4vw, 58px); font-weight: 300; color: #fff;
+      letter-spacing: .5em; text-indent: .5em; opacity: 0; filter: blur(6px);
+      animation: gate-name 1.8s .45s cubic-bezier(.2,.7,.2,1) forwards;
+    }
+    .gate-load { position: relative; width: 240px; height: 46px; display: grid; place-items: center; }
+    .gate-bar { position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(255,255,255,.12); overflow: hidden; transition: opacity .4s; }
+    .gate-bar i { position: absolute; inset: 0; background: #e8edf5; transform-origin: left; transform: scaleX(var(--p, 0)); transition: transform .25s ease; }
+    .gate-pct {
+      position: absolute; right: 0; top: calc(50% + 12px);
+      font: 400 10px/1 ui-monospace, Consolas, monospace; letter-spacing: .2em; color: #6f7887; transition: opacity .4s;
+    }
+    .gate-enter {
+      position: relative; width: 240px; height: 46px;
+      font: 400 12px/1 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .42em; text-indent: .42em;
+      color: #fff; background: transparent; border: 1px solid rgba(255,255,255,.55); border-radius: 0; cursor: pointer;
+      opacity: 0; visibility: hidden; transform: scaleX(.2); transition: opacity .5s, transform .7s cubic-bezier(.2,.8,.2,1), background .25s;
+    }
+    .gate-enter::after { content: ""; position: absolute; inset: -1px; border: 1px solid rgba(255,255,255,.5); animation: gate-pulse 2.2s ease-out infinite; pointer-events: none; }
+    .gate-enter:hover, .gate-enter:focus-visible { background: rgba(255,255,255,.08); outline: none; }
+    .sound-gate.is-ready .gate-bar, .sound-gate.is-ready .gate-pct { opacity: 0; }
+    .sound-gate.is-ready .gate-enter { opacity: 1; visibility: visible; transform: none; }
+    /* 뷰파인더 장식 */
+    .gate-hud {
+      position: absolute; inset: clamp(18px, 3vw, 44px); pointer-events: none;
+      font: 400 11px/1 ui-monospace, "SFMono-Regular", Consolas, monospace; letter-spacing: .16em; color: #7a8391;
+      opacity: 0; animation: gate-in 1s .1s ease forwards; transition: opacity .45s ease;
+    }
+    .gate-hud::before {   /* 아주 옅은 주사선 */
+      content: ""; position: absolute; inset: calc(-1 * clamp(18px, 3vw, 44px));
+      background: repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px);
+    }
+    .hud-corner { position: absolute; width: 34px; height: 34px; border: 0 solid rgba(255,255,255,.42); }
+    .hud-corner.tl { left: 0; top: 0; border-left-width: 1px; border-top-width: 1px; }
+    .hud-corner.tr { right: 0; top: 0; border-right-width: 1px; border-top-width: 1px; }
+    .hud-corner.bl { left: 0; bottom: 0; border-left-width: 1px; border-bottom-width: 1px; }
+    .hud-corner.br { right: 0; bottom: 0; border-right-width: 1px; border-bottom-width: 1px; }
+    .hud-guide { position: absolute; background: rgba(255,255,255,.045); }
+    .hud-guide.v1, .hud-guide.v2 { top: 0; bottom: 0; width: 1px; }
+    .hud-guide.v1 { left: 33.333%; } .hud-guide.v2 { left: 66.666%; }
+    .hud-guide.h1, .hud-guide.h2 { left: 0; right: 0; height: 1px; }
+    .hud-guide.h1 { top: 33.333%; } .hud-guide.h2 { top: 66.666%; }
+    .hud-cross { position: absolute; left: 50%; top: 50%; width: 18px; height: 18px; transform: translate(-50%, -50%); opacity: .35; }
+    .hud-cross::before, .hud-cross::after { content: ""; position: absolute; background: #fff; }
+    .hud-cross::before { left: 50%; top: 0; bottom: 0; width: 1px; }
+    .hud-cross::after { top: 50%; left: 0; right: 0; height: 1px; }
+    .hud-tl, .hud-tr, .hud-bl, .hud-br { position: absolute; display: flex; align-items: center; gap: 10px; }
+    .hud-tl { left: 52px; top: 12px; color: #d8dee8; }
+    .hud-tr { right: 52px; top: 12px; color: #d8dee8; font-variant-numeric: tabular-nums; }
+    .hud-bl { left: 52px; bottom: 12px; }
+    .hud-br { right: 52px; bottom: 12px; }
+    .hud-tl em, .hud-bl em, .hud-br em { font-style: normal; color: #5f6876; }
+    .rec-dot { width: 7px; height: 7px; border-radius: 50%; background: #e5484d; box-shadow: 0 0 8px rgba(229,72,77,.8); animation: rec 1.6s steps(1) infinite; }
+    @keyframes rec { 0%, 60% { opacity: 1; } 61%, 100% { opacity: .15; } }
+    /* 입장: 글자·장식 사라짐 → 가운데 빛줄 → 위아래로 열림 */
+    .sound-gate.is-leaving .gate-hud { opacity: 0 !important; animation: none; }
+    .sound-gate.is-leaving .gate-inner { opacity: 0; transform: scale(.96); }
+    .sound-gate.is-leaving .gate-flash { animation: gate-flash 1.1s .25s ease forwards; }
+    .sound-gate.is-leaving .gate-half.top { transform: translateY(-101%); transition-delay: .55s; }
+    .sound-gate.is-leaving .gate-half.bottom { transform: translateY(101%); transition-delay: .55s; }
+    @keyframes gate-in { to { opacity: 1; } }
+    @keyframes gate-name { to { opacity: 1; filter: blur(0); letter-spacing: .22em; text-indent: .22em; } }
+    @keyframes gate-pulse { 0% { opacity: .7; transform: scale(1); } 100% { opacity: 0; transform: scale(1.18, 1.6); } }
+    @keyframes gate-flash { 0% { opacity: 0; transform: translate(-50%, -50%) scaleX(0); } 30% { opacity: 1; transform: translate(-50%, -50%) scaleX(1); } 100% { opacity: 0; transform: translate(-50%, -50%) scaleX(1); } }
+    /* 입장 전에는 표지 글자를 숨겼다가, 문이 열리면 아래에서 떠오름 */
+    body.gate-pending .hero-content > * { opacity: 0; transform: translateY(26px); }
+    .hero-content > * { transition: opacity 1.1s ease, transform 1.3s cubic-bezier(.16,.7,.25,1); }
+    body.gate-entered .hero-content > :nth-child(1) { transition-delay: 1.15s; }
+    body.gate-entered .hero-content > :nth-child(2) { transition-delay: 1.35s; }
+    body.gate-entered .hero-content > :nth-child(3) { transition-delay: 1.55s; }
+    @media (max-width: 600px) {
+      .sound-toggle { padding: 7px 8px; }
+      .sound-label { display: none; }
+      .gate-hud { font-size: 9px; letter-spacing: .1em; }
+      .hud-tl, .hud-tr { top: 10px; } .hud-bl, .hud-br { bottom: 10px; }
+      .hud-tl, .hud-bl { left: 42px; } .hud-tr, .hud-br { right: 42px; }
+      .hud-bl em, .hud-br em { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .gate-half, .gate-inner, .hero-content > * { transition-duration: .25s !important; transition-delay: 0s !important; }
+      .gate-name, .gate-sys { animation-duration: .3s; animation-delay: 0s; }
+      .gate-flash, .gate-enter::after { animation: none !important; }
+      .sound-toggle.is-on .sound-eq i { animation: none; height: 8px; }
+    }
+
+    /* ---------- 표지 ---------- */
+    .hero {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 100svh;
+      min-height: 640px;
+      padding-top: 60px;
+      overflow: hidden;
+      background: #0c0d10;
+    }
+
+    .cover-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .cover-shade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(8,10,14,.64), rgba(8,10,14,.3) 70%), linear-gradient(0deg, rgba(8,10,14,.5), transparent 60%);
+    }
+
+    .cover-play {
+      position: absolute;
+      z-index: 2;
+      right: 24px;
+      bottom: 24px;
+      padding: 10px 16px;
+      background: #0c0d10cc;
+      border: 1px solid var(--line);
+    }
+
+    /* 표지 문구: 하단, 본문과 같은 폭(왼쪽 정렬선 일치) */
+    .hero-content {
+      position: absolute;
+      z-index: 1;
+      left: 50%;
+      bottom: 9%;
+      width: var(--wrap);
+      transform: translateX(-50%);
+      text-align: left;
+    }
+
+    .hero-content .category-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      color: #d5dce5;
+      margin-bottom: 22px;
+    }
+
+    .hero-title {
+      font-size: clamp(38px, 3.9vw, 72px);
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: -.035em;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+
+    .hero-desc {
+      font-size: clamp(16px, 1.1vw, 20px);
+      line-height: 1.8;
+      color: #e0e5ed;
+      font-weight: 400;
+      max-width: 580px;
+    }
+
+    /* 표지 맨 아래: 얇은 선 + 이름(왼쪽) / 스크롤 안내(오른쪽) */
+    .hero-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: clamp(22px, 3.4svh, 36px);
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,.18);
+    }
+
+    .hero-name {
+      font-size: clamp(18px, 1.3vw, 24px);
+      font-weight: 500;
+      letter-spacing: .02em;
+      color: #fff;
+    }
+
+    .hero-scroll {
+      font: 400 11px/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .14em;
+      color: #aeb7c4;
+    }
+
+    .hero-scroll::after { content: " ↓"; }
+
+    /* 표지와 Works 경계: 아래로 갈수록 배경색으로 자연스럽게 이어짐
+       (움직이는 표지 위 실시간 블러는 매 프레임 다시 계산돼 랙의 원인이라 그라데이션만 사용) */
+    .hero::after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 180px;
+      pointer-events: none; z-index: 0;
+      background: linear-gradient(to bottom, rgba(12,13,16,0), rgba(12,13,16,.85) 70%, #0c0d10);
+    }
+
+    /* ---------- Works: 위 전시 대표작(사진 + 설명) / 아래 영상 4편 한 줄 ---------- */
+    #works { padding: 82px 0 36px; }
+    .works-shell { width: var(--wrap); margin: auto; }
+    #works .section-title { margin: 0 0 24px; padding-bottom: 10px; }
+
+    /* 전시 대표작(Works 첫 화면): 사진 높이는 화면 높이에 맞춰(240~620px), 폭은 최대 64% */
+    .exhibition-work {
+      --feature-h: clamp(240px, calc(100svh - 300px), 620px);
+      display: grid;
+      grid-template-columns: min(calc(var(--feature-h) * 1.7778), 64%) minmax(0, 1fr);
+      gap: clamp(24px, 3vw, 56px);
+      align-items: end;
+    }
+    .exhibition-image { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: #111317; }
+    button.exhibition-image { width: 100%; padding: 0; border: 0; font: inherit; color: inherit; text-align: left; cursor: zoom-in; }
+    .exhibition-image img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.65,.3,1); }
+    .exhibition-image:hover img { transform: scale(1.025); }
+    .work-label {
+      display: inline-flex; align-items: center; gap: 10px;
+      font: 400 11px/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .14em; color: #d5dce5;
+    }
+    .work-label::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+    .exhibition-image .work-label { position: absolute; left: 14px; top: 14px; padding: 6px 8px; background: rgba(8,10,14,.62); }
+    .exhibition-info { display: flex; flex-direction: column; justify-content: flex-end; min-width: 0; }
+    .exhibition-info h3 { margin-top: 14px; font-size: clamp(28px, 2.6vw, 44px); font-weight: 400; line-height: 1.2; letter-spacing: -.04em; color: #fff; }
+    /* 전시 정보: 전시작이라는 게 바로 보이도록 제목 바로 아래 크게 */
+    .exhibition-meta { margin-top: 12px; font-size: clamp(15px, 1.15vw, 19px); line-height: 1.6; color: #dfe5ee; word-break: keep-all; }
+    .exhibition-meta .nw { white-space: nowrap; } /* 전시 제목은 줄 중간에서 끊기지 않게 */
+    .exhibition-meta, .exhibition-desc { text-wrap: balance; } /* 줄 길이를 고르게 해 한 단어만 남는 줄 방지 */
+    .exhibition-desc { margin-top: clamp(16px, 2.4svh, 26px); max-width: 34em; font-size: clamp(14px, 1vw, 16px); line-height: 1.75; color: #c4cdd8; word-break: keep-all; }
+    /* 전시 소개 버튼: 흰 바탕 큰 버튼 + 주기적으로 빛이 스침 */
+    .exhibition-cta { align-self: flex-start; margin-top: clamp(18px, 2.8svh, 30px); display: grid; gap: 10px; }
+    .exhibition-link {
+      position: relative; overflow: hidden;
+      display: inline-flex; align-items: center; gap: 14px;
+      padding: 15px 22px 15px 24px;
+      font-size: clamp(15px, 1.05vw, 17px); font-weight: 600; letter-spacing: -.01em;
+      color: #0c0d10; background: #f4f6f9; border-radius: 3px;
+      box-shadow: 0 10px 30px -12px rgba(255,255,255,.35);
+      transition: background .25s, transform .25s, box-shadow .25s;
+    }
+    .exhibition-link .cta-arrow { display: inline-block; font-weight: 500; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+    .exhibition-link:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 14px 36px -12px rgba(255,255,255,.5); }
+    .exhibition-link:hover .cta-arrow { transform: translate(3px, -3px); }
+    .exhibition-link::after {
+      content: ""; position: absolute; top: 0; bottom: 0; left: -40%; width: 30%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,.85), transparent);
+      transform: skewX(-18deg); animation: cta-shine 4.5s ease-in-out 1.5s infinite; pointer-events: none;
+    }
+    @keyframes cta-shine { 0%, 70% { left: -40%; } 100% { left: 130%; } }
+    .exhibition-cta small { font-size: 12.5px; line-height: 1.4; letter-spacing: .02em; color: #9aa3b0; }
+    /* 전시 사진: 항상 보이는 VIEW PROJECT 표시 + 올리면 가운데 안내 */
+    .exhibition-image .view-tag {
+      position: absolute; right: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 20px 12px 16px; border-radius: 999px;
+      font-size: 16px; font-weight: 600; letter-spacing: -.01em; line-height: 1; color: #fff;
+      background: rgba(12,13,16,.42); border: 1px solid rgba(255,255,255,.35);
+      backdrop-filter: blur(10px) saturate(1.2); -webkit-backdrop-filter: blur(10px) saturate(1.2);
+      box-shadow: 0 8px 24px rgba(0,0,0,.35); transition: background .25s, border-color .25s, transform .25s;
+    }
+    .exhibition-image .view-tag svg { width: 17px; height: 17px; }
+    .exhibition-image:hover .view-tag, .exhibition-image:focus-visible .view-tag { background: rgba(255,255,255,.92); color: #0c0d10; border-color: #fff; transform: translateY(-2px); }
+    .exhibition-image::after {
+      content: ""; position: absolute; inset: 0; display: grid; place-items: center;
+      font-size: clamp(16px, 1.3vw, 22px); font-weight: 600; color: #fff; letter-spacing: -.01em;
+      background: rgba(8,10,14,.25); opacity: 0; transition: opacity .3s;
+    }
+    .exhibition-image:hover::after, .exhibition-image:focus-visible::after { opacity: 1; }
+    @media (prefers-reduced-motion: reduce) { .exhibition-link::after { animation: none; display: none; } }
+
+    /* ---------- Films: 세로 썸네일 + 16:9 큰 플레이어 (예전 Works 방식) ---------- */
+    #films { padding: 96px 0 36px; }
+
+    .films-shell { width: var(--wrap); margin: auto; }
+
+    #films .section-title {
+      margin: 0 0 40px;
+      padding-bottom: 10px;
+      font-size: 22px;
+      line-height: 1.4;
+    }
+
+    /* 썸네일과 플레이어 사이를 32px로 붙여 둘이 함께 가운데 오도록 */
+    .works-stage {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 32px;
+    }
+
+    .thumbnails {
+      flex: 0 0 220px;
+      display: grid;
+      grid-template-columns: minmax(0,1fr);
+      gap: 14px;
+    }
+
+    .thumbnail {
+      width: 100%;
+      padding: 0 0 7px;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      background: none;
+      text-align: left;
+      transition: border-color .2s;
+    }
+
+    .thumbnail[aria-selected=true] { border-color: #fff; }
+
+    .thumb-crop {
+      display: block;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      border-radius: 2px;
+      border: 1px solid var(--line);
+      background: #111317;
+    }
+
+    .thumb-crop > * {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .65s cubic-bezier(.2,.65,.3,1);
+    }
+
+    .thumbnail[aria-selected=true] .thumb-crop > * { transform: scale(1.055); }
+
+    .thumb-crop .media-placeholder { font-size: 14px; }
+
+    /* 플레이어 폭: 최대 1000px, 화면 높이에 맞춰 축소 (1920×950에서 약 950px, 설명칸까지 한 화면) */
+    .film-viewport {
+      flex: 0 1 auto;
+      width: min(1000px, calc((100svh - 416px) * 1.77778), calc(100% - 252px));
+      min-width: 0;
+      overflow: hidden;
+      border-radius: 2px;
+      border: 1px solid var(--line);
+      background: #111318;
+    }
+
+    /* 선택된 작품만 표시(JS가 hidden 전환). 영상 컨트롤바가 잘리지 않도록 이동 효과 없음 */
+    .film-track { width: 100%; }
+    .film { width: 100%; overflow: hidden; }
+
+    .video-frame {
+      aspect-ratio: 16/9;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-frame video {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .video-frame .media-placeholder {
+      position: absolute;
+      inset: 0;
+      gap: 14px;
+      align-content: center;
+    }
+
+    /* 작품 설명: 전환 시 살짝 밀려 들어옴 */
+    .film-info {
+      text-align: left;
+      padding: 16px 22px 18px;
+      border-top: 1px solid var(--line);
+      background: #0f1115;
+    }
+
+    .film:not([hidden]) .film-info { animation: film-details-in .35s ease both; }
+
+    @keyframes film-details-in { from { opacity: .3; translate: 12px 0; } to { opacity: 1; translate: 0 0; } }
+
+    .film-info h2 {
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+
+    .film-info p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.65;
+      white-space: pre-line;
+    }
+
+    .film-info .film-duration {
+      font-size: 13px;
+      color: #b9c2ce;
+      margin: 4px 0 7px;
+    }
+
+    .pdf-links { margin-top: 12px; font-size: 14px; }
+
+    /* 기획안 열람: 문서 아이콘 + 밝은 테두리 버튼 */
+    .pdf-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px 8px 12px;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 3px;
+      color: #fff;
+      background: rgba(255,255,255,.1);
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .pdf-links a::before {
+      content: ""; width: 12px; height: 15px; flex: none;
+      background:
+        linear-gradient(currentColor, currentColor) 3px 5px / 6px 1px no-repeat,
+        linear-gradient(currentColor, currentColor) 3px 8px / 6px 1px no-repeat,
+        linear-gradient(currentColor, currentColor) 3px 11px / 4px 1px no-repeat;
+      border: 1.5px solid currentColor; border-radius: 1px; box-sizing: border-box;
+    }
+
+    .pdf-links a:hover { border-color: #fff; background: #f4f6f9; color: #0c0d10; }
+
+    /* 필름 영상 가운데 재생 버튼: 반투명 유리 원 + 흰 삼각형, 재생 중엔 사라짐 */
+    .film-play { position: absolute; z-index: 2; left: 50%; top: 50%; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.38); background: rgba(12,13,16,.32); backdrop-filter: blur(10px) saturate(1.2); -webkit-backdrop-filter: blur(10px) saturate(1.2);
+      display: grid; place-items: center; cursor: pointer; color: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      transition: opacity .3s, transform .3s, background .2s, border-color .2s; }
+    .film-play svg { width: 26px; height: 26px; margin-left: 4px; }
+    .film-play::after { content: ''; position: absolute; inset: -9px; border-radius: 50%; border: 1px solid rgba(255,255,255,.18); transition: inset .3s, opacity .3s; }
+    .film-play:hover { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.7); transform: scale(1.06); }
+    .film-play:hover::after { inset: -14px; opacity: .6; }
+    .film-play:focus-visible { outline: 2px solid #fff; outline-offset: 6px; }
+    .video-frame.is-playing .film-play { opacity: 0; transform: scale(.85); pointer-events: none; }
+    @media (max-width: 700px) { .film-play { width: 64px; height: 64px; margin: -32px 0 0 -32px; } .film-play svg { width: 20px; height: 20px; } }
+
+    /* 4번 작품: 영상 위 왼쪽 위에 떠 있는 1편·2편 전환 (설명 칸 높이는 다른 작품과 같음) */
+    .ep-switch { position: absolute; z-index: 3; top: 14px; left: 14px; display: inline-flex; gap: 2px; padding: 3px; border-radius: 999px;
+      background: rgba(12,13,16,.62); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      transition: opacity .3s; }
+    .ep-switch button { border: 0; border-radius: 999px; padding: 6px 14px; font-family: inherit; font-weight: 600; font-size: 12px; line-height: 1; letter-spacing: .02em;
+      color: #c9d0da; background: transparent; cursor: pointer; transition: background .2s, color .2s; }
+    .ep-switch button:hover { color: #fff; }
+    .ep-switch button.on { color: #fff; background: #B8312F; box-shadow: 0 2px 10px rgba(184,49,47,.55); }
+    .ep-switch button:not(.on):hover { background: rgba(255,255,255,.12); }
+    .film-viewport.is-playing .ep-switch { opacity: .28; }
+    .film-viewport.is-playing .video-frame:hover .ep-switch, .ep-switch:focus-within { opacity: 1; }
+    /* 설명 문단: 첫 줄만 꽉 차지 않게 줄 길이를 고르게 */
+    .film-info h2, .film-info p { text-wrap: balance; word-break: keep-all; overflow-wrap: break-word; }
+
+    /* Works 효과: 뷰파인더 모서리 / 반투명 설명 패널 / 작품 전환 시 영상 아래 빛 줄기 / 작품 번호 */
+    .film-viewport {
+      position: relative;
+      overflow: visible;
+      border-color: rgba(255,255,255,.16);
+      background: rgba(15,17,21,.6);
+    }
+
+    .film-viewport::before {
+      --c: rgba(226,231,239,.6);
+      --l: 18px;
+      content: "";
+      position: absolute;
+      inset: -10px;
+      pointer-events: none;
+      background:
+        linear-gradient(var(--c), var(--c)) top left / var(--l) 1px,
+        linear-gradient(var(--c), var(--c)) top left / 1px var(--l),
+        linear-gradient(var(--c), var(--c)) top right / var(--l) 1px,
+        linear-gradient(var(--c), var(--c)) top right / 1px var(--l),
+        linear-gradient(var(--c), var(--c)) bottom left / var(--l) 1px,
+        linear-gradient(var(--c), var(--c)) bottom left / 1px var(--l),
+        linear-gradient(var(--c), var(--c)) bottom right / var(--l) 1px,
+        linear-gradient(var(--c), var(--c)) bottom right / 1px var(--l);
+      background-repeat: no-repeat;
+      opacity: .7;
+      transition: inset .4s cubic-bezier(.2,.7,.25,1), opacity .4s;
+    }
+
+    .film-viewport:hover::before { inset: -14px; opacity: 1; }
+
+    /* 플레이어 뒤 은은한 빛: 선택한 작품 썸네일 색을 크게 흐려서 깔아 줌(JS가 --ambient 설정) */
+    .film-viewport::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: 6% -3% -2%;
+      background: var(--ambient, none) center / cover no-repeat;
+      filter: blur(60px) saturate(1.3);
+      opacity: .26;
+      pointer-events: none;
+    }
+
+    /* 플레이어 위 모니터 상태 표시줄: 재생 상태 + 시간(JS가 갱신) */
+    .player-hud {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: calc(100% + 12px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font: 400 11px/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .1em;
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    .hud-state::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      vertical-align: 1px;
+      opacity: .6;
+    }
+
+    .film-viewport.is-playing .hud-state { color: #e6ebf2; }
+    .film-viewport.is-playing .hud-state::before { background: #ff5252; opacity: 1; animation: hud-blink 1s steps(1) infinite; }
+    @keyframes hud-blink { 50% { opacity: .25; } }
+
+    .film-info {
+      position: relative;
+      background: linear-gradient(180deg, rgba(22,25,31,.78), rgba(12,13,16,.62));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .video-frame::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: -35%;
+      width: 35%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent);
+      opacity: 0;
+    }
+
+    .film:not([hidden]) .video-frame::after { animation: info-sweep 1.4s .15s ease-out both; }
+
+    @keyframes info-sweep {
+      0% { left: -35%; opacity: 1; }
+      70% { opacity: 1; }
+      100% { left: 100%; opacity: 0; }
+    }
+
+    .film-info::before {
+      display: block;
+      margin-bottom: 8px;
+      font: 400 11px/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .1em;
+      color: var(--muted);
+    }
+
+    #film-0 .film-info::before { content: "FILM 01 / 04"; }
+    #film-1 .film-info::before { content: "FILM 02 / 04"; }
+    #film-2 .film-info::before { content: "FILM 03 / 04"; }
+    #film-3 .film-info::before { content: "FILM 04 / 04"; }
+
+    .film-info .film-duration {
+      font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .04em;
+    }
+
+    /* 세로가 짧은 화면(노트북 등, 높이 820px 이하): 설명을 플레이어 오른쪽으로 옮겨
+       플레이어를 화면 높이만큼 크게. 썸네일 목록도 줄여 한 화면에 들어오게 */
+    @media (max-height: 940px) and (min-width: 1100px) {
+      .thumbnails { flex-basis: 160px; gap: 12px; }
+      .film-viewport { width: min(calc((100svh - 220px) * 1.7778 + 300px), calc(100% - 192px)); }
+      .film:not([hidden]) { display: grid; grid-template-columns: minmax(0, 1fr) 300px; }
+      .film-info { border-top: 0; border-left: 1px solid var(--line); padding: 18px 20px; overflow-y: auto; }
+      .film-info h2 { font-size: 19px; }
+      .film-info p { font-size: 14px; }
+    }
+
+    /* Films·Exhibition 반응형 */
+    @media (max-width: 900px) {
+      .exhibition-work { grid-template-columns: 1fr; gap: 18px; }
+      .works-stage { gap: 20px; }
+      .thumbnails { flex-basis: 160px; }
+      .film-viewport { flex: 1 1 0; width: auto; }
+    }
+    @media (max-width: 700px) {
+      #films { padding-top: 90px; }
+      .thumb-crop .media-placeholder { padding: 4px; }
+      .film-info { padding: 14px; }
+      .film-info h2 { font-size: 20px; }
+      .film-info p { font-size: 14px; }
+    }
+    @media (max-width: 600px) {
+      #films .section-title { margin-bottom: 34px; }
+      .works-stage { gap: 12px; }
+      .thumbnails { flex-basis: 90px; gap: 10px; }
+      .thumb-crop .media-placeholder { font-size: 10px; }
+      .film-info { padding: 12px; }
+      .film-info h2 { font-size: 18px; }
+      .film-info p { font-size: 13px; }
+      .pdf-links a { padding: 5px 9px; font-size: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .exhibition-image img { transition: none; }
+    }
+
+        /* 섹션 제목 앞 번호: 상단 메뉴·왼쪽 진행 레일의 01~05와 연결 */
+    #works .section-title::before, #films .section-title::before, #craft .section-title::before,
+    #about .section-title::before, .contact h2::before {
+      font: 400 11px/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin-right: 14px;
+      vertical-align: middle;
+    }
+
+    #works .section-title::before { content: "01"; }
+    #films .section-title::before { content: "02"; }
+    #craft .section-title::before { content: "03"; }
+    #about .section-title::before { content: "04"; }
+    .contact h2::before { content: "05"; }
+
+    /* ---------- Process: 2×2 그리드 ---------- */
+    #craft { padding: 96px 0 32px; }
+
+    #craft .section-title {
+      font-size: 24px;
+      line-height: 1.4;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .craft-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 48px;
+      align-items: start;
+    }
+
+    .craft-item { border-top: 1px solid var(--line); padding-top: 16px; }
+
+    .photo {
+      position: relative;
+      width: min(340px,100%);
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      margin-bottom: 14px;
+      background: #111317;
+      border-radius: 2px;
+      border: 1px solid var(--line);
+    }
+
+    /* 사진이 있으면 원본 비율로 표시(style의 --photo-ratio) */
+    .photo.has-image { aspect-ratio: var(--photo-ratio); }
+    .photo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .photo video { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    .enlarge {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      padding: 6px 12px;
+      background: #0c0d10;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      font-size: 12px;
+      color: var(--muted);
+      transition: border-color .2s, color .2s;
+    }
+
+    .enlarge:hover { border-color: #fff; color: #fff; }
+
+    .craft-item h3 {
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .craft-item p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+    /* 1200px 이상: 가로 카드(사진 왼쪽, 글 오른쪽).
+       사진·글자 크기가 화면 높이에 맞춰 커짐 → 1920×950에서는 크게, 노트북에서는 한 화면에 들어오게 */
+    @media (min-width: 1200px) {
+      #craft .craft-grid { row-gap: clamp(24px, 4svh, 40px); }
+
+      .craft-item {
+        display: grid;
+        grid-template-columns: clamp(240px, min(25vw, calc((100svh - 260px) * 0.85)), 480px) minmax(0, 1fr);
+        grid-template-rows: auto 1fr;
+        column-gap: 28px;
+        align-items: start;
+      }
+
+      .craft-item .photo { grid-row: 1 / span 2; width: 100%; margin-bottom: 0; }
+      .craft-item h3 { font-size: clamp(20px, 2.5svh, 24px); line-height: 1.3; margin-bottom: 10px; }
+      .craft-item p { font-size: clamp(14px, 1.7svh, 16px); }
+    }
+
+    /* ---------- About: 큰 제목 탭 + 슬라이드 패널 ---------- */
+    /* 탭은 상단 메뉴(작은 네모 버튼)와 구분되게 본문 제목 크기의 글자로 표시.
+       선택된 탭만 흰색, 나머지는 흐리게 → 다른 내용도 볼 수 있다는 게 바로 보임 */
+    /* About 내용(탭+패널)은 폭이 넓지 않아 1040px로 묶어 가운데 정렬. 제목줄은 다른 섹션처럼 전체 폭 */
+    .about-layout { max-width: 1040px; margin: 0 auto; }
+
+    .subnav {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 40px;
+      margin-bottom: 32px;
+    }
+
+    /* 선택된 탭 밑 흰 막대: 다른 탭을 누르면 그쪽으로 미끄러져 이동(JS가 위치·폭 설정) */
+    .subnav::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: var(--bar-w, 0px);
+      height: 2px;
+      background: #fff;
+      transform: translate(var(--bar-x, 0px), var(--bar-y, 0px));
+      transition: transform .45s cubic-bezier(.2,.7,.25,1), width .45s cubic-bezier(.2,.7,.25,1);
+    }
+
+    .subnav button {
+      padding: 0 0 10px;
+      border: 0;
+      background: none;
+      font-size: 24px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: rgba(226,231,239,.32);
+      transition: color .25s;
+    }
+
+    .subnav button:hover { color: rgba(226,231,239,.75); }
+    .subnav button[aria-selected=true] { color: #fff; }
+
+    .about-viewport { overflow: hidden; min-width: 0; }
+
+    .about-track {
+      display: flex;
+      transition: transform .5s cubic-bezier(.2, .7, .25, 1);
+    }
+
+    .about-panel { flex: 0 0 100%; min-width: 0; }
+
+    /* 프로필: 사진 없이 글만. 소개 3문장이 각각 한 줄에 들어가도록 About 묶음 폭(1040px) 안에 배치 */
+    .profile h2 {
+      font-size: 34px;
+      font-weight: 400;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .profile .role { font-size: 16px; color: var(--muted); margin-bottom: 24px; }
+
+    .profile .bio {
+      font-size: clamp(15px, 1.05vw, 17px);
+      color: #c4cdd8;
+      white-space: pre-line;
+      margin-bottom: 28px;
+      line-height: 1.8;
+    }
+
+    .profile dl {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 14px 20px;
+      font-size: 16px;
+      border-top: 1px solid var(--line);
+      padding-top: 24px;
+    }
+
+    .profile dt { color: var(--muted); }
+    .profile dd { margin: 0; color: #fff; }
+
+    /* 자격 / 수상: 날짜 + 내용 */
+    .credentials {
+      list-style: none;
+      display: grid;
+      gap: 18px;
+    }
+
+    /* 1200px 이상: 2단(위→아래 순서)으로 나눠 노트북에서도 자격 사항 전체가 한 화면에 */
+    @media (min-width: 1200px) {
+      .credentials {
+        grid-template-rows: repeat(var(--rows, 3), auto); /* 한 단에 들어갈 줄 수(목록마다 style로 지정 가능) */
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(0, 1fr);
+        column-gap: 48px;
+      }
+    }
+
+    .credentials li {
+      display: grid;
+      grid-template-columns: 110px minmax(0,1fr);
+      gap: 22px;
+      font-size: 16px;
+      color: #fff;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 16px;
+    }
+
+    .credentials time {
+      padding-top: 3px;
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .record-info h3 { font: 400 17px/1.6 var(--font-sans); color: var(--text); }
+
+    .record-info small {
+      display: block;
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* 소프트웨어 */
+    .tool-row {
+      display: grid;
+      grid-template-columns: 130px minmax(0, 1fr);
+      gap: 20px;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tool-row h4 { font-size: 14px; color: var(--muted); font-weight: 400; }
+
+    .tool-list { display: flex; flex-wrap: wrap; gap: 18px 24px; }
+
+    .tool {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      color: #fff;
+    }
+
+    .tool img {
+      display: block;
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      flex: 0 0 32px;
+    }
+
+    /* 검은 아이콘은 반전해 어두운 배경에서 보이게 함 */
+    .tool img[src$="chatgpt.png"], .tool img[src$="midjourney.png"] { filter: invert(1); }
+
+    /* ---------- Contact: 한 화면짜리 마무리 화면 (가운데 큰 이메일, 맨 아래 이름·맨 위로) ---------- */
+    .contact {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      padding: 96px 0 40px;
+      border-top: 1px solid var(--line);
+      overflow: clip;
+    }
+
+    #contact > .shell { flex: 1; display: flex; flex-direction: column; }
+
+    .contact-main {
+      margin: auto 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 32px;
+    }
+
+    .contact h2 {
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .contact p { font-size: 15px; color: var(--muted); }
+
+    .contact-links a {
+      display: inline-block;
+      padding-bottom: 12px;
+      font-size: clamp(26px, 3.4vw, 56px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      color: #fff;
+      border-bottom: 1px solid var(--line);
+      transition: border-color .3s;
+    }
+
+    .contact-links a:hover { border-color: #fff; }
+
+    .footer-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #555e6b;
+    }
+
+    /* ---------- 사진 확대창: 화면 중앙 + 블러 전환 ---------- */
+    dialog {
+      position: fixed;
+      inset: 0;
+      margin: auto;
+      width: min(1560px, calc(100vw - 48px));
+      height: fit-content;
+      max-height: calc(100dvh - 48px);
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      padding: 24px;
+      color: #fff;
+      background: #0f1115;
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateY(12px) scale(.985);
+      transition: opacity .25s, transform .25s, filter .25s;
+    }
+
+    dialog.is-open { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(0);
+      transition: backdrop-filter .25s;
+    }
+
+    dialog.is-open::backdrop { backdrop-filter: blur(10px); }
+
+    .dialog-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .dialog-head h2 { font-size: 18px; font-weight: 400; }
+
+    .dialog-head button {
+      padding: 4px 10px;
+      background: none;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      font-size: 12px;
+    }
+
+    .dialog-body { display: grid; place-items: center; min-height: 200px; }
+    .dialog-body:has(img), .dialog-body:has(video) { min-height: 0; }
+
+    .dialog-body img, .dialog-body video {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: calc(100dvh - 160px);
+      object-fit: contain;
+      margin: auto;
+    }
+
+    .dialog-body .media-placeholder { min-height: 320px; font-size: 20px; }
+
+    /* ---------- 반응형 ---------- */
+    @media (max-width: 900px) {
+
+
+
+      .tool-row { grid-template-columns: 1fr; gap: 12px; }
+    }
+
+    @media (max-width: 700px) {
+      .shell, .works-shell { width: calc(100% - 40px); }
+
+      .menu-wrap { top: 14px; right: 14px; }
+      .nav-links { gap: 2px; }
+      .nav-links a { padding: 7px 6px; font-size: 11px; }
+
+      .hero { min-height: 540px; }
+      .hero-content { width: calc(100% - 48px); }
+      .hero-title { font-size: clamp(30px, 7.5vw, 48px); }
+
+      #works { padding-top: 90px; }
+
+
+
+
+
+      #craft { padding-top: 90px; }
+      .craft-grid { grid-template-columns: 1fr; gap: 32px; }
+
+    }
+
+    @media (max-width: 600px) {
+      .hero-content { bottom: 10%; }
+
+
+
+
+
+
+
+
+
+
+
+      .credentials li { grid-template-columns: 1fr; gap: 6px; }
+      .subnav { gap: 6px 16px; }
+      .subnav button { font-size: 16px; }
+      .dialog-body .media-placeholder { min-height: 220px; }
+    }
+    /* 표지 모션그래픽: 캔버스가 표지 전체를 채우고, 아래쪽만 어둡게 해 문구를 읽기 쉽게 함 */
+    .cover-motion { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .cover-shade { background: linear-gradient(0deg, rgba(8,10,14,.7), transparent 45%); }
+    /* 텍스트 클릭 시 깜빡이는 커서 숨김 (브라우저 캐럿 브라우징 대비) */
+    body { caret-color: transparent; }
+  </style>
+  </head>
+  <body id="top">
+    <!-- ===== B. 내용 수정: 아래 HTML에서 제목·설명·사진·영상·PDF 주소를 직접 바꾸세요. ===== -->
+    <!-- 3D 점선 배경 캔버스 -->
+    <canvas id="flow" aria-hidden="true"></canvas>
+    <!-- 상단 메뉴 -->
+    <header class="menu-wrap">
+      <div class="menu">
+        <nav class="nav-links" aria-label="메뉴">
+          <a href="#intro" aria-current="location">Home</a>
+          <a href="#works">Exhibition</a>
+          <a href="#films">Films</a>
+          <a href="#craft">Process</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <button class="sound-toggle" type="button" aria-pressed="false" aria-label="배경음악 켜기">
+          <span class="sound-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="sound-label">SOUND</span>
+        </button>
+      </div>
+    </header>
+    <!-- 입장 화면: 브라우저는 클릭 전에는 소리를 못 틀게 하므로, 표지 위에서 한 번 눌러 들어오게 함 -->
+    <div class="sound-gate" id="sound-gate" role="dialog" aria-modal="true" aria-label="포트폴리오 입장">
+      <div class="gate-half top" aria-hidden="true"></div>
+      <div class="gate-half bottom" aria-hidden="true"></div>
+      <div class="gate-flash" aria-hidden="true"></div>
+      <div class="gate-inner">
+        <p class="gate-sys">PORTFOLIO — 2026</p>
+        <p class="gate-name">YOON DONGHYUN</p>
+        <div class="gate-load">
+          <div class="gate-bar" aria-hidden="true"><i></i></div>
+          <span class="gate-pct" aria-hidden="true">0%</span>
+          <button class="gate-enter" type="button">PRESS ENTER</button>
+        </div>
+      </div>
+      <!-- 카메라 뷰파인더 장식: 모서리 프레임, REC, 타임코드, 촬영 정보, 3분할 구도선 -->
+      <div class="gate-hud" aria-hidden="true">
+        <span class="hud-corner tl"></span><span class="hud-corner tr"></span><span class="hud-corner bl"></span><span class="hud-corner br"></span>
+        <span class="hud-guide v1"></span><span class="hud-guide v2"></span><span class="hud-guide h1"></span><span class="hud-guide h2"></span>
+        <span class="hud-tl"><i class="rec-dot"></i>REC<em>STANDBY</em></span>
+        <span class="hud-tr gate-tc">00:00:00:00</span>
+        <span class="hud-bl">1920 × 1080<em>29.97 fps</em></span>
+        <span class="hud-br">CH-01<em>STEREO · BGM</em></span>
+      </div>
+    </div>
+    <main>
+      <!-- 표지 -->
+      <section class="hero" id="intro" data-stage="0">
+        <!-- 표지 모션그래픽: 아래 D 스크립트가 그림 (영상 파일 없음) -->
+        <canvas id="cover-motion" class="cover-motion" aria-hidden="true"></canvas>
+        <div class="cover-shade" aria-hidden="true"></div>
+        <div class="hero-content">
+          <h1 class="hero-title">PORTFOLIO</h1>
+          <p class="hero-desc">기획부터 촬영, 편집, AI 워크플로우까지.</p>
+          <div class="hero-foot"><span class="hero-name">윤동현</span><span class="hero-scroll">SCROLL</span></div>
+        </div>
+      </section>
+      <!-- 작품 1: 전시 대표작. 대표 사진은 assets/exhibition/site-night.jpg (16:9) -->
+      <section class="section" id="works" data-stage="1" aria-label="전시 작품">
+        <div class="works-shell">
+          <h2 class="section-title">Exhibition</h2>
+          <article class="exhibition-work">
+            <button type="button" class="exhibition-image" aria-label="은평의 물길 현장 사진 크게 보기">
+              <img src="assets/exhibition/site-night.jpg" alt="불광천 보행교 15:1 LED 스크린에 상영 중인 은평의 물길 — 야간 현장" width="1920" height="1080" loading="lazy">
+              <span class="work-label">EXHIBITION</span>
+              <span class="view-tag" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>크게 보기</span>
+            </button>
+            <div class="exhibition-info">
+              <span class="work-label">MEDIA ART · 15:1 LED</span>
+              <h3>은평의 물길</h3>
+              <p class="exhibition-meta">불광천 미디어브릿지 전시<br>2026 EMLAB <span class="nw">〈프롬프트 투 모션(Prompt to Motion)〉</span><br>2026.11.20 – 12.12 상영</p>
+              <p class="exhibition-desc">평소 발밑 땅속으로 숨어 흐르던 물길을 시민들의 눈높이로 드러내며, 우리가 걷는 일상의 길과 보이지 않는 물길이 나란히 흐르고 있음을 시각화했다.</p>
+              <div class="exhibition-cta">
+                <a class="exhibition-link" href="assets/exhibition/index.html?v=20261127" target="_blank" rel="noopener">전시 소개 보기 <span class="cta-arrow" aria-hidden="true">↗</span></a>
+                <small>기획 · 제작 과정 · 현장 기록 전체</small>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+      <!-- 영상 작품(Films): 왼쪽 썸네일을 누르면 오른쪽 큰 플레이어에 표시 -->
+      <section class="section" id="films" data-stage="2" aria-label="영상 작품">
+        <div class="films-shell">
+          <h2 class="section-title">Films</h2>
+          <div class="works-stage">
+          <div class="thumbnails" role="tablist" aria-label="작품 선택" aria-orientation="vertical">
+            <button class="thumbnail" type="button" id="film-tab-0" role="tab" aria-selected="true" aria-controls="film-0" tabindex="0">
+              <span class="thumb-crop">
+                <img src="assets/works/01/thumbnail.jpg" alt="작품 1 썸네일" onerror="this.parentElement.innerHTML='&lt;span class=\'media-placeholder\'&gt;썸네일 01&lt;/span&gt;'">
+              </span>
+            </button>
+            <button class="thumbnail" type="button" id="film-tab-1" role="tab" aria-selected="false" aria-controls="film-1" tabindex="-1">
+              <span class="thumb-crop">
+                <img src="assets/works/02/thumbnail.jpg?v=20261124" alt="작품 2 썸네일" onerror="this.parentElement.innerHTML='&lt;span class=\'media-placeholder\'&gt;썸네일 02&lt;/span&gt;'">
+              </span>
+            </button>
+            <button class="thumbnail" type="button" id="film-tab-2" role="tab" aria-selected="false" aria-controls="film-2" tabindex="-1">
+              <span class="thumb-crop">
+                <img src="assets/works/03/thumbnail.jpg" alt="작품 3 썸네일" onerror="this.parentElement.innerHTML='&lt;span class=\'media-placeholder\'&gt;썸네일 03&lt;/span&gt;'">
+              </span>
+            </button>
+            <button class="thumbnail" type="button" id="film-tab-3" role="tab" aria-selected="false" aria-controls="film-3" tabindex="-1">
+              <span class="thumb-crop">
+                <img src="assets/works/04/thumbnail.jpg" alt="작품 4 썸네일" onerror="this.parentElement.innerHTML='&lt;span class=\'media-placeholder\'&gt;썸네일 04&lt;/span&gt;'">
+              </span>
+            </button>
+          </div>
+          <div class="film-viewport">
+            <div class="player-hud" aria-hidden="true"><span class="hud-state">STANDBY</span><span class="hud-time">--:-- / --:--</span></div>
+            <div class="film-track">
+              <article class="film" id="film-0" role="tabpanel" aria-labelledby="film-tab-0">
+                <div class="video-frame">
+                  <video controls playsinline preload="metadata" src="assets/works/01/video.mp4?v=20261127" poster="assets/works/01/thumbnail.jpg"></video>
+                </div>
+                <div class="film-info">
+                  <h2>부담은 덜고, 보장은 길게. 카카오페이손해보험 휴대폰보험</h2>
+                  <p class="film-duration">재생시간 50초</p>
+                  <p>기기값 200만 원 시대, 수리비도 함께 오릅니다. 자기부담금은 10%부터 직접 고르고 보장은 최대 5년까지. 기존 보험보다 가볍고 편한 카카오페이손해보험 휴대폰보험을, 사고 직전으로 시간을 되감는 이야기로 담았습니다.</p>
+                  <div class="pdf-links">
+                    <a href="assets/works/01/detail/index.html" target="_blank" rel="noopener">기획안 열람 ↗</a>
+                  </div>
+                </div>
+              </article>
+              <article class="film" id="film-1" role="tabpanel" aria-labelledby="film-tab-1" inert aria-hidden="true">
+                <div class="video-frame">
+                  <video controls playsinline preload="metadata" src="assets/works/02/video.mp4" poster="assets/works/02/thumbnail.jpg?v=20261124"></video>
+                </div>
+                <div class="film-info">
+                  <h2>하나의 공간에 담기는 일상, 기아 PV5 패신저</h2>
+                  <p class="film-duration">재생시간 43초</p>
+                  <p>딱딱한 승합차 이미지를 벗고 친근한 일상용 라이프스타일 차량으로 각인시키기 위해 기획했습니다. 기존 주행 광고 문법 대신 따뜻한 3D 애니메이션을 채택해 다채로운 공간의 유연성을 시각화했습니다.</p>
+                  <div class="pdf-links">
+                    <a href="assets/works/02/detail/index.html" target="_blank" rel="noopener">기획안 열람 ↗</a>
+                  </div>
+                </div>
+              </article>
+              <article class="film" id="film-2" role="tabpanel" aria-labelledby="film-tab-2" inert aria-hidden="true">
+                <div class="video-frame">
+                  <video controls playsinline preload="metadata" src="assets/works/03/video.mp4" poster="assets/works/03/thumbnail.jpg"></video>
+                </div>
+                <div class="film-info">
+                  <h2>Spotify Wrapped 2026</h2>
+                  <p class="film-duration">재생시간 30초</p>
+                  <p>2026 연말결산 공개를 알리는 컨셉 프로모션 영상입니다. 30초를 5개 구간으로 나누어 브랜드 각인부터 데이터 시각화, 다음 시즌 예고까지 연결했습니다.</p>
+                  <div class="pdf-links">
+                    <a href="assets/works/03/detail/index.html" target="_blank" rel="noopener">기획안 열람 ↗</a>
+                  </div>
+                </div>
+              </article>
+              <article class="film" id="film-3" role="tabpanel" aria-labelledby="film-tab-3" inert aria-hidden="true">
+                <div class="video-frame">
+                  <video controls playsinline preload="metadata" src="assets/works/04/ep01.mp4" poster="assets/works/04/ep01.jpg"></video>
+                  <div class="ep-switch" role="group" aria-label="편 선택">
+                    <button type="button" class="on" aria-pressed="true" data-src="assets/works/04/ep01.mp4" data-poster="assets/works/04/ep01.jpg" data-dur="재생시간 33초">EP.01 신혼 부부</button>
+                    <button type="button" aria-pressed="false" data-src="assets/works/04/ep02.mp4" data-poster="assets/works/04/ep02.jpg" data-dur="재생시간 34초">EP.02 독사과</button>
+                  </div>
+                </div>
+                <div class="film-info">
+                  <h2>보이지 않는 위협, 간접흡연 · 금연 공익광고 시리즈</h2>
+                  <p class="film-duration">재생시간 33초</p>
+                  <p>잠자는 숲속의 공주와 백설공주를 현실의 가족 일상에 옮긴 3인 팀 프로젝트입니다. 프롬프트 설계로 영상 품질을 끌어올리고, 크레딧 관리와 최종 업스케일링, 팀 의견 조율을 맡았습니다.</p>
+                  <div class="pdf-links">
+                    <a href="assets/works/04/detail/index.html" target="_blank" rel="noopener">기획안 열람 ↗</a>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+        </div>
+      </section>
+      <!-- 제작 과정 -->
+      <section class="section" id="craft" data-stage="3" aria-label="제작 역량">
+        <div class="shell">
+          <h2 class="section-title">Process</h2>
+          <div class="craft-grid">
+            <article class="craft-item">
+              <figure class="photo has-image" style="--photo-ratio: 1920 / 1080;">
+                <img src="assets/process/planning.jpg" alt="팀원들과 기획 회의를 진행하는 모습" width="1920" height="1080" loading="lazy">
+                <button class="enlarge" type="button" aria-label="기획 이미지 크게 보기">확대 ↗</button>
+              </figure>
+              <h3>기획</h3>
+              <p>타깃 분석과 목적에 맞춰 러닝타임과 예산까지 고려한 현실적인 제작 안을 설계합니다. 한정된 제작 환경 안에서도 메시지를 가장 효과적으로 전달할 최적의 연출 방식을 찾아냅니다.</p>
+            </article>
+            <article class="craft-item">
+              <!-- 촬영: 슬레이트(S#16) 현장 영상, 소리 없이 5초 반복 (원본 Main Edit.mp4를 720p로 줄임) -->
+              <figure class="photo has-image" style="--photo-ratio: 16 / 9;">
+                <video class="photo-video" src="assets/process/shooting.mp4" poster="assets/process/shooting.jpg" muted loop playsinline preload="metadata" aria-label="촬영 현장 — S#16 슬레이트와 촬영 중인 모습"></video>
+                <button class="enlarge" type="button" aria-label="촬영 영상 크게 보기">확대 ↗</button>
+              </figure>
+              <h3>촬영</h3>
+              <p>미러리스부터 방송용 장비까지 능숙하게 다루며, 오디오 수음과 현장 데이터 백업까지 안정적으로 관리합니다. 방송부와 영상 학회 활동을 거치며 쌓은 노하우로 현장 흐름을 파악하고 안정적인 컷을 담아냅니다.</p>
+            </article>
+            <article class="craft-item">
+              <figure class="photo has-image" style="--photo-ratio: 1919 / 1002;">
+                <img src="assets/process/editing.jpg" alt="Premiere Pro 편집 작업 화면" width="1919" height="1002" loading="lazy">
+                <button class="enlarge" type="button" aria-label="편집 이미지 크게 보기">확대 ↗</button>
+              </figure>
+              <h3>편집</h3>
+              <p>Premiere Pro와 After Effects를 중심으로 컷 편집부터 그래픽 합성까지 호흡에 맞게 조율합니다. 포토샵 기반 리터칭은 물론, 최근에는 생성형 AI 기술을 접목해 컷의 완성도와 작업 속도를 끌어올립니다.</p>
+            </article>
+            <article class="craft-item">
+              <figure class="photo has-image" style="--photo-ratio: 1919 / 1020;">
+                <img src="assets/process/ai.jpg" alt="Codex를 활용한 AI 작업 화면" width="1919" height="1020" loading="lazy">
+                <button class="enlarge" type="button" aria-label="AI 활용 이미지 크게 보기">확대 ↗</button>
+              </figure>
+              <h3>AI 활용</h3>
+              <p>빠르게 업데이트되는 최신 AI 모델을 지속적으로 모니터링하고 실무 파이프라인에 빠르게 테스트합니다. 콘셉트 이미지 추출부터 영상 생성, 업스케일 및 후반 보정까지 목적에 맞는 툴을 유연하게 활용합니다.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <!-- 소개 -->
+      <section class="section" id="about" data-stage="4" aria-label="제작자 소개">
+        <div class="shell">
+          <h2 class="section-title">About</h2>
+          <div class="about-layout">
+            <div class="subnav" role="tablist" aria-label="소개 항목">
+              <button type="button" role="tab" id="about-tab-0" aria-controls="about-panel-0" aria-selected="true" tabindex="0">Profile</button>
+              <button type="button" role="tab" id="about-tab-1" aria-controls="about-panel-1" aria-selected="false" tabindex="-1">자격 사항</button>
+              <button type="button" role="tab" id="about-tab-2" aria-controls="about-panel-2" aria-selected="false" tabindex="-1">수상 내역</button>
+              <button type="button" role="tab" id="about-tab-3" aria-controls="about-panel-3" aria-selected="false" tabindex="-1">소프트웨어</button>
+            </div>
+            <div class="about-viewport">
+              <div class="about-track">
+                <!-- 프로필 -->
+                <section class="about-panel" id="about-panel-0" role="tabpanel" aria-labelledby="about-tab-0">
+                  <div class="profile">
+                    <div>
+                      <h2>윤동현</h2>
+                      <p class="role">Technical Video Producer &amp; AI Specialist</p>
+                      <p class="bio">방송부 활동과 문화콘텐츠학을 전공하며 단순한 촬영과 편집을 넘어, 콘텐츠의 구조를 분석하고 기획하는 시각을 다져왔습니다.<br>현장 경험을 바탕으로 작업의 한계를 줄이고자 새로운 기술과 AI 툴을 실무 파이프라인에 적극적으로 도입해 활용하는 편입니다.<br>막연한 아이디어에 그치지 않고 기술적인 구현 가능성을 면밀히 따져, 목적에 부합하는 결과물을 안정감 있게 완성해 냅니다.</p>
+                      <dl>
+                        <dt>학력</dt>
+                        <dd>한신대학교 · 디지털영상문화콘텐츠학 (2027년 2월 졸업예정)</dd>
+                        <dt>전문 분야</dt>
+                        <dd>AI 영상 제작 / 편집·후반 작업 / 콘텐츠 기획</dd>
+                        <dt>거주지</dt>
+                        <dd>서울특별시 은평구</dd>
+                      </dl>
+                    </div>
+                  </div>
+                </section>
+                <!-- 자격증 -->
+                <section class="about-panel" id="about-panel-1" role="tabpanel" aria-labelledby="about-tab-1" inert aria-hidden="true">
+                  <ul class="credentials records" style="--rows: 4;">
+                    <li>
+                      <time datetime="2026-10">2026.10</time>
+                      <div class="record-info">
+                        <h3>그래픽기술자격(GTQ) 1급</h3>
+                        <small>한국생산성본부</small>
+                      </div>
+                    </li>
+                    <li>
+                      <time datetime="2021-07-01">2021.07.01</time>
+                      <div class="record-info">
+                        <h3>자동차운전면허증 1종보통</h3>
+                      </div>
+                    </li>
+                    <li>
+                      <time datetime="2014-09-11">2014.09.11</time>
+                      <div class="record-info">
+                        <h3>정보기술자격(ITQ) 한글파워포인트</h3>
+                        <small>한국생산성본부</small>
+                      </div>
+                    </li>
+                    <li>
+                      <time datetime="2014-04-14">2014.04.14</time>
+                      <div class="record-info">
+                        <h3>그래픽기술자격(GTQ) 2급</h3>
+                        <small>한국생산성본부</small>
+                      </div>
+                    </li>
+                    <li>
+                      <time datetime="2013-09-27">2013.09.27</time>
+                      <div class="record-info">
+                        <h3>디지털정보활용능력(DIAT) 스프레드시트</h3>
+                        <small>한국정보통신진흥협회</small>
+                      </div>
+                    </li>
+                    <li>
+                      <time datetime="2013-03-15">2013.03.15</time>
+                      <div class="record-info">
+                        <h3>디지털정보활용능력(DIAT) 워드프로세서</h3>
+                        <small>한국정보통신진흥협회</small>
+                      </div>
+                    </li>
+                    <li>
+                      <time datetime="2012-09-14">2012.09.14</time>
+                      <div class="record-info">
+                        <h3>디지털정보활용능력(DIAT) 프리젠테이션</h3>
+                        <small>한국정보통신진흥협회</small>
+                      </div>
+                    </li>
+                  </ul>
+                </section>
+                <!-- 수상 -->
+                <section class="about-panel" id="about-panel-2" role="tabpanel" aria-labelledby="about-tab-2" inert aria-hidden="true">
+                  <ul class="credentials records">
+                    <li>
+                      <time datetime="2026-01">2026.01</time>
+                      <div class="record-info">
+                        <h3>콘텐츠 캐릭터 분석 경진대회 은상</h3>
+                        <small>한신대학교</small>
+                      </div>
+                    </li>
+                    <li>
+                      <time datetime="2025-12">2025.12</time>
+                      <div class="record-info">
+                        <h3>문화콘텐츠 기업 분석 공모전 장려상</h3>
+                        <small>한신대학교</small>
+                      </div>
+                    </li>
+                    <li>
+                      <time datetime="2024-06">2024.06</time>
+                      <div class="record-info">
+                        <h3>신문방송학 전공 경진대회 최우수상</h3>
+                        <small>원광대학교</small>
+                      </div>
+                    </li>
+                    <li>
+                      <time datetime="2021-06">2021.06</time>
+                      <div class="record-info">
+                        <h3>대학생활과 자기혁신 UCC 콘테스트 본선 진출</h3>
+                        <small>원광대학교</small>
+                      </div>
+                    </li>
+                    <li>
+                      <time datetime="2017-05">2017.05</time>
+                      <div class="record-info">
+                        <h3>FUNFUN UCC 영상 공모전 장려상</h3>
+                        <small>㈜포유디지탈</small>
+                      </div>
+                    </li>
+                  </ul>
+                </section>
+                <!-- 툴 -->
+                <section class="about-panel" id="about-panel-3" role="tabpanel" aria-labelledby="about-tab-3" inert aria-hidden="true">
+                  <div class="tool-row">
+                    <h4>기획·리서치</h4>
+                    <div class="tool-list">
+                      <span class="tool">
+                        <img src="assets/icons/gemini.png" alt="" width="32" height="32">Gemini</span>
+                      <span class="tool">
+                        <img src="assets/icons/chatgpt.png" alt="" width="32" height="32">ChatGPT</span>
+                    </div>
+                  </div>
+                  <div class="tool-row">
+                    <h4>편집·후반</h4>
+                    <div class="tool-list">
+                      <span class="tool">
+                        <img src="assets/icons/premiere-pro.svg" alt="" width="32" height="32">Premiere Pro</span>
+                      <span class="tool">
+                        <img src="assets/icons/after-effects.svg" alt="" width="32" height="32">After Effects</span>
+                      <span class="tool">
+                        <img src="assets/icons/photoshop.svg" alt="" width="32" height="32">Photoshop</span>
+                    </div>
+                  </div>
+                  <div class="tool-row">
+                    <h4>AI 생성</h4>
+                    <div class="tool-list">
+                      <span class="tool">
+                        <img src="assets/icons/higgsfield.png" alt="" width="32" height="32">Higgsfield</span>
+                      <span class="tool">
+                        <img src="assets/icons/midjourney.png" alt="" width="32" height="32">Midjourney</span>
+                      <span class="tool">
+                        <img src="assets/icons/google-flow.png" alt="" width="32" height="32">Google Flow</span>
+                      <span class="tool"><img src="assets/icons/suno.png" alt="" width="32" height="32">Suno</span><span class="tool">
+                        <img src="assets/icons/comfyui.png" alt="" width="32" height="32">ComfyUI</span>
+                      <span class="tool">
+                        <img src="assets/icons/sunra.png" alt="" width="32" height="32">Sunra AI</span>
+                    </div>
+                  </div>
+                  <div class="tool-row">
+                    <h4>웹 제작</h4>
+                    <div class="tool-list">
+                      <span class="tool">
+                        <img src="assets/icons/codex.png" alt="" width="32" height="32">Codex</span>
+                      <span class="tool">
+                        <img src="assets/icons/claude-code.svg" alt="" width="32" height="32">Claude Code</span>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- 연락처 -->
+      <footer class="contact" id="contact" data-stage="5">
+        <div class="shell">
+          <div class="contact-main">
+            <div>
+              <h2>Contact</h2>
+              <p>영상 제작 및 협업에 관한 문의는 이메일로 보내주세요.</p>
+            </div>
+            <div class="contact-links"><a href="mailto:dhauvinfy@naver.com">dhauvinfy@naver.com ↗</a></div>
+          </div>
+          <div class="footer-line">
+            <span>윤동현</span>
+            <a href="#top">맨 위로 ↑</a>
+          </div>
+        </div>
+      </footer>
+    </main>
+    <!-- 이미지 확대 모달 -->
+    <dialog id="photo-dialog" aria-labelledby="dialog-title">
+      <div class="dialog-head">
+        <h2 id="dialog-title">미리보기</h2>
+        <button type="button" class="dialog-close">닫기 ×</button>
+      </div>
+      <div class="dialog-body"></div>
+    </dialog>
+    <!-- ===== C. 동작 수정: 배경 효과 / 메뉴 이동 / 영상 전환 / 소개 탭 / 확대창 ===== -->
+    <script>
+    (() => {
+      'use strict';
+
+      /* 1. 본문 배경: 표지와 같은 점 격자가 이어짐.
+            스크롤하면 점이 살짝 늘어나고(속도 반응), 마우스 주변 점이 밝아짐.
+            왼쪽 레일은 페이지 진행도와 구간(01~04) 위치를 표시. */
+      const canvas = document.getElementById('flow');
+      const ctx = canvas.getContext('2d');
+      const stages = [...document.querySelectorAll('[data-stage]')];
+      const navLinks = [...document.querySelectorAll('.nav-links a')];
+      const GRID = 36;
+      const MONO = 'ui-monospace, "SFMono-Regular", Consolas, "Courier New", monospace';
+      const ink = a => `rgba(226,231,239,${a})`;
+      const pad = n => String(n).padStart(2, '0');
+      let W = 0, H = 0, dpr = 1, raf = 0, active = false, stageIdx = 0;
+      let lastY = scrollY, vel = 0;
+      const mouse = { x: -999, y: -999, tx: -999, ty: -999 };
+      // 구간 위치는 스크롤할 때마다 재지 않고 미리 계산해 둠(매 프레임 측정하면 랙 발생)
+      let stageTops = [];
+      function measureStages() { stageTops = stages.map(s => s.getBoundingClientRect().top + scrollY); }
+      // 점 격자는 점 하나하나 그리지 않고 36px 무늬를 반복(늘어남 0~10px별로 미리 만들어 둠)
+      let dotPatterns = [];
+      function buildPatterns() {
+        dotPatterns = [];
+        for (let s = 0; s <= 10; s++) {
+          const c = document.createElement('canvas');
+          c.width = GRID; c.height = GRID;
+          const g = c.getContext('2d');
+          g.fillStyle = ink(.06);
+          g.fillRect(18, 18 - Math.floor(s / 2), 1, 1 + s);
+          dotPatterns.push(ctx.createPattern(c, 'repeat'));
+        }
+      }
+
+      function resizeBg() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = document.documentElement.clientWidth; H = window.innerHeight;
+        canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.imageSmoothingEnabled = false;
+        if (!dotPatterns.length) buildPatterns();
+        measureStages();
+        requestBg();
+      }
+
+      function drawRail() {
+        const shellLeft = (W - Math.min(1440, W - 80)) / 2;
+        if (W < 900 || shellLeft < 36) return;
+        const x = Math.round(shellLeft / 2), top = 90, len = H - 150;
+        const docH = document.documentElement.scrollHeight - H;
+        const prog = docH > 0 ? Math.min(1, scrollY / docH) : 0;
+        ctx.fillStyle = ink(.1); ctx.fillRect(x, top, 1, len);
+        ctx.fillStyle = ink(.5); ctx.fillRect(x, top, 1, len * prog);
+        ctx.font = `400 10px ${MONO}`; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+        stages.forEach((s, i) => {
+          if (i === 0) return;
+          const y = top + len * Math.min(1, stageTops[i] / (docH || 1));
+          const on = i === stageIdx;
+          ctx.fillStyle = ink(on ? .95 : .35);
+          ctx.fillRect(x - (on ? 4 : 2), Math.round(y), on ? 9 : 5, 1);
+          if (shellLeft >= 72) ctx.fillText(pad(i), x - 10, y);
+        });
+        ctx.fillStyle = ink(.9); ctx.fillRect(x - 2, top + len * prog - 2, 5, 5);
+      }
+
+      function drawBg() {
+        raf = 0;
+        vel += ((scrollY - lastY) - vel) * .25;
+        lastY = scrollY;
+        mouse.x += (mouse.tx - mouse.x) * .18;
+        mouse.y += (mouse.ty - mouse.y) * .18;
+
+        ctx.fillStyle = '#0c0d10'; ctx.fillRect(0, 0, W, H);
+        const off = -((scrollY * .35) % GRID);
+        const stretch = Math.min(10, Math.abs(vel) * .25);
+        // 1) 전체 점 격자: 무늬 한 번 칠하기
+        ctx.save();
+        ctx.translate(0, off);
+        ctx.fillStyle = dotPatterns[Math.round(stretch)];
+        ctx.fillRect(0, -GRID, W, H + GRID * 2);
+        ctx.restore();
+        // 2) 마우스 주변(170px)만 밝은 점을 덧그림
+        if (mouse.x > -900) {
+          const x0 = Math.max(0, Math.floor((mouse.x - 170 - 18) / GRID)), x1 = Math.ceil((mouse.x + 170 - 18) / GRID);
+          const y0 = Math.floor((mouse.y - 170 - 18 - off) / GRID), y1 = Math.ceil((mouse.y + 170 - 18 - off) / GRID);
+          for (let gy = y0; gy <= y1; gy++) {
+            const y = 18 + off + gy * GRID;
+            for (let gx = x0; gx <= x1; gx++) {
+              const x = 18 + gx * GRID;
+              const d = Math.hypot(x - mouse.x, y - mouse.y);
+              if (d >= 170) continue;
+              const glow = (1 - d / 170) ** 2;
+              ctx.fillStyle = ink(glow * .4);
+              ctx.fillRect(x, y - stretch / 2, 1 + glow, 1 + stretch);
+            }
+          }
+        }
+        drawRail();
+        if (Math.abs(vel) > .05 || Math.abs(mouse.tx - mouse.x) > .5 || Math.abs(mouse.ty - mouse.y) > .5) requestBg();
+      }
+
+      function requestBg() { if (!raf && active && !document.hidden) raf = requestAnimationFrame(drawBg); }
+
+      window.addEventListener('scroll', requestBg, { passive: true });
+      window.addEventListener('resize', resizeBg);
+      window.addEventListener('load', measureStages);
+      if (document.fonts) document.fonts.ready.then(measureStages);
+      window.addEventListener('pointermove', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        mouse.tx = e.clientX; mouse.ty = e.clientY;
+        if (mouse.x < -900) { mouse.x = mouse.tx; mouse.y = mouse.ty; }
+        requestBg();
+      }, { passive: true });
+      document.documentElement.addEventListener('mouseleave', () => {
+        mouse.x = mouse.tx = mouse.y = mouse.ty = -999; requestBg();
+      });
+      document.addEventListener('visibilitychange', requestBg);
+      resizeBg();
+
+      /* 2. 현재 구간 표시: 메뉴 강조 / 배경 표시(표지에서는 숨김) */
+      // 메뉴를 눌러 이동했을 때는 사용자가 직접 스크롤하기 전까지 그 메뉴를 강조
+      // (About과 Contact가 한 화면에 같이 보여 페이지 끝에서 구분이 안 되는 경우 대비)
+      let navLock = -1;
+      ['wheel', 'touchmove', 'keydown'].forEach(ev => window.addEventListener(ev, () => { navLock = -1; }, { passive: true }));
+
+      // 스크롤할 때마다 바로 계산(미리 재 둔 구간 위치만 비교해서 가벼움). 화면 변경은 구간이 바뀔 때만
+      let shownIdx = -1;
+      function updateNav() {
+        const line = scrollY + innerHeight * 0.45;
+        let current = stages.filter((s, i) => stageTops[i] <= line).pop() || stages[0];
+        if (scrollY > 10 && scrollY + innerHeight >= document.documentElement.scrollHeight - 4) {
+          current = stages[stages.length - 1];
+        }
+        if (navLock >= 0) current = stages[navLock];
+        stageIdx = Number(current.dataset.stage);
+        requestBg();
+        if (stageIdx === shownIdx) return;
+        shownIdx = stageIdx;
+        const wasActive = active;
+        active = stageIdx !== 0;
+        canvas.style.opacity = active ? '1' : '0';
+        if (active && !wasActive) { lastY = scrollY; vel = 0; }
+        navLinks.forEach((a, i) => {
+          if (i === stageIdx) a.setAttribute('aria-current', 'location');
+          else a.removeAttribute('aria-current');
+        });
+      }
+      window.addEventListener('scroll', updateNav, { passive: true });
+      updateNav();
+
+      /* 4. 구간 이동: 각 구간의 '멈출 위치'
+            표지·Contact는 구간 맨 위, Works는 구간 시작 +20px, Process·About은 제목이 위에서 76px */
+      function stopFor(section) {
+        const offset = ['craft', 'about'].includes(section.id)
+          ? parseFloat(getComputedStyle(section).paddingTop) - 76
+          : ['intro', 'top', 'contact'].includes(section.id) ? 0 : 20;
+        const max = document.documentElement.scrollHeight - innerHeight;
+        return Math.max(0, Math.min(max, Math.round(section.getBoundingClientRect().top + scrollY + offset)));
+      }
+
+      // 부드럽게 이동(0.75초). 이동 중에는 다음 휠 입력을 받지 않음
+      let paging = false, pageAnim = 0;
+      const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      function glideTo(y) {
+        cancelAnimationFrame(pageAnim);
+        const from = scrollY, dist = y - from;
+        if (Math.abs(dist) < 2) { paging = false; return; }
+        const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const dur = reduce ? 0 : 750, t0 = performance.now();
+        paging = true;
+        const step = now => {
+          const k = dur ? Math.min(1, (now - t0) / dur) : 1;
+          window.scrollTo({ top: from + dist * ease(k), behavior: 'instant' });
+          if (k < 1) pageAnim = requestAnimationFrame(step);
+          else { paging = false; measureStages(); }
+        };
+        pageAnim = requestAnimationFrame(step);
+      }
+
+      document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener('click', event => {
+        const target = document.querySelector(link.hash);
+        if (!target) return;
+        event.preventDefault();
+        navLock = Math.max(0, stages.indexOf(target));
+        updateNav();
+        glideTo(stopFor(target));
+        history.replaceState(null, '', link.hash);
+      }));
+
+      /* 4-1. 한 번 스크롤하면 다음 구간으로 딱 이동 (마우스 휠·키보드)
+              - 터치 화면, 폭 1024px 미만, 높이 560px 미만에서는 일반 스크롤
+              - 구간 사이가 화면보다 길면(내용이 긴 경우) 한 화면씩 넘겨서 내용을 건너뛰지 않음
+              - 트랙패드처럼 휠 입력이 연달아 들어오면 한 번의 동작으로 보고 한 구간만 이동 */
+      const finePointer = matchMedia('(pointer: fine)');
+      const pagingOn = () => finePointer.matches && innerWidth >= 1024 && innerHeight >= 560 && !document.body.classList.contains('modal-open');
+      let gestureEnd = 0;
+      // 지금 보고 있는 구간의 실제 내용 아래 끝(문서 기준)
+      // 휠 한 번에 멈추는 화면들: 메뉴 구간(data-stage) + Works 두 번째 화면(Films, data-page)
+      const pageSections = [...document.querySelectorAll('[data-stage], [data-page]')];
+      function contentBottom(y) {
+        const i = pageSections.reduce((found, s, k) => (stopFor(s) <= y + 4 ? k : found), 0);
+        const sec = pageSections[i];
+        const box = sec.id === 'intro' ? sec : sec.querySelector('.works-shell, .films-shell, .shell') || sec;
+        return box.getBoundingClientRect().bottom + scrollY;
+      }
+      function page(dir) {
+        const y = scrollY, view = innerHeight;
+        const stops = [...new Set(pageSections.map(stopFor))].sort((a, b) => a - b);
+        let target;
+        if (dir > 0) {
+          const next = stops.find(s => s > y + 4);
+          if (next === undefined) return;
+          const bottom = contentBottom(y);
+          // 이 구간 내용이 화면 아래로 더 남아 있으면 그만큼만 내려서 다 보여준 뒤 다음 구간으로
+          target = bottom > y + view + 8 ? Math.min(next, Math.round(bottom - view + 40)) : next;
+        } else {
+          const prev = [...stops].reverse().find(s => s < y - 4);
+          if (prev === undefined) return;
+          target = prev;
+        }
+        navLock = -1;
+        glideTo(target);
+      }
+      window.addEventListener('wheel', e => {
+        if (!pagingOn() || e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+        e.preventDefault();
+        const now = performance.now(), continuing = now < gestureEnd;
+        gestureEnd = now + 220;
+        if (paging || continuing || Math.abs(e.deltaY) < 2) return;
+        page(e.deltaY > 0 ? 1 : -1);
+      }, { passive: false });
+      window.addEventListener('keydown', e => {
+        if (!pagingOn() || e.altKey || e.ctrlKey || e.metaKey) return;
+        const el = e.target instanceof Element ? e.target : document.body;
+        if (el.closest('input, textarea, select, video, [role="tablist"], [contenteditable]')) return;
+        if (e.key === ' ' && el.closest('button, a')) return; // 포커스된 버튼은 스페이스로 누를 수 있게
+        const down = ['PageDown', 'ArrowDown'].includes(e.key) || (e.key === ' ' && !e.shiftKey);
+        const up = ['PageUp', 'ArrowUp'].includes(e.key) || (e.key === ' ' && e.shiftKey);
+        if (!down && !up) return;
+        e.preventDefault();
+        if (!paging) page(down ? 1 : -1);
+      });
+
+      /* 5. 탭: Works는 선택 작품만 표시, About은 옆으로 슬라이드. 키보드 화살표 지원 */
+      function tabs(root, buttonSelector, trackSelector, panelSelector, { slide, beforeChange, onChange } = {}) {
+        if (!root) return;
+        const buttons = [...root.querySelectorAll(buttonSelector)];
+        const track = root.querySelector(trackSelector);
+        const panels = [...track.querySelectorAll(panelSelector)];
+        let selected = 0;
+
+        function select(index, focus) {
+          if (index !== selected && beforeChange) beforeChange();
+          selected = index;
+          buttons.forEach((button, i) => {
+            const on = i === index;
+            button.setAttribute('aria-selected', String(on));
+            button.tabIndex = on ? 0 : -1;
+            panels[i].inert = !on;
+            panels[i].setAttribute('aria-hidden', String(!on));
+            if (!slide) panels[i].hidden = !on;
+          });
+          if (slide) track.style.transform = `translateX(-${index * 100}%)`;
+          if (onChange) onChange(index);
+          if (focus) buttons[index].focus();
+        }
+
+        buttons.forEach((button, index) => {
+          button.addEventListener('click', () => select(index));
+          button.addEventListener('keydown', (event) => {
+            const dir = ['ArrowRight', 'ArrowDown'].includes(event.key) ? 1 : ['ArrowLeft', 'ArrowUp'].includes(event.key) ? -1 : 0;
+            if (dir) {
+              event.preventDefault();
+              select((selected + dir + buttons.length) % buttons.length, true);
+            }
+          });
+        });
+        select(0);
+      }
+
+      // Films: 왼쪽 썸네일을 누르면 오른쪽 큰 플레이어에 그 영상만 표시
+      const films = document.querySelector('#films');
+      const filmVideos = films ? [...films.querySelectorAll('video')] : [];
+      function pauseFilms() { filmVideos.forEach(v => v.pause()); }
+
+      // 플레이어 상태 표시줄(STANDBY / PLAYING / PAUSED, 시간)과 뒤쪽 빛 색
+      const viewport = films && films.querySelector('.film-viewport');
+      const hudState = viewport && viewport.querySelector('.hud-state');
+      const hudTime = viewport && viewport.querySelector('.hud-time');
+      let curVideo = null;
+      const fmt = s => Number.isFinite(s) ? `${pad(Math.floor(s / 60))}:${pad(Math.floor(s % 60))}` : '--:--';
+      function renderHud() {
+        if (!hudState) return;
+        const has = curVideo && curVideo.getAttribute('src');
+        const playing = has && !curVideo.paused;
+        hudState.textContent = !has ? 'NO SIGNAL' : playing ? 'PLAYING' : (curVideo.currentTime > 0 && !curVideo.ended ? 'PAUSED' : 'STANDBY');
+        hudTime.textContent = has ? `${fmt(curVideo.currentTime)} / ${fmt(curVideo.duration)}` : '--:-- / --:--';
+        viewport.classList.toggle('is-playing', !!playing);
+      }
+      function setPlayer(i) {
+        if (!viewport) return;
+        curVideo = films.querySelector(`#film-${i} video`);
+        const poster = curVideo && curVideo.getAttribute('poster');
+        viewport.style.setProperty('--ambient', poster ? `url("${poster}")` : 'none');
+        renderHud();
+      }
+      filmVideos.forEach(v => ['play', 'pause', 'ended', 'timeupdate', 'loadedmetadata'].forEach(ev =>
+        v.addEventListener(ev, () => { if (v === curVideo) renderHud(); })));
+      tabs(films, '.thumbnail', '.film-track', '.film', { beforeChange: pauseFilms, onChange: setPlayer });
+
+      // 한 번에 한 영상만 재생, Films를 벗어나거나 탭을 숨기면 정지
+      filmVideos.forEach(v => v.addEventListener('play', () => filmVideos.forEach(o => { if (o !== v) o.pause(); })));
+      document.addEventListener('visibilitychange', () => { if (document.hidden) pauseFilms(); });
+      if (films) new IntersectionObserver(entries => {
+        if (!entries[0].isIntersecting) pauseFilms();
+      }, { threshold: 0 }).observe(films);
+
+      // About 탭 밑 막대를 선택된 탭 아래로 이동
+      const aboutNav = document.querySelector('#about .subnav');
+      let aboutIdx = 0;
+      function moveTabBar(i = aboutIdx) {
+        if (!aboutNav) return;
+        aboutIdx = i;
+        const btn = aboutNav.querySelectorAll('button')[i];
+        aboutNav.style.setProperty('--bar-x', btn.offsetLeft + 'px');
+        aboutNav.style.setProperty('--bar-w', btn.offsetWidth + 'px');
+        aboutNav.style.setProperty('--bar-y', (btn.offsetTop + btn.offsetHeight - aboutNav.offsetHeight) + 'px');
+      }
+      tabs(document.querySelector('#about'), '.subnav button', '.about-track', '.about-panel', { slide: true, onChange: moveTabBar });
+      window.addEventListener('resize', () => moveTabBar());
+      if (document.fonts) document.fonts.ready.then(() => moveTabBar());
+
+      /* 6. 스크롤 당김 효과: 구간이 화면 아래에 있을수록 내용이 최대 90px 아래에 있다가 따라 올라옴.
+            마지막의 짧은 Contact는 문서 끝에서 제자리에 안착합니다. */
+      const pullTargets = [
+        ['works', '.works-shell'], ['films', '.films-shell'], ['craft', '.shell'], ['about', '.shell'], ['contact', '.shell']
+      ].map(([id, sel]) => {
+        const section = document.getElementById(id);
+        return section && { section, content: section.querySelector(sel) };
+      }).filter(t => t && t.content);
+
+      let pullFrame = 0;
+      function updatePull() {
+        pullFrame = 0;
+        const remaining = Math.max(0, document.documentElement.scrollHeight - innerHeight - scrollY);
+        pullTargets.forEach(({ section, content }) => {
+          let progress = Math.max(0, Math.min(1, section.getBoundingClientRect().top / (innerHeight * .8)));
+          if (section.id === 'contact') progress = Math.min(progress, remaining / Math.max(160, innerHeight * .35));
+          content.style.setProperty('--pull', (progress * 90).toFixed(2) + 'px');
+        });
+      }
+      function requestPull() { if (!pullFrame) pullFrame = requestAnimationFrame(updatePull); }
+      window.addEventListener('scroll', requestPull, { passive: true });
+      window.addEventListener('resize', requestPull);
+      updatePull();
+
+      /* Process 사진: 불러온 사진의 실제 가로세로 비율로 칸을 맞춤(새로 넣은 사진도 자동) */
+      document.querySelectorAll('#craft .photo img').forEach(img => {
+        const fit = () => {
+          if (!img.naturalWidth) return;
+          const figure = img.closest('.photo');
+          figure.classList.add('has-image');
+          figure.style.setProperty('--photo-ratio', `${img.naturalWidth} / ${img.naturalHeight}`);
+        };
+        if (img.complete) fit(); else img.addEventListener('load', fit);
+      });
+
+      /* Process 칸 영상: 화면에 보일 때만 소리 없이 반복 재생 */
+      const quietMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      document.querySelectorAll('#craft .photo-video').forEach(v => {
+        if (quietMotion) return;
+        new IntersectionObserver(entries => {
+          if (entries[0].isIntersecting) v.play().catch(() => {}); else v.pause();
+        }, { threshold: 0.25 }).observe(v);
+      });
+
+      /* 7. 사진 확대창 */
+      const dialog = document.querySelector('#photo-dialog');
+      const dialogTitle = document.querySelector('#dialog-title');
+      const dialogBody = dialog.querySelector('.dialog-body');
+      const closeButton = dialog.querySelector('.dialog-close');
+      let closingTimer, opener;
+
+      function closePhoto() {
+        if (!dialog.open) return;
+        dialog.classList.remove('is-open');
+        clearTimeout(closingTimer);
+        closingTimer = setTimeout(() => dialog.close(), 250);
+      }
+
+      document.querySelectorAll('.enlarge').forEach(button => button.addEventListener('click', () => {
+        clearTimeout(closingTimer);
+        opener = button;
+        const item = button.closest('.craft-item');
+        const figure = button.closest('.photo');
+        const source = figure.querySelector('img, video') || figure.querySelector('.media-placeholder');
+        dialogTitle.textContent = item.querySelector('h3').textContent;
+        const media = source.cloneNode(true);
+        if (media.tagName === 'IMG') media.removeAttribute('loading');
+        if (media.tagName === 'VIDEO') { media.muted = true; media.controls = true; media.autoplay = true; }
+        dialogBody.replaceChildren(media);
+        document.body.classList.add('modal-open');
+        dialog.showModal();
+        requestAnimationFrame(() => requestAnimationFrame(() => dialog.classList.add('is-open')));
+      }));
+
+      // 전시 현장 사진: 누르면 같은 확대창으로 크게 보기
+      const exImg = document.querySelector('.exhibition-image');
+      if (exImg) exImg.addEventListener('click', () => {
+        clearTimeout(closingTimer);
+        opener = exImg;
+        dialogTitle.textContent = '은평의 물길 · 불광천 미디어브릿지 현장';
+        const media = exImg.querySelector('img').cloneNode(true);
+        media.removeAttribute('loading');
+        dialogBody.replaceChildren(media);
+        document.body.classList.add('modal-open');
+        dialog.showModal();
+        requestAnimationFrame(() => requestAnimationFrame(() => dialog.classList.add('is-open')));
+      });
+
+      closeButton.addEventListener('click', closePhoto);
+      dialog.addEventListener('cancel', (e) => { e.preventDefault(); closePhoto(); });
+      dialog.addEventListener('click', (e) => {
+        if (e.target !== dialog) return;
+        const r = dialog.getBoundingClientRect();
+        if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) closePhoto();
+      });
+      dialog.addEventListener('close', () => {
+        dialogBody.querySelectorAll('video').forEach(v => v.pause());
+        clearTimeout(closingTimer);
+        dialog.classList.remove('is-open');
+        document.body.classList.remove('modal-open');
+        if (opener) opener.focus();
+      });
+    })();
+
+    /* 8. 배경음악: 입장 클릭 시 서서히 재생, 메뉴의 SOUND로 켜기/끄기.
+          소리 있는 영상이 재생되는 동안과 다른 탭에 있을 때는 멈춤. 끊김 없는 반복을 위해 Web Audio 사용 */
+    (() => {
+      const SRC = 'assets/audio/bgm.mp3', VOL = 0.35, LOOP_END = 48.0;
+      const gate = document.getElementById('sound-gate');
+      const toggle = document.querySelector('.sound-toggle');
+      if (!gate || !toggle) return;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      let ctx = null, gain = null, started = false, enabled = false;
+      const playing = new Set();            // 소리 있는 영상 중 재생 중인 것
+      const bar = gate.querySelector('.gate-bar'), pct = gate.querySelector('.gate-pct'), enterBtn = gate.querySelector('.gate-enter');
+      let bytes = null;
+      const showProgress = p => { bar.style.setProperty('--p', p.toFixed(3)); pct.textContent = Math.round(p * 100) + '%'; };
+      // 음악 파일을 받으면서 진행률을 로딩 선에 표시
+      const prefetch = () => {
+        if (bytes) return bytes;
+        bytes = fetch(SRC).then(async r => {
+          const total = +r.headers.get('content-length') || 0;
+          if (!r.body || !total) { const b = await r.arrayBuffer(); showProgress(1); return b; }
+          const reader = r.body.getReader(), chunks = []; let got = 0;
+          for (;;) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value); got += value.length; showProgress(Math.min(1, got / total));
+          }
+          const all = new Uint8Array(got); let o = 0;
+          chunks.forEach(c => { all.set(c, o); o += c.length; });
+          showProgress(1);
+          return all.buffer;
+        }).catch(() => { showProgress(1); return null; });
+        return bytes;
+      };
+
+      document.body.classList.add('modal-open', 'gate-pending');
+      const shownAt = performance.now();
+      let ready = false;
+      prefetch().then(() => {
+        // 이름이 다 나타난 뒤(최소 2.4초) PRESS ENTER로 바뀜
+        setTimeout(() => {
+          ready = true; gate.classList.add('is-ready');
+          enterBtn.focus({ preventScroll: true });
+        }, Math.max(0, 2400 - (performance.now() - shownAt)));
+      });
+
+      async function ensureStarted() {
+        if (!AC) return;
+        if (!ctx) { ctx = new AC(); gain = ctx.createGain(); gain.gain.value = 0; gain.connect(ctx.destination); }
+        if (ctx.state === 'suspended' && playing.size === 0) ctx.resume();
+        if (started) return;
+        started = true;
+        try {
+          const data = await prefetch();
+          if (!data) { started = false; return; }
+          const buf = await new Promise((ok, no) => ctx.decodeAudioData(data.slice(0), ok, no));
+          const node = ctx.createBufferSource();
+          node.buffer = buf; node.loop = true; node.loopStart = 0; node.loopEnd = Math.min(buf.duration, LOOP_END);
+          node.connect(gain); node.start();
+          update(2.5);
+        } catch (e) { started = false; }
+      }
+
+      // 소리 켤 때만 엔진을 돌리고, 영상 재생·탭 이동·끄기 때는 볼륨을 내린 뒤 엔진 자체를 멈춤(어느 브라우저에서도 확실히 무음)
+      let suspendTimer = 0;
+      function update(secs) {
+        if (!gain) return;
+        // 화면에 있는 영상 중 소리 내며 재생 중인 것이 있으면 무조건 끔 (이벤트를 놓쳐도 다시 확인)
+        document.querySelectorAll('video, audio').forEach(v => {
+          if (!v.paused && !v.ended && !v.muted && v.volume > 0) playing.add(v); else playing.delete(v);
+        });
+        const on = enabled && playing.size === 0 && !document.hidden;
+        toggle.classList.toggle('is-held', enabled && !on);
+        const dur = secs || (on ? 1.5 : 0.4);
+        clearTimeout(suspendTimer);
+        if (on && ctx.state === 'suspended') ctx.resume();
+        const t = ctx.currentTime, g = gain.gain;
+        g.cancelScheduledValues(t);
+        g.setValueAtTime(g.value, t);
+        g.linearRampToValueAtTime(on ? VOL : 0, t + dur);
+        if (!on) suspendTimer = setTimeout(() => { if (ctx.state === 'running') ctx.suspend(); }, dur * 1000 + 80);
+      }
+
+      function setEnabled(v) {
+        enabled = v;
+        toggle.classList.toggle('is-on', v);
+        toggle.setAttribute('aria-pressed', String(v));
+        toggle.setAttribute('aria-label', v ? '배경음악 끄기' : '배경음악 켜기');
+        if (v) ensureStarted();
+        update();
+      }
+
+      let left = false;
+      function leaveGate(withSound) {
+        if (left) return; left = true;
+        if (withSound) setEnabled(true);
+        gate.classList.add('is-leaving');
+        document.body.classList.remove('gate-pending');
+        document.body.classList.add('gate-entered');
+        setTimeout(() => document.body.classList.remove('modal-open'), 1200);
+        setTimeout(() => gate.remove(), 2000);
+      }
+
+      enterBtn.addEventListener('click', () => leaveGate(true));
+      // 뷰파인더 타임코드 (29.97fps, 입장 화면이 열린 동안만)
+      const tc = gate.querySelector('.gate-tc');
+      const pad2 = n => String(n).padStart(2, '0');
+      (function tick() {
+        if (!gate.isConnected || left) return;
+        const s = (performance.now() - shownAt) / 1000, f = Math.floor((s % 1) * 29.97);
+        tc.textContent = `${pad2(Math.floor(s / 3600))}:${pad2(Math.floor(s / 60) % 60)}:${pad2(Math.floor(s) % 60)}:${pad2(f)}`;
+        requestAnimationFrame(tick);
+      })();
+      // 준비되면 화면 아무 곳 클릭이나 Enter/Space 키로도 입장
+      gate.addEventListener('click', e => { if (ready && !e.target.closest('button')) leaveGate(true); });
+      window.addEventListener('keydown', e => {
+        if (!ready || left || !gate.isConnected) return;
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); leaveGate(true); }
+      });
+      toggle.addEventListener('click', () => setEnabled(!enabled));
+
+      // 소리 있는 영상이 재생되면 음악을 줄여 멈추고, 멈추면 다시 재생
+      const track = (e) => {
+        const v = e.target;
+        if (!(v instanceof HTMLMediaElement)) return;
+        if (!v.paused && !v.ended && !v.muted && v.volume > 0) playing.add(v); else playing.delete(v);
+        update();
+      };
+      ['play', 'playing', 'pause', 'ended', 'volumechange', 'emptied'].forEach(ev => document.addEventListener(ev, track, true));
+      // 영상마다 직접도 연결 (일부 브라우저에서 문서 단위 감지가 빠지는 경우 대비)
+      document.querySelectorAll('video, audio').forEach(v => ['play', 'playing', 'pause', 'ended', 'volumechange'].forEach(ev => v.addEventListener(ev, () => update())));
+
+      document.addEventListener('visibilitychange', () => {
+        if (!ctx) return;
+        if (document.hidden) { update(0.3); setTimeout(() => { if (document.hidden) ctx.suspend(); }, 350); }
+        else { ctx.resume(); update(); }
+      });
+    })();
+  </script>
+    <!-- ===== D. 표지 모션그래픽: 5개 컷(기획·촬영·편집·AI·출력)이 5초마다 전환 ===== -->
+    <script>
+    (() => {
+      'use strict';
+      const canvas = document.getElementById('cover-motion');
+      const hero = document.getElementById('intro');
+      if (!canvas || !hero) return;
+      const ctx = canvas.getContext('2d');
+
+      /* 설정: 컷 길이(초), 전환 시간(초) */
+      const D = 5, FADE = 0.7;
+      const SANS = getComputedStyle(document.documentElement).getPropertyValue('--font-sans').trim() || 'sans-serif';
+      const MONO = 'ui-monospace, "SFMono-Regular", Consolas, "Courier New", monospace';
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const clamp = v => v < 0 ? 0 : v > 1 ? 1 : v;
+      const seg = (t, a, b) => clamp((t - a) / (b - a));
+      const out3 = t => 1 - Math.pow(1 - clamp(t), 3);
+      const inOut = t => { t = clamp(t); return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+      const lerp = (a, b, t) => a + (b - a) * t;
+      const ink = a => `rgba(226,231,239,${a})`;
+      const pad = n => String(n).padStart(2, '0');
+
+      let W = 0, H = 0, dpr = 1, box, hudX = 40, texture;
+
+      function resize() {
+        const r = canvas.getBoundingClientRect();
+        W = r.width; H = r.height;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const narrow = W < 760;
+        const bw = narrow ? W * 0.84 : Math.min(W * 0.46, 820);
+        const bh = bw * 9 / 16;
+        const cx = narrow ? W * 0.5 : Math.min(W * 0.64, W - (W - Math.min(1440, W - 80)) / 2 - bw / 2);
+        const cy = narrow ? H * 0.36 : H * 0.42;
+        box = { x: cx - bw / 2, y: cy - bh / 2, w: bw, h: bh, narrow };
+        hudX = narrow ? 24 : (W - Math.min(1440, W - 80)) / 2;
+        // 배경의 옅은 점 격자 (한 번만 그려 둠)
+        texture = document.createElement('canvas');
+        texture.width = canvas.width; texture.height = canvas.height;
+        const g = texture.getContext('2d');
+        g.scale(dpr, dpr);
+        g.fillStyle = ink(.06);
+        for (let y = 18; y < H; y += 36) for (let x = 18; x < W; x += 36) g.fillRect(x, y, 1, 1);
+      }
+
+      /* 그리기 도구 */
+      function text(s, x, y, { size = 12, a = .7, align = 'left', mono = false, weight = 400 } = {}) {
+        ctx.font = `${weight} ${size}px ${mono ? MONO : SANS}`;
+        ctx.textAlign = align;
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = ink(a);
+        ctx.fillText(s, x, y);
+      }
+      function line(x1, y1, x2, y2, a = .5, w = 1) {
+        ctx.strokeStyle = ink(a); ctx.lineWidth = w;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      }
+      function rect(x, y, w, h, a = .6, lw = 1) {
+        ctx.strokeStyle = ink(a); ctx.lineWidth = lw; ctx.strokeRect(x, y, w, h);
+      }
+      // 사각형 테두리를 p(0~1)만큼만 그림
+      function partialRect(x, y, w, h, p, a = .6) {
+        if (p <= 0) return;
+        let L = p * 2 * (w + h), px = x, py = y;
+        ctx.strokeStyle = ink(a); ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x, y);
+        for (const [nx, ny] of [[x + w, y], [x + w, y + h], [x, y + h], [x, y]]) {
+          const d = Math.hypot(nx - px, ny - py);
+          if (L >= d) { ctx.lineTo(nx, ny); L -= d; px = nx; py = ny; }
+          else { ctx.lineTo(px + (nx - px) * L / d, py + (ny - py) * L / d); break; }
+        }
+        ctx.stroke();
+      }
+
+      /* 컷 1. 기획: 스토리보드 6칸이 차례로 그려짐 */
+      function drawPanel(i, x, y, w, h, lt) {
+        ctx.strokeStyle = ink(.6); ctx.lineWidth = 1;
+        switch (i) {
+          case 0: // 일출
+            line(x, y + h * .62, x + w, y + h * .62, .5);
+            ctx.beginPath(); ctx.arc(x + w * .68, y + h * .62, h * .2 * out3(lt * .8), Math.PI, 0); ctx.stroke();
+            break;
+          case 1: // 두 인물
+            for (const [fx, sc] of [[.38, 1], [.62, .9]]) {
+              const cx = x + w * fx, base = y + h * .95;
+              ctx.beginPath(); ctx.arc(cx, base - h * .58 * sc, h * .1 * sc, 0, Math.PI * 2); ctx.stroke();
+              ctx.strokeRect(cx - h * .13 * sc, base - h * .45 * sc, h * .26 * sc, h * .45 * sc);
+            }
+            break;
+          case 2: // 클로즈업
+            ctx.beginPath(); ctx.ellipse(x + w * .5, y + h * .66, w * .2, h * .52, 0, 0, Math.PI * 2); ctx.stroke();
+            line(x + w * .42, y + h * .52, x + w * .47, y + h * .52, .6);
+            line(x + w * .53, y + h * .52, x + w * .58, y + h * .52, .6);
+            break;
+          case 3: { // 카메라 이동
+            ctx.setLineDash([3, 4]);
+            ctx.beginPath(); ctx.moveTo(x + w * .15, y + h * .72);
+            ctx.quadraticCurveTo(x + w * .5, y + h * .1, x + w * .85, y + h * .58); ctx.stroke();
+            ctx.setLineDash([]);
+            const ax = x + w * .85, ay = y + h * .58;
+            line(ax, ay, ax - 9, ay - 6, .7); line(ax, ay, ax - 7, ay + 6, .7);
+            text('DOLLY IN', x + w * .1, y + h * .2, { size: 9, a: .5, mono: true });
+            break;
+          }
+          case 4: // 자막
+            ctx.fillStyle = ink(.2);
+            [.7, .5, .6].forEach((len, k) => ctx.fillRect(x + w * .12, y + h * (.3 + k * .18), w * len * out3(lt * 1.4 - k * .2), h * .07));
+            break;
+          case 5: // 풍경
+            ctx.beginPath(); ctx.moveTo(x, y + h * .8); ctx.lineTo(x + w * .25, y + h * .45); ctx.lineTo(x + w * .42, y + h * .62);
+            ctx.lineTo(x + w * .62, y + h * .3); ctx.lineTo(x + w, y + h * .75); ctx.stroke();
+            break;
+        }
+      }
+      function plan(t, b) {
+        const gap = b.w * .035, pw = (b.w - gap * 2) / 3, ph = pw * 9 / 16, rowGap = gap * 1.7;
+        const top = b.y + (b.h - (ph * 2 + rowGap)) / 2;
+        const drift = -t * 3;
+        for (let i = 0; i < 6; i++) {
+          const x = b.x + (i % 3) * (pw + gap) + drift, y = top + ((i / 3) | 0) * (ph + rowGap);
+          const s = .1 + i * .22;
+          partialRect(x, y, pw, ph, out3(seg(t, s, s + .7)), .55);
+          const ca = out3(seg(t, s + .45, s + 1.05));
+          if (ca <= 0) continue;
+          text(`S#${pad(i + 1)}`, x, y - 10, { size: 10, a: .45 * ca, mono: true });
+          ctx.save();
+          ctx.beginPath(); ctx.rect(x, y, pw, ph); ctx.clip();
+          ctx.globalAlpha *= ca;
+          drawPanel(i, x, y, pw, ph, t - s);
+          ctx.restore();
+        }
+        text('STORYBOARD · 6 CUTS · 00:30', b.x + drift, top + ph * 2 + rowGap + 24, { size: 11, a: .5 * out3(seg(t, 1.8, 2.6)), mono: true });
+      }
+
+      /* 컷 2. 촬영: 뷰파인더, 초점이 흔들리다 고정 */
+      function shoot(t, b) {
+        const { x, y, w, h } = b;
+        const L = w * .07, off = (1 - out3(seg(t, 0, .8))) * 30;
+        ctx.strokeStyle = ink(.8); ctx.lineWidth = 1.5;
+        for (const [sx, sy] of [[0, 0], [1, 0], [0, 1], [1, 1]]) {
+          const cx = x + sx * w + (sx ? off : -off), cy = y + sy * h + (sy ? off : -off);
+          const dx = sx ? -1 : 1, dy = sy ? -1 : 1;
+          ctx.beginPath(); ctx.moveTo(cx + dx * L, cy); ctx.lineTo(cx, cy); ctx.lineTo(cx, cy + dy * L); ctx.stroke();
+        }
+        const g = out3(seg(t, .4, 1.2));
+        for (const f of [1 / 3, 2 / 3]) {
+          line(x + w * f, y, x + w * f, y + h * g, .12);
+          line(x, y + h * f, x + w * g, y + h * f, .12);
+        }
+        const locked = t >= 2.2;
+        const k = locked ? 1 : 1 + .45 * Math.exp(-t * 1.1) * Math.cos(t * 7);
+        const fs = h * .16 * k, fx = x + w * .5, fy = y + h * .5;
+        rect(fx - fs / 2, fy - fs / 2, fs, fs, locked ? 1 : .7, locked ? 2 : 1.2);
+        const tilt = .12 * Math.exp(-t * 1.4) * Math.sin(t * 5);
+        ctx.save(); ctx.translate(fx, fy); ctx.rotate(tilt);
+        line(-w * .2, 0, -fs / 2 - 8, 0, .5); line(fs / 2 + 8, 0, w * .2, 0, .5);
+        ctx.restore();
+        if (locked) text('AF · LOCK', fx, fy + fs / 2 + 16, { size: 10, a: .85 * out3(seg(t, 2.2, 2.6)), mono: true, align: 'center' });
+
+        const ia = out3(seg(t, .6, 1.2));
+        if (Math.floor(t * 2) % 2 === 0) {
+          ctx.fillStyle = `rgba(255,82,82,${.9 * ia})`;
+          ctx.beginPath(); ctx.arc(x + 20, y + 22, 4.5, 0, Math.PI * 2); ctx.fill();
+        }
+        text('REC', x + 32, y + 22, { size: 11, a: .85 * ia, mono: true, weight: 500 });
+        text(`00:00:${pad(Math.floor(t) + 12)}:${pad(Math.floor(t * 24) % 24)}`, x + w - 16, y + 22, { size: 11, a: .85 * ia, mono: true, align: 'right' });
+        text('ISO 800    1/50    F2.8    4K 23.976', x + w / 2, y + h - 20, { size: 10.5, a: .6 * ia, mono: true, align: 'center' });
+        for (let c = 0; c < 2; c++) { // 오디오 레벨
+          const lv = .3 + .55 * Math.abs(Math.sin(t * 6.3 + c * 1.7) * Math.sin(t * 2.1 + c));
+          const mh = h * .3, mx = x + 16 + c * 7, my = y + h - 34;
+          ctx.fillStyle = ink(.12 * ia); ctx.fillRect(mx, my - mh, 4, mh);
+          ctx.fillStyle = ink(.65 * ia); ctx.fillRect(mx, my - mh * lv, 4, mh * lv);
+        }
+      }
+
+      /* 컷 3. 편집: 타임라인에 클립이 들어오고 재생 헤드가 지나감 */
+      const TRACKS = [
+        ['V2', [[.18, .22], [.62, .16]]],
+        ['V1', [[0, .26], [.27, .2], [.48, .3], [.8, .2]]],
+        ['A1', [[0, .45], [.47, .53]]],
+        ['A2', [[.1, .7]]]
+      ];
+      function edit(t, b) {
+        const { x, y, w, h } = b;
+        const tx = x + w * .07, tw = w - w * .07, rulerY = y + h * .1;
+        const ra = out3(seg(t, 0, .6));
+        line(x, rulerY, x + w * ra, rulerY, .3);
+        for (let i = 0; i <= 32; i++) {
+          const px = tx + tw * i / 32;
+          if (px > x + w * ra) break;
+          line(px, rulerY, px, rulerY - (i % 8 ? 4 : 9), .35);
+          if (i % 8 === 0) text(`00:${pad(i)}`, i === 32 ? px : px + 4, rulerY - 14, { size: 9, a: .45, mono: true, align: i === 32 ? 'right' : 'left' });
+        }
+        const th = h * .15, gap = h * .04, y0 = y + h * .18;
+        TRACKS.forEach(([name, clips], r) => {
+          const ty = y0 + r * (th + gap);
+          text(name, x, ty + th / 2, { size: 10, a: .5 * ra, mono: true });
+          line(tx, ty + th + gap / 2, x + w, ty + th + gap / 2, .06);
+          clips.forEach(([s, l], k) => {
+            const p = out3(seg(t, .2 + r * .18 + k * .14, .9 + r * .18 + k * .14));
+            if (p <= 0) return;
+            const cx = tx + tw * s + (1 - p) * tw * .25, cw = tw * l - 3;
+            ctx.fillStyle = ink((r < 2 ? .09 : .06) * p); ctx.fillRect(cx, ty, cw, th);
+            rect(cx + .5, ty + .5, cw - 1, th - 1, .45 * p);
+            if (r < 2) { // 영상 클립: 프레임 썸네일
+              ctx.fillStyle = ink(.07 * p);
+              for (let f = cx; f < cx + cw - 6; f += th * 1.6) ctx.fillRect(f + 3, ty + 3, Math.min(th * 1.4, cx + cw - f - 6), th - 6);
+            } else { // 오디오 클립: 파형
+              ctx.strokeStyle = ink(.5 * p); ctx.lineWidth = 1; ctx.beginPath();
+              for (let f = 2; f < cw - 2; f += 3) {
+                const amp = Math.abs(Math.sin((f + s * 900) * .11) * Math.sin((f + k * 77) * .023)) * th * .4;
+                ctx.moveTo(cx + f, ty + th / 2 - amp); ctx.lineTo(cx + f, ty + th / 2 + amp);
+              }
+              ctx.stroke();
+            }
+          });
+        });
+        const pa = out3(seg(t, 1, 1.4)), phx = tx + tw * inOut(seg(t, 1.2, 5.4));
+        line(phx, rulerY - 10, phx, y0 + 4 * (th + gap), .95 * pa, 1.5);
+        ctx.fillStyle = ink(.95 * pa);
+        ctx.beginPath(); ctx.moveTo(phx - 5, rulerY - 16); ctx.lineTo(phx + 5, rulerY - 16); ctx.lineTo(phx, rulerY - 9); ctx.fill();
+      }
+
+      /* 컷 4. AI: 흩어진 점이 회전하는 구로 모임 */
+      const POINTS = Array.from({ length: 360 }, (_, i, arr) => {
+        const yy = 1 - 2 * (i + .5) / 360, rr = Math.sqrt(1 - yy * yy), th = i * 2.39996;
+        return { sx: Math.cos(th) * rr, sy: yy, sz: Math.sin(th) * rr, rx: Math.random(), ry: Math.random(), ph: Math.random() * 6.28 };
+      });
+      const PROMPT = '> a quiet city at dawn, cinematic, 35mm film';
+      function ai(t, b) {
+        const { x, y, w, h } = b;
+        const m = inOut(seg(t, .9, 3.2)), R = h * .36, cx = x + w * .5, cy = y + h * .52;
+        const cs = Math.cos(t * .45), sn = Math.sin(t * .45);
+        for (const p of POINTS) {
+          const nx = x + p.rx * w + Math.sin(t * 2 + p.ph) * 6, ny = y + p.ry * h + Math.cos(t * 1.7 + p.ph) * 6;
+          const X = p.sx * cs + p.sz * sn, Z = -p.sx * sn + p.sz * cs, depth = (Z + 1) / 2;
+          const px = lerp(nx, cx + X * R, m), py = lerp(ny, cy + p.sy * R, m);
+          const a = lerp(.4, .15 + .7 * depth, m), s = lerp(1.3, .8 + 1.4 * depth, m);
+          ctx.fillStyle = ink(a); ctx.fillRect(px - s / 2, py - s / 2, s, s);
+        }
+        const n = Math.floor(PROMPT.length * seg(t, 0, 1.3));
+        text(PROMPT.slice(0, n) + (t < 1.8 && Math.floor(t * 3) % 2 ? '▍' : ''), x, y + 8, { size: 11, a: .75, mono: true });
+        const pr = seg(t, .4, 3.3), bw = w * .32, by = y + h - 10;
+        ctx.fillStyle = ink(.12); ctx.fillRect(x, by, bw, 2);
+        ctx.fillStyle = ink(.85); ctx.fillRect(x, by, bw * pr, 2);
+        text(pr < 1 ? `GENERATING  ${Math.round(pr * 100)}%` : 'DONE · SEED 2614 · 30 STEPS', x, by - 12, { size: 10, a: .6, mono: true });
+      }
+
+      /* 컷 5. 출력: 화면비가 16:9 → 2.39:1 → 1:1 → 9:16 → 16:9로 바뀜 */
+      const RATIOS = [[16 / 9, '16 : 9', 'YOUTUBE'], [2.39, '2.39 : 1', 'CINEMA'], [1, '1 : 1', 'FEED'], [9 / 16, '9 : 16', 'SHORTS'], [16 / 9, '16 : 9', 'YOUTUBE']];
+      const fit = (r, b) => r >= b.w / b.h ? [b.w, b.w / r] : [b.h * r, b.h];
+      function deliver(t, b) {
+        const cx = b.x + b.w / 2, cy = b.y + b.h / 2;
+        for (const [r] of RATIOS.slice(0, 4)) { const [fw, fh] = fit(r, b); rect(cx - fw / 2, cy - fh / 2, fw, fh, .07); }
+        const step = 1.05, k = Math.min(3, Math.floor(t / step)), mv = inOut(seg(t - k * step, .55, 1));
+        const [w0, h0] = fit(RATIOS[k][0], b), [w1, h1] = fit(RATIOS[k + 1][0], b);
+        const fw = lerp(w0, w1, mv), fh = lerp(h0, h1, mv);
+        rect(cx - fw / 2, cy - fh / 2, fw, fh, .85, 1.5);
+        ctx.setLineDash([2, 4]); rect(cx - fw * .45, cy - fh * .45, fw * .9, fh * .9, .22); ctx.setLineDash([]);
+        line(cx - 8, cy, cx + 8, cy, .5); line(cx, cy - 8, cx, cy + 8, .5);
+        const cur = mv < .5 ? RATIOS[k] : RATIOS[k + 1], la = Math.abs(mv - .5) * 2;
+        text(cur[1], cx - fw / 2, cy - fh / 2 - 14, { size: 12, a: .9 * la, mono: true, weight: 500 });
+        text(cur[2], cx + fw / 2, cy - fh / 2 - 14, { size: 10, a: .5 * la, mono: true, align: 'right' });
+      }
+
+      const SCENES = [
+        { en: 'PLAN', ko: '기획', fn: plan },
+        { en: 'SHOOT', ko: '촬영', fn: shoot },
+        { en: 'EDIT', ko: '편집', fn: edit },
+        { en: 'AI', ko: '생성', fn: ai },
+        { en: 'DELIVER', ko: '출력', fn: deliver }
+      ];
+
+      function drawScene(i, t, alpha, dx) {
+        if (alpha <= 0) return;
+        ctx.save(); ctx.globalAlpha = alpha; ctx.translate(dx, 0);
+        SCENES[i].fn(t, box);
+        ctx.restore();
+      }
+
+      function frame(T) {
+        if (!W || !H || !texture.width || !texture.height) return; // 화면 크기 변경 중 0px일 때 건너뜀
+        ctx.fillStyle = '#0c0d10'; ctx.fillRect(0, 0, W, H);
+        ctx.drawImage(texture, 0, 0, W, H);
+        const idx = Math.floor(T / D) % SCENES.length, t = T % D, f = out3(t / FADE);
+        if (t < FADE && T >= D) drawScene((idx + SCENES.length - 1) % SCENES.length, D + t, 1 - f, -f * 14);
+        drawScene(idx, t, f, (1 - f) * 14);
+        if (t < .45 && !reduced) { // 컷 전환 순간 지나가는 빛 줄기
+          const p = t / .45;
+          ctx.fillStyle = ink(.5 * (1 - p));
+          ctx.fillRect(box.x - 20 + (box.w + 40) * out3(p), box.y - 24, 1.5, box.h + 48);
+        }
+        // 왼쪽 위 컷 번호와 진행 막대
+        const y = box.narrow ? 76 : 40, sc = SCENES[idx];
+        text(`${pad(idx + 1)} / ${pad(SCENES.length)}`, hudX, y, { size: 11, a: .55, mono: true });
+        text(`${sc.en} · ${sc.ko}`, hudX + 68, y, { size: 12, a: .9, weight: 500 });
+        ctx.fillStyle = ink(.15); ctx.fillRect(hudX, y + 15, 150, 1);
+        ctx.fillStyle = ink(.8); ctx.fillRect(hudX, y + 15, 150 * clamp(t / D), 1);
+      }
+
+      resize();
+      window.addEventListener('resize', () => { resize(); frame(T); });
+
+      let T = 0;
+      if (reduced) { // 동작 줄이기 설정: 완성된 장면만 5초마다 교체
+        let i = 0;
+        const show = () => { T = i * D + 4.4; frame(T); i = (i + 1) % SCENES.length; };
+        show(); setInterval(show, D * 1000);
+        return;
+      }
+
+      // 표지가 보이고 탭이 활성일 때만 그림
+      let raf = 0, last = 0, visible = true;
+      function tick(now) {
+        raf = 0;
+        T += Math.min(.05, Math.max(0, (now - last) / 1000));
+        last = now;
+        frame(T);
+        schedule();
+      }
+      function schedule() {
+        if (!raf && visible && !document.hidden) { last = last || performance.now(); raf = requestAnimationFrame(tick); }
+      }
+      function resume() { last = performance.now(); schedule(); }
+      new IntersectionObserver(e => { visible = e[0].isIntersecting; if (visible) resume(); }, { threshold: 0 }).observe(hero);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) resume(); });
+      frame(0);
+      resume();
+    })();
+  </script>
+  <script>
+    // 필름마다 가운데 재생 버튼 (재생하면 사라지고, 멈추거나 끝나면 다시 나타남)
+    document.querySelectorAll('#films .video-frame').forEach(frame => {
+      const v = frame.querySelector('video');
+      if (!v) return;
+      const btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'film-play'; btn.setAttribute('aria-label', '영상 재생');
+      btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>';
+      btn.addEventListener('click', () => { v.play().catch(() => {}); });
+      frame.appendChild(btn);
+      const sync = () => frame.classList.toggle('is-playing', !v.paused && !v.ended);
+      ['play', 'playing', 'pause', 'ended', 'emptied'].forEach(ev => v.addEventListener(ev, sync));
+      sync();
+    });
+
+    // 4번 작품: 같은 플레이어에서 EP.01 / EP.02 전환 (슬롯은 하나)
+    (() => {
+      const film = document.getElementById('film-3');
+      if (!film) return;
+      const v = film.querySelector('video'), dur = film.querySelector('.film-duration');
+      const btns = [...film.querySelectorAll('.ep-switch button')];
+      const pick = (b, play) => {
+        btns.forEach(o => { o.classList.toggle('on', o === b); o.setAttribute('aria-pressed', String(o === b)); });
+        v.pause();
+        v.src = b.dataset.src; v.poster = b.dataset.poster;
+        if (dur) dur.textContent = b.dataset.dur;
+        v.load();
+        if (play) v.play().catch(() => {});
+      };
+      btns.forEach(b => b.addEventListener('click', () => { if (!b.classList.contains('on')) pick(b, !v.paused); }));
+      // EP.01을 끝까지 보면 EP.02로 자동으로 넘어가 이어서 재생
+      v.addEventListener('ended', () => { if (btns[0].classList.contains('on')) pick(btns[1], true); });
+    })();
+  </script>
+  </body>
+</html>

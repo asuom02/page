@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>부담은 덜고, 보장은 길게 — 카카오페이손해보험 컨셉 광고</title>
+<meta name="description" content="카카오페이손해보험 DIY 휴대폰보험 컨셉 광고 포트폴리오">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FEE500'/%3E%3Cpath d='M12 9l12 7-12 7z' fill='%23191919'/%3E%3C/svg%3E">
+<style>
+  @font-face { font-family: 'Archivo Expanded'; src: url(fonts/ArchivoExpanded-Black.ttf) format('truetype'); font-weight: 900; font-display: swap; }
+  @font-face { font-family: 'Pretendard'; src: url(fonts/Pretendard-Black.woff2) format('woff2'); font-weight: 900; font-display: swap; }
+  @font-face { font-family: 'Pretendard'; src: url(fonts/Pretendard-Bold.woff2) format('woff2'); font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'Pretendard'; src: url(fonts/Pretendard-Regular.woff2) format('woff2'); font-weight: 400; font-display: swap; }
+
+  :root {
+    --y: #FEE500; --y2: #FFF4A8; --cream: #FFFBEA; --paper: #FFFFFF;
+    --ink: #191919; --brown: #3C1E1E; --mute: #6E6A5E; --line: #EDE6C4;
+    --pad: clamp(20px, 5vw, 80px);
+    --num: 'Archivo Expanded', 'Pretendard', sans-serif;
+    --kr: 'Pretendard', system-ui, sans-serif;
+    --r: 22px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (max-width: 1100px), (max-height: 639px) { html { scroll-snap-type: y proximity; } }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--kr); -webkit-font-smoothing: antialiased; word-break: keep-all; overflow-wrap: break-word; }
+  h1, h2 { text-wrap: balance; }
+  p, .sub, .fact span, .persona li, .persona q, .sol s, .sol b { text-wrap: balance; }
+  .ln { display: block; }
+  @media (min-width: 641px) { .ln { white-space: nowrap; } }
+  img, video { display: block; max-width: 100%; }
+  mark { background: linear-gradient(transparent 54%, var(--y) 54%, var(--y) 94%, transparent 94%); color: inherit; padding: 0 .06em; }
+
+  /* ===== 공통 페이지 틀: 모든 페이지가 같은 머리글 위치 · 같은 폭 · 같은 카드 ===== */
+  section { position: relative; min-height: 100svh; scroll-snap-align: start; scroll-snap-stop: always;
+    padding: clamp(48px, 7vh, 84px) var(--pad) clamp(56px, 8vh, 90px); display: flex; flex-direction: column; justify-content: center; }
+  section:nth-of-type(even) { background: var(--cream); }
+  .wrap { width: min(100%, 1320px); margin: 0 auto; }
+  .hd { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: clamp(20px, 3.2vh, 34px); }
+  .eyebrow { font-family: var(--num); font-size: 13px; letter-spacing: .14em; display: flex; align-items: center; gap: 12px; text-transform: uppercase; }
+  .eyebrow::before { content: ''; width: 36px; height: 10px; border-radius: 5px; background: var(--y); box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  h2 { font-weight: 900; font-size: clamp(32px, 3.4vw, 52px); line-height: 1.12; letter-spacing: -.03em; margin: 12px 0 0; }
+  .sub { font-size: clamp(16px, 1.3vw, 19px); font-weight: 700; color: var(--mute); margin: 12px 0 0; line-height: 1.55; max-width: 46ch; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); }
+  .pno { position: absolute; left: var(--pad); right: var(--pad); bottom: clamp(18px, 3vh, 30px); display: flex; justify-content: space-between; font-family: var(--num); font-size: 12px; letter-spacing: .18em; color: var(--mute); pointer-events: none; }
+  .pno b { color: var(--ink); }
+
+  /* ===== 1. 표지 ===== */
+  .cover .wrap { display: grid; grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr); gap: clamp(28px, 4vw, 64px); align-items: center; }
+  .cover h1 { font-weight: 900; font-size: clamp(46px, 5.8vw, 96px); line-height: 1.05; letter-spacing: -.04em; margin: 20px 0 20px; }
+  .cover .sub { color: #403C33; max-width: none; line-height: 1.7; }
+  .meta { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 0; padding: 0; list-style: none; }
+  .meta li { font-weight: 700; font-size: 15px; padding: 9px 15px; border-radius: 999px; background: var(--cream); border: 1px solid var(--line); }
+  .meta li b { font-family: var(--num); margin-right: 6px; }
+  .player { position: relative; }
+  .player::before { content: ''; position: absolute; inset: 0; transform: translate(18px, 18px); background: var(--y); border-radius: var(--r); }
+  .player video { position: relative; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--r); background: #000; box-shadow: 0 30px 60px rgba(60, 30, 30, .16); }
+
+  .sound { position: fixed; z-index: 50; right: clamp(16px, 2.6vw, 32px); bottom: clamp(56px, 8vh, 80px); width: 52px; height: 52px; border-radius: 50%;
+    border: 1px solid rgba(25,25,25,.16); background: rgba(255,255,255,.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    color: var(--ink); cursor: pointer; display: grid; place-items: center; transition: transform .2s, background .2s; box-shadow: 0 8px 20px rgba(60,30,30,.12); }
+  .sound:hover { transform: scale(1.06); }
+  .sound.off { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(.8); }
+  .sound { transition: transform .2s, background .2s, opacity .25s, visibility .25s; }
+  .sound svg { width: 22px; height: 22px; }
+  .sound .eq { display: none; gap: 3px; align-items: flex-end; height: 18px; }
+  .sound .eq i { width: 3px; background: var(--ink); border-radius: 2px; animation: eq .9s ease-in-out infinite; }
+  .sound .eq i:nth-child(2) { animation-delay: -.3s; } .sound .eq i:nth-child(3) { animation-delay: -.6s; } .sound .eq i:nth-child(4) { animation-delay: -.15s; }
+  @keyframes eq { 0%, 100% { height: 4px; } 50% { height: 18px; } }
+  .sound.on { background: var(--y); }
+  .sound.on svg { display: none; } .sound.on .eq { display: flex; }
+  .sound .tip { position: absolute; right: 62px; white-space: nowrap; font: 700 13px var(--kr); color: #fff; background: var(--ink); padding: 6px 10px; border-radius: 8px; opacity: 0; transform: translateX(6px); transition: opacity .2s, transform .2s; pointer-events: none; }
+  .sound:hover .tip, .sound:focus-visible .tip { opacity: 1; transform: none; }
+
+  /* ===== 2. 개요 ===== */
+  .ov-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: stretch; }
+  .facts { display: grid; gap: 10px; grid-auto-rows: minmax(0, 1fr); }
+  .fact { padding: 10px 22px; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 22px; }
+  .fact b { font-family: var(--num); font-size: clamp(24px, 2.2vw, 34px); letter-spacing: -.03em; white-space: nowrap; }
+  .fact b small { font-family: var(--kr); font-size: .45em; font-weight: 900; margin-left: 4px; }
+  .fact span { font-size: clamp(14px, 1.1vw, 16px); font-weight: 700; color: var(--mute); line-height: 1.4; }
+  .fact.hi { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .fact.hi b { color: var(--y); }
+  .fact.hi span { color: #e7e3d6; }
+  .persona { padding: 18px; display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1fr); gap: 20px; align-items: stretch; align-self: start; }
+  .persona img { width: 100%; height: 100%; min-height: 0; object-fit: cover; object-position: center 25%; border-radius: 14px; }
+  .persona .tag { font-family: var(--num); font-size: 12px; letter-spacing: .16em; color: var(--mute); }
+  .persona .nm { font-weight: 900; font-size: clamp(26px, 2.2vw, 34px); margin-top: 8px; }
+  .persona .nm small { font-size: .55em; color: var(--mute); margin-left: 8px; }
+  .persona ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; font-size: clamp(15px, 1.2vw, 18px); font-weight: 700; }
+  .persona ul li::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--y); box-shadow: 0 0 0 1px #d9c400; margin: 0 10px 3px 0; vertical-align: middle; }
+  .persona q { display: block; margin-top: 18px; padding: 16px 18px; border-radius: 14px; background: var(--y); font-weight: 900; font-size: clamp(17px, 1.4vw, 21px); line-height: 1.4; quotes: '“' '”'; }
+  .sols { display: grid; grid-template-columns: minmax(0, 1.45fr) repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 20px; }
+  .prod { padding: 18px 20px; background: var(--ink); border-color: var(--ink); color: #fff; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+  .prod .k { font-weight: 900; font-size: 15px; color: var(--y); }
+  .prod p { margin: 0; font-size: clamp(14px, 1.05vw, 16px); line-height: 1.55; font-weight: 700; color: #e7e3d6; }
+  .prod p b { color: #fff; }
+  .sol { padding: 18px 20px; }
+  .sol s { display: block; font-size: 15px; font-weight: 700; color: var(--mute); text-decoration-color: rgba(110,106,94,.6); }
+  .sol b { display: block; margin-top: 8px; font-weight: 900; font-size: clamp(17px, 1.4vw, 22px); letter-spacing: -.02em; }
+  .sol b::before { content: '→ '; color: #c9b400; }
+
+  /* ===== 3. 블렌더 × Genjutsu ===== */
+  .bg-grid { display: grid; grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr); gap: 24px; align-items: center; }
+  .cmp { position: relative; aspect-ratio: 16 / 9; border-radius: var(--r); overflow: hidden; cursor: ew-resize; touch-action: none; user-select: none; background: #000; }
+  .cmp > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+  .cmp .top { clip-path: inset(0 calc(100% - var(--x, 50%)) 0 0); }
+  .cmp .hand { position: absolute; top: 0; bottom: 0; left: var(--x, 50%); width: 4px; margin-left: -2px; background: var(--y); }
+  .cmp .hand::after { content: '‹ ›'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 46px; height: 46px; border-radius: 50%; background: var(--y); display: grid; place-items: center; font: 900 18px var(--kr); box-shadow: 0 6px 16px rgba(0,0,0,.3); }
+  .cmp .lb { position: absolute; top: 14px; font-weight: 900; font-size: 14px; padding: 7px 12px; border-radius: 10px; background: rgba(25,25,25,.78); color: #fff; display: inline-flex; align-items: center; gap: 8px; }
+  .cmp .lb img { width: 18px; height: 18px; border-radius: 4px; }
+  .cmp .lb.l { left: 14px; } .cmp .lb.r { right: 14px; }
+  .moments { display: inline-flex; gap: 4px; padding: 5px; margin-bottom: 14px; border-radius: 999px; background: var(--ink); }
+  .moments button { border: 0; background: transparent; border-radius: 999px; padding: 10px 22px; font: 900 16px var(--kr); cursor: pointer; color: #fff; transition: background .2s, color .2s; }
+  .moments button:hover { color: var(--y); }
+  .moments button.on { background: var(--y); color: var(--ink); }
+  .moments button::before { content: attr(data-n); font: 900 11px var(--num); margin-right: 8px; opacity: .6; }
+  .flow3 { display: grid; gap: 12px; align-content: center; }
+  .fs { padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+  .fs .t { display: flex; align-items: center; gap: 12px; }
+  .fs .t img { width: 32px; height: 32px; object-fit: contain; border-radius: 8px; }
+  .fs .t .x { font: 900 16px var(--num); color: var(--mute); }
+  .fs h3 { margin: 4px 0 0; font-size: clamp(19px, 1.6vw, 23px); font-weight: 900; letter-spacing: -.02em; }
+  .fs p { margin: 0; font-size: clamp(14px, 1.05vw, 16px); line-height: 1.6; font-weight: 700; color: #57524a; }
+  .fs.res { background: var(--y); border-color: #e9d300; }
+  .fs.res p { color: #3a3628; }
+
+  /* ===== 4. 합성 · 마감 ===== */
+  .fin { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .fc { overflow: hidden; display: flex; flex-direction: column; }
+  .fc .th { aspect-ratio: 4 / 3; background: var(--y2); overflow: hidden; position: relative; }
+  .fc .th img { width: 100%; height: 100%; object-fit: cover; }
+  .fc .th.ui { display: flex; align-items: center; justify-content: center; gap: 6%; padding: 0 7%; }
+  .fc .th.ui img { width: 29%; height: auto; border-radius: 7px; border: 3px solid #1d1d1d; box-shadow: 0 8px 18px rgba(60,30,30,.18); }
+  .fc .th.ui img:nth-child(2) { transform: translateY(-10%); }
+  .fc .bd { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; }
+  .fc h3 { margin: 0; font-size: clamp(19px, 1.5vw, 22px); font-weight: 900; letter-spacing: -.02em; }
+  .fc p { margin: 0; font-size: clamp(14px, 1.08vw, 16px); line-height: 1.55; font-weight: 700; color: #57524a; }
+  .tools { margin-top: 22px; padding: 18px 24px; display: flex; align-items: center; gap: 14px 28px; flex-wrap: wrap; }
+  .tools .lb { font-family: var(--num); font-size: 12px; letter-spacing: .16em; color: var(--mute); margin-right: 4px; }
+  .tools span { display: inline-flex; align-items: center; gap: 10px; font-weight: 900; font-size: 16px; }
+  .tools img { width: 28px; height: 28px; object-fit: contain; border-radius: 7px; }
+
+
+  /* ===== 3. 제작 과정 (한 페이지) ===== */
+  #process { padding-top: clamp(36px, 5vh, 60px); padding-bottom: clamp(48px, 7vh, 72px); }
+  #process .hd { margin-bottom: clamp(14px, 2vh, 22px); }
+  #process .bg-grid { grid-template-columns: min(60%, calc((100svh - 470px) * 1.78)) minmax(0, 1fr); gap: 20px; align-items: center; }
+  #process .moments { margin-bottom: 10px; }
+  #process .moments button { padding: 8px 18px; font-size: 15px; }
+  #process .flow3 { gap: 10px; }
+  #process .fs { padding: 14px 18px; gap: 6px; }
+  #process .fs .t { gap: 10px; }
+  #process .fs .t img { width: 26px; height: 26px; }
+  #process .fs .t h3, #process .fs h3 { margin: 0; font-size: clamp(17px, 1.35vw, 20px); }
+  #process .fs p { font-size: clamp(13px, .98vw, 15px); line-height: 1.55; }
+  #process .tools { margin-top: 14px; padding: 12px 22px; justify-content: space-between; }
+  #process .tools span { font-size: 15px; }
+  #process .tools img { width: 24px; height: 24px; }
+  #process .fin { margin-top: 14px; gap: 14px; }
+  #process .fc { flex-direction: row; align-items: center; }
+  #process .fc .th { flex: none; width: 38%; aspect-ratio: 1 / 1; }
+  #process .fc .th.ui { gap: 6%; padding: 0 8%; }
+  #process .fc .th.ui img { width: 44%; }
+  #process .fc .th.ui img:nth-child(2) { transform: none; }
+  #process .fc .bd { padding: 12px 14px; gap: 5px; }
+  #process .fc h3 { font-size: clamp(15px, 1.15vw, 17px); }
+  #process .fc p { font-size: clamp(12px, .9vw, 14px); line-height: 1.5; }
+  #process .fc .th { width: 34%; }
+
+
+  #process .cmpcol { position: relative; }
+  #process .moments { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); margin: 0; z-index: 3; box-shadow: 0 8px 20px rgba(0,0,0,.3); }
+  #process .bg-grid { align-items: stretch; }
+  #process .flow3 { display: grid; grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 12px; align-content: stretch; }
+  #process .fs { justify-content: center; }
+  #process .tools { margin-top: 16px; padding: 12px 2px; background: none; border: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-radius: 0; }
+
+  /* ===== 5. 스토리보드 ===== */
+  .sb-wrap { width: min(100%, calc((100svh - 262px) * 1.74), 1320px); margin: 0 auto; }
+  #storyboard { padding-top: clamp(30px, 4vh, 48px); padding-bottom: clamp(46px, 6vh, 64px); }
+  #storyboard .hd { margin-bottom: clamp(12px, 1.8vh, 20px); }
+  #storyboard .grid { gap: 12px 22px; }
+  #storyboard .frame .capl { margin-top: 8px; }
+  .ctrl { display: flex; align-items: center; gap: 14px; }
+  .prog { display: grid; justify-items: end; gap: 10px; }
+  .prog .pn { font-family: var(--num); font-size: 16px; color: var(--mute); }
+  .prog .pn b { color: var(--ink); }
+  .prog .bar { display: grid; grid-template-columns: repeat(3, 26px); gap: 6px; }
+  .prog .bar button { height: 5px; padding: 0; border: 0; border-radius: 3px; background: rgba(25,25,25,.14); cursor: pointer; }
+  .prog .bar button.on { background: var(--ink); }
+  .arw { width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(25,25,25,.18); background: var(--paper); color: var(--ink); display: grid; place-items: center; cursor: pointer; transition: background .2s, opacity .2s; }
+  .arw svg { width: 20px; height: 20px; }
+  .arw:hover:not(:disabled) { background: var(--y); }
+  .arw:disabled { opacity: .3; cursor: default; }
+  .sb-view { overflow: hidden; }
+  .sb-track { display: flex; gap: 48px; transition: transform .7s cubic-bezier(.65, 0, .35, 1); }
+  .sb-page { flex: 0 0 100%; min-width: 0; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; }
+  .frame { border: 0; padding: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: zoom-in; min-width: 0; }
+  .frame img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 16px; transition: transform .25s; }
+  .frame:hover img { transform: translateY(-3px); }
+  .frame .capl { display: flex; align-items: baseline; gap: 10px; margin-top: 10px; min-width: 0; }
+  .frame .n { font-family: var(--num); font-size: 13px; background: var(--y); padding: 2px 7px; border-radius: 6px; }
+  .frame .tc { font-family: var(--num); font-size: 12px; color: var(--mute); }
+  .frame .cp { font-weight: 700; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .frame .cp.v { font-weight: 900; }
+  dialog { border: 0; padding: 0; background: transparent; max-width: min(1200px, 94vw); width: 100%; overflow: visible; }
+  dialog::backdrop { background: rgba(25,25,25,.9); }
+  dialog img { width: 100%; border-radius: 14px; }
+  .lb-cap { margin-top: 14px; font-weight: 700; font-size: 17px; color: #fff; }
+  .lb-cap .tc { font-family: var(--num); color: var(--y); margin-right: 12px; }
+  .lb-close { position: absolute; right: 0; top: -46px; background: none; border: 0; color: #fff; font: 900 28px var(--kr); cursor: pointer; }
+
+  :focus-visible { outline: 3px solid var(--brown); outline-offset: 3px; }
+  section.on .wrap > *, section.on .sb-wrap > * { animation: rise .6s cubic-bezier(.2,.7,.2,1) both; }
+  section.on .wrap > *:nth-child(2), section.on .sb-wrap > *:nth-child(2) { animation-delay: .08s; }
+  section.on .wrap > *:nth-child(3), section.on .sb-wrap > *:nth-child(3) { animation-delay: .16s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+
+  @media (max-width: 1100px) {
+    .cover .wrap, .ov-grid, .bg-grid, #process .bg-grid { grid-template-columns: minmax(0, 1fr); }
+    #process .fs p .ln { white-space: normal; }
+    .sols, .fin { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .prod { grid-column: 1 / -1; }
+    .ctrl { display: none; }
+    .sb-wrap { width: 100%; }
+    .sb-track { display: grid; gap: 16px; transform: none !important; }
+    .pno { display: none; }
+  }
+  @media (max-width: 640px) {
+    .persona { grid-template-columns: minmax(0, 1fr); }
+    .persona img { min-height: 220px; }
+    .sols, .fin, .grid { grid-template-columns: minmax(0, 1fr); }
+    .fact { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+    .player::before { transform: translate(10px, 10px); }
+    .moments button { font-size: 13px; padding: 8px 6px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .sound .eq i { animation: none; }
+    .sb-track { transition: none; }
+    section.on .wrap > *, section.on .sb-wrap > * { animation: none; }
+  }
+    /* 텍스트 클릭 시 깜빡이는 커서 숨김 (브라우저 캐럿 브라우징 대비) */
+    body { caret-color: transparent; }
+</style>
+</head>
+<body>
+
+<!-- 1. 표지 -->
+<section class="cover" id="cover">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">KakaoPay Insurance · Concept Ad</div>
+      <h1>부담은 덜고,<br><mark>보장은 길게</mark></h1>
+      <p class="sub"><span class="ln">사고 직전, 시간이 멈춘다.</span><span class="ln">그 사이 보험에 가입하고 시간을 되감으면</span><span class="ln">같은 순간이 아무 일 없이 지나간다.</span></p>
+      <ul class="meta"><li><b>50</b>초</li><li><b>16:9</b>가로형</li><li>AI 영상 + 3D 레이아웃 + 모션그래픽</li></ul>
+    </div>
+    <div class="player"><video id="main" src="../video.mp4" poster="media/poster.jpg" autoplay muted loop playsinline aria-label="메인 광고 영상"></video></div>
+  </div>
+  <div class="pno"><span>카카오페이손해보험 휴대폰보험</span><span><b>01</b> / 04</span></div>
+</section>
+<button class="sound" id="sound" aria-pressed="false" aria-label="메인 영상 소리 켜기">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z" fill="currentColor" stroke="none"/><path d="M16 9.5l4.5 5M20.5 9.5l-4.5 5"/></svg>
+  <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  <span class="tip">소리 켜기</span>
+</button>
+
+<!-- 2. 개요 -->
+<section id="overview">
+  <div class="wrap">
+    <div class="hd"><div><div class="eyebrow">Overview</div><h2>폰값은 올랐는데, 보험은 그대로</h2></div></div>
+    <div class="ov-grid">
+      <div class="facts">
+        <div class="fact card"><b>150~300<small>만 원</small></b><span>폴더블폰 출고가</span></div>
+        <div class="fact card"><b>773,500<small>원</small></b><span><span class="ln">실제 수리비</span><span class="ln">(폴드8 메인 액정 기준)</span></span></div>
+        <div class="fact card hi"><b>3<small>년</small></b><span><span class="ln">기존 보험 대부분의 최대 보장</span><span class="ln">폰은 그보다 오래 쓴다</span></span></div>
+      </div>
+      <div class="persona card">
+        <img src="media/persona.jpg" alt="광고 속 주인공 진우" loading="lazy">
+        <div>
+          <div class="tag">PERSONA</div>
+          <div class="nm">이진우<small>30세 · 직장인</small></div>
+          <ul><li>폴드8 산 지 1개월</li><li>보장 끝나자마자 깨져 35만 원 낸 경험</li><li>보험료·서류 청구가 부담</li></ul>
+          <q>큰돈 들인 폴드폰, 수리비 걱정 덜 방법 없나?</q>
+        </div>
+      </div>
+    </div>
+    <div class="sols">
+      <div class="prod card"><span class="k">카카오페이손해보험 휴대폰보험</span><p><span class="ln">필요한 조건만 직접 골라 담는</span><span class="ln"><b>DIY 휴대폰보험</b></span></p></div>
+      <div class="sol card"><s>수리비 25% 자기부담</s><b>10%부터 선택</b></div>
+      <div class="sol card"><s>서류 · 6~7일 심사</s><b>카톡 간편 청구</b></div>
+      <div class="sol card"><s>3년이면 끝</s><b>최대 5년 보장</b></div>
+      <div class="sol card"><s>무사고면 전액 소멸</s><b>10% 환급</b></div>
+    </div>
+  </div>
+  <div class="pno"><span>왜 이 광고인가</span><span><b>02</b> / 04</span></div>
+</section>
+
+<!-- 3. 스토리보드 -->
+<section id="storyboard">
+  <div class="sb-wrap">
+    <div class="hd">
+      <div><div class="eyebrow">Storyboard</div><h2>스토리보드</h2></div>
+      <div class="ctrl">
+        <div class="prog"><span class="pn" aria-live="polite"><b id="sbNum">01</b> / 03</span><span class="bar" id="bars"></span></div>
+        <button class="arw" id="sbPrev" aria-label="이전 컷"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="arw" id="sbNext" aria-label="다음 컷"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+    <div class="sb-view"><div class="sb-track" id="sbTrack"></div></div>
+  </div>
+  <div class="pno"><span>스토리보드</span><span><b>03</b> / 04</span></div>
+</section>
+
+<!-- 4. 제작 과정 (블렌더 × Genjutsu + 합성 · 마감 + 툴) -->
+<section id="process">
+  <div class="wrap">
+    <div class="hd"><div><div class="eyebrow">Process</div><h2>블렌더로 짜고, Genjutsu로 찍고, 합성하다</h2></div></div>
+    <div class="bg-grid">
+      <div class="cmpcol">
+        <div class="cmp" id="cmp" style="--x:50%" role="slider" tabindex="0" aria-label="블렌더 레이아웃과 Genjutsu 결과 비교" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+          <img id="cmpB" src="media/gj_1.jpg" alt="Genjutsu로 만든 실사 장면">
+          <img id="cmpA" class="top" src="media/bl_1.jpg" alt="블렌더 3D 레이아웃 장면">
+          <span class="hand"></span>
+          <span class="lb l"><img src="media/icons/si_blender.svg" alt="">Blender</span>
+          <span class="lb r"><img src="media/icons/higgsfield.png" alt="">Genjutsu</span>
+        </div>
+        <div class="moments" id="moments" role="tablist" aria-label="비교할 장면">
+          <button class="on" data-k="1" data-n="01">충돌</button><button data-k="2" data-n="02">시간 정지</button><button data-k="3" data-n="03">폰 회전</button>
+        </div>
+      </div>
+      <div class="flow3">
+        <div class="fs card"><div class="t"><img src="media/icons/claude-color.svg" alt="Claude"><span class="x">×</span><img src="media/icons/si_blender.svg" alt="Blender"><h3>Claude로 블렌더 장면 설계</h3></div>
+          <p><span class="ln">블렌더 파이썬 스크립트로 광장·인물·폴드폰을 3D로 배치하고</span><span class="ln">충돌 → 정지 → 360° 회전 카메라를 18초 한 컷으로 잡았습니다.</span></p></div>
+        <div class="fs card"><div class="t"><img src="media/icons/higgsfield.png" alt="Higgsfield Genjutsu"><h3>Genjutsu로 실사화</h3></div>
+          <p><span class="ln">3D 영상을 동작·카메라 기준으로 넣고 진우·광장·폴드8 이미지를 붙여</span><span class="ln">움직임은 그대로, 화면만 실사로 바꿨습니다.</span></p></div>
+        <div class="fs card res"><h3>촬영 없이 원테이크 불렛타임</h3><p><span class="ln">카메라 리그도 모션캡처도 없이 원하는 동선 그대로 얻었습니다.</span></p></div>
+      </div>
+    </div>
+    <div class="tools">
+      <span class="lb">TOOLS</span>
+      <span><img src="media/icons/after-effects.svg" alt="">After Effects</span>
+      <span><img src="media/icons/claude-color.svg" alt="">Claude</span>
+      <span><img src="media/icons/higgsfield.png" alt="">Genjutsu</span>
+      <span><img src="media/icons/gemini-color.svg" alt="">Gemini</span>
+      <span><img src="media/icons/flow.png" alt="">Google Flow</span>
+      <span><img src="media/icons/si_blender.svg" alt="">Blender</span>
+      <span><img src="media/icons/si_ffmpeg.svg" alt="">FFmpeg</span>
+    </div>
+    <div class="fin">
+      <article class="fc card"><div class="th ui"><img src="media/ui_slider.png" alt="자기부담금 슬라이더 화면" loading="lazy"><img src="media/ui_done.png" alt="가입 완료 화면" loading="lazy"></div>
+        <div class="bd"><h3>가입 UI 모션</h3><p><span class="ln">10% → 3회 → 가입 완료</span><span class="ln">내레이션에 맞춘 연출</span></p></div></article>
+      <article class="fc card"><div class="th"><img src="media/p_green.jpg" alt="그린스크린 원본(왼쪽)과 합성 결과(오른쪽)" loading="lazy"></div>
+        <div class="bd"><h3>그린스크린 합성</h3><p><span class="ln">네 모서리 프레임 추적</span><span class="ln">알림톡 화면 합성</span></p></div></article>
+      <article class="fc card"><div class="th"><img src="media/p_flow.jpg" alt="되감기 후 다시 걷는 진우" loading="lazy"></div>
+        <div class="bd"><h3>되감기 · 색 맞춤</h3><p><span class="ln">Genjutsu 장면 역재생</span><span class="ln">플로우 장면과 색 맞춤</span></p></div></article>
+      <article class="fc card"><div class="th"><img src="media/p_audio.jpg" alt="최종 믹스 파형, 노란색이 내레이션 구간" loading="lazy"></div>
+        <div class="bd"><h3>목소리와 사운드</h3><p><span class="ln">대사 · 내레이션 직접 녹음</span><span class="ln">속마음 메아리 효과 추가</span></p></div></article>
+    </div>
+  </div>
+  <div class="pno"><span>제작 과정</span><span><b>04</b> / 04</span></div>
+</section>
+
+
+<dialog id="lb" aria-label="스토리보드 컷 크게 보기">
+  <button class="lb-close" id="lbClose" aria-label="닫기">✕</button>
+  <img id="lbImg" alt="">
+  <p class="lb-cap" id="lbCap"></p>
+</dialog>
+
+<script>
+  // [시간, 문구, 대사 여부]
+  // [파일 번호, 시간, 문구, 대사 여부]
+  const SHOTS = [
+    [2, 4.6, '서류를 든 직장인과 충돌', 0], [3, 5.6, '어? 내 폰!', 1], [6, 15.2, '이제 어쩌지..?', 1], [7, 17.9, '카톡 알림: 휴대폰보험, 필요한 만큼만', 0],
+    [8, 21.3, '자기부담금과 보장 횟수만 고르면 끝!', 1], [9, 24.6, '가입 완료 · 보장 기간 최대 5년', 0], [10, 27.5, '시간을 되감는다', 0], [11, 31.0, '다시 걷는 진우, 까톡! 알림에 멈춘다', 0],
+    [12, 34.5, '가입하기 쉽네', 1], [13, 38.2, '직장인이 그냥 지나간다, 사고 없음', 0], [14, 42.5, '긴 보장과 함께 파손 없이 사용하면 보험금 환급까지!', 1], [16, 47.5, '부담은 덜고, 보장은 길게.', 1],
+  ];
+  const PER = 4, NP = Math.ceil(SHOTS.length / PER);
+  const tc = (t) => `00:${t.toFixed(1).padStart(4, '0')}`;
+  const nn = (i) => String(i + 1).padStart(2, '0');
+  const cap = (s) => (s[3] ? `“${s[2]}”` : s[2]);
+  const fimg = (s) => `frames/c${String(s[0]).padStart(2, '0')}.jpg`;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 소리
+  const main = document.getElementById('main'), snd = document.getElementById('sound');
+  let first = true;
+  snd.onclick = () => {
+    main.muted = !main.muted;
+    if (!main.muted) { if (first) { main.currentTime = 0; first = false; } main.play(); }
+    snd.classList.toggle('on', !main.muted);
+    snd.querySelector('.tip').textContent = main.muted ? '소리 켜기' : '소리 끄기';
+    snd.setAttribute('aria-pressed', String(!main.muted));
+    snd.setAttribute('aria-label', main.muted ? '메인 영상 소리 켜기' : '메인 영상 소리 끄기');
+  };
+  if (reduce) main.pause();
+  // 스피커 버튼은 1페이지(표지)에서만 보이고, 다른 페이지로 가면 무조건 음소거
+  const coverSec = document.getElementById('cover');
+  const muteAll = () => {
+    main.muted = true;
+    snd.classList.remove('on');
+    snd.querySelector('.tip').textContent = '소리 켜기';
+    snd.setAttribute('aria-pressed', 'false');
+    snd.setAttribute('aria-label', '메인 영상 소리 켜기');
+  };
+  const syncSound = () => {
+    const r = coverSec.getBoundingClientRect();
+    const onCover = r.bottom > innerHeight * 0.5 && r.top < innerHeight * 0.5;
+    snd.classList.toggle('off', !onCover);
+    snd.tabIndex = onCover ? 0 : -1;
+    if (!onCover && !main.muted) muteAll();
+  };
+  addEventListener('scroll', syncSound, { passive: true });
+  addEventListener('resize', syncSound);
+  syncSound();
+
+  // 블렌더 ↔ Genjutsu 비교 슬라이더
+  const cmp = document.getElementById('cmp');
+  const setX = (p) => { p = Math.max(0, Math.min(100, p)); cmp.style.setProperty('--x', p + '%'); cmp.setAttribute('aria-valuenow', Math.round(p)); };
+  let drag = false;
+  const fromEv = (e) => { const r = cmp.getBoundingClientRect(); setX(((e.clientX - r.left) / r.width) * 100); };
+  cmp.addEventListener('pointerdown', (e) => { drag = true; cmp.setPointerCapture(e.pointerId); fromEv(e); });
+  cmp.addEventListener('pointermove', (e) => drag && fromEv(e));
+  cmp.addEventListener('pointerup', () => (drag = false));
+  cmp.addEventListener('keydown', (e) => {
+    const v = parseFloat(cmp.style.getPropertyValue('--x')) || 50;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); setX(v - 5); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); setX(v + 5); }
+  });
+  const mb = [...document.querySelectorAll('#moments button')];
+  mb.forEach((b) => (b.onclick = () => {
+    mb.forEach((o) => o.classList.toggle('on', o === b));
+    document.getElementById('cmpA').src = `media/bl_${b.dataset.k}.jpg`;
+    document.getElementById('cmpB').src = `media/gj_${b.dataset.k}.jpg`;
+  }));
+
+  // 스토리보드
+  const track = document.getElementById('sbTrack'), barsEl = document.getElementById('bars'), lb = document.getElementById('lb');
+  for (let p = 0; p < NP; p++) {
+    const cells = SHOTS.slice(p * PER, p * PER + PER).map((s, k) => {
+      const i = p * PER + k;
+      return `<button class="frame" data-i="${i}"><img src="${fimg(s)}" alt="${nn(i)} ${s[2]}" loading="lazy">
+        <span class="capl"><span class="n">${nn(i)}</span><span class="tc">${tc(s[1])}</span><span class="cp${s[3] ? ' v' : ''}">${cap(s)}</span></span></button>`;
+    }).join('');
+    track.insertAdjacentHTML('beforeend', `<div class="sb-page"><div class="grid">${cells}</div></div>`);
+    barsEl.insertAdjacentHTML('beforeend', `<button aria-label="${p * PER + 1}–${p * PER + PER}컷"></button>`);
+  }
+  track.addEventListener('click', (e) => {
+    const f = e.target.closest('.frame'); if (!f) return;
+    const i = +f.dataset.i, s = SHOTS[i], img = document.getElementById('lbImg');
+    img.src = fimg(s); img.alt = s[2];
+    document.getElementById('lbCap').innerHTML = `<span class="tc">${nn(i)} · ${tc(s[1])}</span>${cap(s)}`;
+    lb.showModal();
+  });
+  document.getElementById('lbClose').onclick = () => lb.close();
+  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+  const bars = [...barsEl.children], prevB = document.getElementById('sbPrev'), nextB = document.getElementById('sbNext'), pagesSb = [...track.children];
+  let slide = 0;
+  const setSlide = (i) => {
+    slide = Math.max(0, Math.min(NP - 1, i));
+    track.style.transform = `translateX(calc(${-100 * slide}% - ${48 * slide}px))`;
+    bars.forEach((b, k) => b.classList.toggle('on', k === slide));
+    document.getElementById('sbNum').textContent = nn(slide);
+    prevB.disabled = slide === 0; nextB.disabled = slide === NP - 1;
+    const wide = matchMedia('(min-width: 1101px)').matches;
+    pagesSb.forEach((pg, k) => (pg.inert = wide && k !== slide));
+  };
+  prevB.onclick = () => setSlide(slide - 1);
+  nextB.onclick = () => setSlide(slide + 1);
+  bars.forEach((b, k) => (b.onclick = () => setSlide(k)));
+  setSlide(0);
+  matchMedia('(min-width: 1101px)').addEventListener('change', () => setSlide(slide));
+
+  // 등장 애니메이션
+  const secs = [...document.querySelectorAll('section')];
+  const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add('on')), { threshold: 0.35 });
+  secs.forEach((s) => io.observe(s));
+
+  // 데스크톱: 휠 한 번 / 키 한 번 = 한 페이지 (스토리보드에서는 컷을 먼저 넘김)
+  const sbSec = document.getElementById('storyboard');
+  const desk = matchMedia('(min-width: 1101px) and (min-height: 640px)');
+  let lock = false, acc = 0;
+  const current = () => secs.reduce((best, p, i) => (Math.abs(p.getBoundingClientRect().top) < Math.abs(secs[best].getBoundingClientRect().top) ? i : best), 0);
+  const sbActive = () => desk.matches && secs[current()] === sbSec;
+  const go = (dir) => {
+    lock = true;
+    if (sbActive() && slide + dir >= 0 && slide + dir <= NP - 1) { setSlide(slide + dir); setTimeout(() => { lock = false; acc = 0; }, 750); return; }
+    secs[Math.max(0, Math.min(secs.length - 1, current() + dir))].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    setTimeout(() => { lock = false; acc = 0; }, 950);
+  };
+  addEventListener('wheel', (e) => {
+    if (!desk.matches || lb.open) return;
+    e.preventDefault(); if (lock) return;
+    acc += e.deltaY; if (Math.abs(acc) > 30) go(acc > 0 ? 1 : -1);
+  }, { passive: false });
+  addEventListener('keydown', (e) => {
+    if (!desk.matches || lb.open || e.target === cmp) return;
+    if (['ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); if (!lock) go(1); }
+    if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); if (!lock) go(-1); }
+    if (sbActive() && e.key === 'ArrowRight') { e.preventDefault(); setSlide(slide + 1); }
+    if (sbActive() && e.key === 'ArrowLeft') { e.preventDefault(); setSlide(slide - 1); }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>하나의 공간에 담기는 일상 — 기아 PV5 패신저 광고</title>
+<meta name="description" content="기아 PV5 패신저 3D 애니메이션 광고 포트폴리오">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237FD3C6'/%3E%3Cpath d='M12 9l12 7-12 7z' fill='%2312313A'/%3E%3C/svg%3E">
+<style>
+  @font-face { font-family: 'Archivo Expanded'; src: url(fonts/ArchivoExpanded-Black.ttf) format('truetype'); font-weight: 900; font-display: swap; }
+  @font-face { font-family: 'Pretendard'; src: url(fonts/Pretendard-Black.woff2) format('woff2'); font-weight: 900; font-display: swap; }
+  @font-face { font-family: 'Pretendard'; src: url(fonts/Pretendard-Bold.woff2) format('woff2'); font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'Pretendard'; src: url(fonts/Pretendard-Regular.woff2) format('woff2'); font-weight: 400; font-display: swap; }
+
+  :root {
+    --m: #7FD3C6; --m2: #DFF5F1; --m3: #B9E7DF; --sky: #A9D9F2; --pale: #F3FBF9; --paper: #FFFFFF;
+    --ink: #12313A; --mute: #5F7B81; --line: #D3ECE7; --teal: #2E9C8E;
+    --pad: clamp(20px, 5vw, 80px);
+    --num: 'Archivo Expanded', 'Pretendard', sans-serif;
+    --kr: 'Pretendard', system-ui, sans-serif;
+    --r: 22px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (max-width: 1100px), (max-height: 639px) { html { scroll-snap-type: y proximity; } }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--kr); -webkit-font-smoothing: antialiased; word-break: keep-all; overflow-wrap: break-word; caret-color: transparent; }
+  h1, h2, p { text-wrap: balance; }
+  img, video { display: block; max-width: 100%; }
+  .ln { display: block; }
+  @media (min-width: 641px) { .ln { white-space: nowrap; } }
+  mark { background: linear-gradient(transparent 55%, var(--m3) 55%, var(--m3) 94%, transparent 94%); color: inherit; padding: 0 .06em; }
+
+  /* 공통 틀 (카카오 기획안과 같은 규격) */
+  section { position: relative; min-height: 100svh; scroll-snap-align: start; scroll-snap-stop: always;
+    padding: clamp(48px, 7vh, 84px) var(--pad) clamp(56px, 8vh, 90px); display: flex; flex-direction: column; justify-content: center; }
+  section:nth-of-type(even) { background: var(--pale); }
+  .wrap { width: min(100%, 1320px); margin: 0 auto; }
+  .hd { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: clamp(20px, 3.2vh, 34px); }
+  .eyebrow { font-family: var(--num); font-size: 13px; letter-spacing: .14em; display: flex; align-items: center; gap: 12px; text-transform: uppercase; color: var(--ink); }
+  .eyebrow::before { content: ''; width: 36px; height: 10px; border-radius: 5px; background: linear-gradient(90deg, var(--m), var(--sky)); }
+  h2 { font-weight: 900; font-size: clamp(32px, 3.4vw, 52px); line-height: 1.12; letter-spacing: -.03em; margin: 12px 0 0; }
+  h2 em { font-style: normal; color: var(--teal); }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); }
+  .pno { position: absolute; left: var(--pad); right: var(--pad); bottom: clamp(18px, 3vh, 30px); display: flex; justify-content: space-between; font-family: var(--num); font-size: 12px; letter-spacing: .18em; color: var(--mute); pointer-events: none; }
+  .pno b { color: var(--ink); }
+
+  /* 1. 표지 */
+  .cover { background: radial-gradient(ellipse 60% 70% at 78% 45%, var(--m2), transparent 70%), linear-gradient(180deg, #FFFFFF, #F5FCFB); }
+  .cover .wrap { display: grid; grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr); gap: clamp(28px, 4vw, 64px); align-items: center; }
+  .cover h1 { font-weight: 900; font-size: clamp(42px, 5vw, 82px); line-height: 1.08; letter-spacing: -.04em; margin: 20px 0 20px; }
+  .cover .sub { font-size: clamp(16px, 1.3vw, 19px); font-weight: 700; color: #3E5A60; line-height: 1.7; margin: 0; }
+  .meta { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 0; padding: 0; list-style: none; }
+  .meta li { font-weight: 700; font-size: 15px; padding: 9px 15px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line); }
+  .meta li b { font-family: var(--num); margin-right: 6px; }
+  .player { position: relative; }
+  .player::before { content: ''; position: absolute; inset: 0; transform: translate(18px, 18px); background: linear-gradient(135deg, var(--m), var(--sky)); border-radius: var(--r); }
+  .player video { position: relative; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--r); background: #000; box-shadow: 0 30px 60px rgba(18, 49, 58, .16); }
+
+  .sound { position: fixed; z-index: 50; right: clamp(16px, 2.6vw, 32px); bottom: clamp(56px, 8vh, 80px); width: 52px; height: 52px; border-radius: 50%;
+    border: 1px solid rgba(18,49,58,.16); background: rgba(255,255,255,.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    color: var(--ink); cursor: pointer; display: grid; place-items: center; transition: transform .2s, background .2s, opacity .25s, visibility .25s; box-shadow: 0 8px 20px rgba(18,49,58,.12); }
+  .sound:hover { transform: scale(1.06); }
+  .sound.off { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(.8); }
+  .sound svg { width: 22px; height: 22px; }
+  .sound .eq { display: none; gap: 3px; align-items: flex-end; height: 18px; }
+  .sound .eq i { width: 3px; background: var(--ink); border-radius: 2px; animation: eq .9s ease-in-out infinite; }
+  .sound .eq i:nth-child(2) { animation-delay: -.3s; } .sound .eq i:nth-child(3) { animation-delay: -.6s; } .sound .eq i:nth-child(4) { animation-delay: -.15s; }
+  @keyframes eq { 0%, 100% { height: 4px; } 50% { height: 18px; } }
+  .sound.on { background: var(--m); }
+  .sound.on svg { display: none; } .sound.on .eq { display: flex; }
+
+  /* 2. 개요 */
+  .ov { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+  .old { padding: 22px 24px; }
+  .old .k, .pos .k, .why .k { font-family: var(--num); font-size: 12px; letter-spacing: .16em; color: var(--mute); }
+  .seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto minmax(0, 1.3fr); gap: 10px; align-items: center; margin-top: 14px; }
+  .seg div { padding: 14px 10px; border-radius: 14px; background: var(--pale); border: 1px solid var(--line); text-align: center; }
+  .seg div b { display: block; font-size: clamp(17px, 1.4vw, 20px); font-weight: 900; }
+  .seg div span { display: block; margin-top: 4px; font-size: 14px; font-weight: 700; color: var(--mute); }
+  .seg .ar { font-weight: 900; font-size: 22px; color: var(--teal); background: none; border: 0; padding: 0; }
+  .seg .pv { background: linear-gradient(135deg, var(--m), var(--sky)); border-color: transparent; }
+  .seg .pv span { color: var(--ink); }
+  .pos { margin-top: 14px; padding: 22px 24px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; align-items: center; background: var(--ink); border-color: var(--ink); color: #fff; }
+  .pos .k { color: var(--m); }
+  .pos q { display: block; margin-top: 10px; font-weight: 900; font-size: clamp(20px, 1.8vw, 27px); line-height: 1.35; quotes: '“' '”'; }
+  .pos q em { font-style: normal; color: var(--m); }
+  .pos img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 14px; }
+  .feats { display: grid; grid-template-rows: auto auto 1fr; gap: 14px; }
+  .feat { padding: 20px 22px; display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; }
+  .feat .n { width: 46px; height: 46px; border-radius: 14px; background: var(--m2); display: grid; place-items: center; font: 900 15px var(--num); color: var(--teal); }
+  .feat h3 { margin: 0; font-size: clamp(18px, 1.5vw, 22px); font-weight: 900; letter-spacing: -.02em; }
+  .feat p { margin: 4px 0 0; font-size: clamp(14px, 1.05vw, 16px); line-height: 1.55; font-weight: 700; color: var(--mute); }
+  .why { padding: 20px 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; background: linear-gradient(160deg, var(--m2), var(--paper) 70%); }
+  .why .k { grid-column: 1 / -1; }
+  .why div b { display: block; font-size: clamp(16px, 1.3vw, 19px); font-weight: 900; }
+  .why div p { margin: 6px 0 0; font-size: clamp(13px, 1vw, 15px); line-height: 1.55; font-weight: 700; color: var(--mute); }
+  .why .s b { color: var(--teal); }
+
+  /* 3. 스토리보드 (카카오와 같은 4컷 × 3장 슬라이드) */
+  .sb-wrap { width: min(100%, calc((100svh - 320px) * 1.74), 1290px); margin: 0 auto; }
+  .ctrl { display: flex; align-items: center; gap: 14px; }
+  .prog { display: grid; justify-items: end; gap: 10px; }
+  .prog .pn { font-family: var(--num); font-size: 16px; color: var(--mute); }
+  .prog .pn b { color: var(--ink); }
+  .prog .bar { display: grid; grid-template-columns: repeat(3, 26px); gap: 6px; }
+  .prog .bar button { height: 5px; padding: 0; border: 0; border-radius: 3px; background: rgba(18,49,58,.14); cursor: pointer; }
+  .prog .bar button.on { background: var(--teal); }
+  .arw { width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(18,49,58,.18); background: var(--paper); color: var(--ink); display: grid; place-items: center; cursor: pointer; transition: background .2s, opacity .2s; }
+  .arw svg { width: 20px; height: 20px; }
+  .arw:hover:not(:disabled) { background: var(--m2); }
+  .arw:disabled { opacity: .3; cursor: default; }
+  .sb-view { overflow: hidden; }
+  .sb-track { display: flex; transition: transform .7s cubic-bezier(.65, 0, .35, 1); }
+  .sb-page { flex: 0 0 100%; min-width: 0; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; }
+  .frame { border: 0; padding: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: zoom-in; min-width: 0; }
+  .frame img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 16px; transition: transform .25s; }
+  .frame:hover img { transform: translateY(-3px); }
+  .frame .capl { display: flex; align-items: baseline; gap: 10px; margin-top: 10px; min-width: 0; }
+  .frame .n { font-family: var(--num); font-size: 13px; background: var(--m3); padding: 2px 7px; border-radius: 6px; }
+  .frame .tc { font-family: var(--num); font-size: 12px; color: var(--mute); }
+  .frame .cp { font-weight: 700; font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .frame .cp.v { font-weight: 900; }
+  dialog { border: 0; padding: 0; background: transparent; max-width: min(1200px, 94vw); width: 100%; overflow: visible; }
+  dialog::backdrop { background: rgba(18,49,58,.92); }
+  dialog img { width: 100%; border-radius: 14px; }
+  .lb-cap { margin-top: 14px; font-weight: 700; font-size: 17px; color: #fff; }
+  .lb-cap .tc { font-family: var(--num); color: var(--m); margin-right: 12px; }
+  .lb-close { position: absolute; right: 0; top: -46px; background: none; border: 0; color: #fff; font: 900 28px var(--kr); cursor: pointer; }
+
+  /* 4. 제작 */
+  .acts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .act { overflow: hidden; display: flex; flex-direction: column; }
+  .act img { width: 100%; aspect-ratio: 16 / 8; object-fit: cover; }
+  .act .bd { padding: 16px 18px 18px; display: grid; gap: 6px; }
+  .act .tm { font-family: var(--num); font-size: 12px; color: var(--teal); letter-spacing: .08em; }
+  .act h3 { margin: 0; font-size: clamp(18px, 1.5vw, 22px); font-weight: 900; letter-spacing: -.02em; }
+  .act p { margin: 0; font-size: clamp(14px, 1.05vw, 16px); line-height: 1.55; font-weight: 700; color: var(--mute); }
+  .act q { font-weight: 900; font-size: clamp(14px, 1.05vw, 16px); color: var(--ink); quotes: '“' '”'; }
+  .tl { position: relative; height: 10px; border-radius: 5px; margin: 16px 0 18px; display: grid; grid-template-columns: 16fr 6fr 10fr; gap: 4px; }
+  .tl i { border-radius: 5px; }
+  .tl i:nth-child(1) { background: var(--m); } .tl i:nth-child(2) { background: var(--sky); } .tl i:nth-child(3) { background: var(--teal); }
+  .spec { margin-top: 16px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 16px; }
+  .specs { padding: 18px 22px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: center; }
+  .specs div span { display: block; font-family: var(--num); font-size: 11px; letter-spacing: .14em; color: var(--mute); }
+  .specs div b { display: block; margin-top: 6px; font-size: clamp(16px, 1.3vw, 19px); font-weight: 900; }
+  .look { padding: 14px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .look figure { margin: 0; display: grid; grid-template-columns: 42% 1fr; gap: 12px; align-items: center; }
+  .look img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; }
+  .look figcaption b { display: block; font-size: 15px; font-weight: 900; }
+  .look figcaption span { display: block; margin-top: 4px; font-size: 13px; line-height: 1.5; font-weight: 700; color: var(--mute); }
+
+
+  /* 2. 개요 (PV5 소개 왼쪽, 나머지 오른쪽) */
+  .ov2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 20px; align-items: stretch; }
+  .what { overflow: hidden; display: flex; flex-direction: column; }
+  .what img { width: 100%; aspect-ratio: 16 / 7.5; object-fit: cover; object-position: center 60%; background: #f1f3f3; }
+  .what .bd { padding: 20px 24px 24px; display: grid; gap: 10px; }
+  .what .k, .pos .k { font-family: var(--num); font-size: 12px; letter-spacing: .16em; color: var(--teal); }
+  .what h3 { margin: 0; font-size: clamp(24px, 2.1vw, 32px); font-weight: 900; letter-spacing: -.03em; }
+  .what p { margin: 0; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.6; font-weight: 700; color: #3E5A60; }
+  .what ul { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 8px; }
+  .what li { padding: 12px 14px; border-radius: 12px; background: var(--pale); border: 1px solid var(--line); font-size: clamp(14px, 1.05vw, 16px); font-weight: 700; color: var(--mute); }
+  .what li b { color: var(--ink); margin-right: 10px; }
+  .right { display: grid; gap: 14px; grid-template-rows: auto 1fr auto; }
+  .right .pos { margin: 0; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+  .right .pos q { margin-top: 4px; }
+  .right .pos p { margin: 0; font-size: clamp(14px, 1.05vw, 16px); line-height: 1.6; font-weight: 700; color: #BFE3DD; }
+  /* 4. 쓰임 3가지 + 룩 대비 */
+  #production .look { margin-top: 16px; padding: 12px 16px; }
+  #production .look figure { grid-template-columns: 30% 1fr; gap: 16px; }
+  #production .look img { aspect-ratio: 16 / 9; }
+  #production .look figcaption b { font-size: 17px; }
+  #production .look figcaption span { font-size: 14px; }
+
+  :focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+  section.on .wrap > *, section.on .sb-wrap > * { animation: rise .6s cubic-bezier(.2,.7,.2,1) both; }
+  section.on .wrap > *:nth-child(2), section.on .sb-wrap > *:nth-child(2) { animation-delay: .08s; }
+  section.on .wrap > *:nth-child(3), section.on .sb-wrap > *:nth-child(3) { animation-delay: .16s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+
+  @media (max-width: 1100px) {
+    .cover .wrap, .ov, .ov2, .spec, .pos { grid-template-columns: minmax(0, 1fr); }
+    .acts { grid-template-columns: minmax(0, 1fr); }
+    .ctrl { display: none; }
+    .sb-wrap { width: 100%; }
+    .sb-track { display: grid; gap: 16px; transform: none !important; }
+    .pno { display: none; }
+  }
+  @media (max-width: 640px) {
+    .seg { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .seg .ar { display: none; } .seg .pv { grid-column: 1 / -1; }
+    .why, .specs, .look, .grid { grid-template-columns: minmax(0, 1fr); }
+    .player::before { transform: translate(10px, 10px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .sound .eq i { animation: none; }
+    .sb-track { transition: none; }
+    section.on .wrap > *, section.on .sb-wrap > * { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. 표지 -->
+<section class="cover" id="cover">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Kia PBV Campaign · 3D Animation</div>
+      <h1>하나의 공간에<br>담기는 일상,<br><mark>기아 PV5 패신저</mark></h1>
+      <p class="sub"><span class="ln">일터에서 캠핑장, 온 가족의 주말까지.</span><span class="ln">세단도 SUV도 밴도 아닌 라이프스타일 모빌리티를</span><span class="ln">따뜻한 3D 애니메이션으로 그렸습니다.</span></p>
+      <ul class="meta"><li><b>43</b>초</li><li><b>16:9</b>가로형</li><li>풀 3D 애니메이션 · AI I2V</li></ul>
+    </div>
+    <div class="player"><video id="main" src="../video.mp4" poster="media/poster.jpg" autoplay muted loop playsinline aria-label="기아 PV5 광고 영상"></video></div>
+  </div>
+  <div class="pno"><span>기아 PV5 패신저 광고</span><span><b>01</b> / 04</span></div>
+</section>
+<button class="sound" id="sound" aria-pressed="false" aria-label="영상 소리 켜기">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z" fill="currentColor" stroke="none"/><path d="M16 9.5l4.5 5M20.5 9.5l-4.5 5"/></svg>
+  <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+</button>
+
+<!-- 2. 개요 -->
+<section id="overview">
+  <div class="wrap">
+    <div class="hd"><div><div class="eyebrow">Overview</div><h2>정해진 용도가 없는 차, <em>PV5</em></h2></div></div>
+    <div class="ov2">
+      <div class="what card">
+        <img src="media/car.jpg" alt="기아 PV5 패신저" loading="lazy">
+        <div class="bd">
+          <span class="k">WHAT IS PV5</span>
+          <h3>기아 PV5 패신저</h3>
+          <p><span class="ln">기아의 목적 기반 전기차(PBV) 플랫폼.</span><span class="ln">일상과 일터의 경계를 허무는, 쓰는 사람이 용도를 정하는 차입니다.</span></p>
+          <ul>
+            <li><b>플랫 플로어</b>턱 없는 평평한 바닥으로 실내를 자유롭게 변형</li>
+            <li><b>라이프스타일 PBV</b>업무·레저·가족을 단 하나의 차체로</li>
+          </ul>
+        </div>
+      </div>
+      <div class="right">
+        <div class="old card">
+          <span class="k">기존 자동차 구분</span>
+          <div class="seg">
+            <div><b>세단</b><span>= 승차감</span></div>
+            <div><b>SUV</b><span>= 레저</span></div>
+            <div><b>밴</b><span>= 화물</span></div>
+            <span class="ar">→</span>
+            <div class="pv"><b>PV5</b><span>용도를 가리지 않는 하나</span></div>
+          </div>
+        </div>
+        <div class="pos card">
+          <span class="k">POSITIONING</span>
+          <q>평일엔 일터, 주말엔 레저,<br>가족과는 <em>7인승</em>. 어떤 용도로든.</q>
+          <p>상용 밴의 투박한 이미지 대신, 쓰는 사람의 라이프스타일에 맞춰 변하는 공간으로 인식을 바꿉니다.</p>
+        </div>
+        <div class="why card">
+          <span class="k">WHY 3D ANIMATION?</span>
+          <div><b>문제</b><p>박스형 차체를 실사로 찍으면 배달용 밴, 화물차로 굳어질 위험</p></div>
+          <div class="s"><b>해결</b><p>3D 캐릭터의 친근함으로 딱딱한 PBV를 일상의 차로</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pno"><span>캠페인 목적</span><span><b>02</b> / 04</span></div>
+</section>
+
+<!-- 3. 세 가지 쓰임 -->
+<section id="production">
+  <div class="wrap">
+    <div class="hd"><div><div class="eyebrow">Production</div><h2>세 가지 쓰임, <em>하나의 공간</em></h2></div></div>
+    <div class="tl" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="acts">
+      <article class="act card"><img src="media/work.jpg" alt="트렁크에서 화분을 꺼내는 장면" loading="lazy">
+        <div class="bd"><span class="tm">USE 01 · 00–16s</span><h3>일터가 되는 차</h3><p><span class="ln">자영업의 배달·운반용으로.</span><span class="ln">키 큰 화분도 서서 들어가는 트렁크</span></p><q>키 큰 화분도 쏙 들어가는 오늘의 일터부터,</q></div></article>
+      <article class="act card"><img src="media/camp.jpg" alt="트렁크에서 쉬는 차박 장면" loading="lazy">
+        <div class="bd"><span class="tm">USE 02 · 16–22s</span><h3>레저를 즐기는 차</h3><p><span class="ln">시트를 접으면 누울 수 있는 공간.</span><span class="ln">어디든 가서 쉬는 나만의 휴식처</span></p><q>어디든지 이동할 수 있는 나만의 캠핑장,</q></div></article>
+      <article class="act card"><img src="frames/c10.jpg" alt="3대 가족과 반려견이 함께 탄 실내" loading="lazy">
+        <div class="bd"><span class="tm">USE 03 · 22–32s</span><h3>3대가 함께 타는 7인승</h3><p><span class="ln">슬라이딩 도어로 편한 승하차,</span><span class="ln">조부모님과 반려견까지 한 번에</span></p><q>온 가족이 함께 타는 여유로운 주말까지.</q></div></article>
+    </div>
+    <div class="look card">
+      <figure><img src="media/car.jpg" alt="실사 질감의 PV5 차체" loading="lazy"><figcaption><b>차량은 사실적으로</b><span>매끈한 메탈릭 차체, 순정 외형 그대로</span></figcaption></figure>
+      <figure><img src="media/clay.jpg" alt="클레이 질감의 캐릭터와 배경" loading="lazy"><figcaption><b>세계는 부드럽게</b><span>클레이 질감, 따뜻한 자연광, 파스텔 톤</span></figcaption></figure>
+    </div>
+  </div>
+  <div class="pno"><span>세 가지 쓰임</span><span><b>03</b> / 04</span></div>
+</section>
+
+<!-- 4. 스토리보드 -->
+<section id="storyboard">
+  <div class="sb-wrap">
+    <div class="hd">
+      <div><div class="eyebrow">Storyboard</div><h2>스토리보드</h2></div>
+      <div class="ctrl">
+        <div class="prog"><span class="pn" aria-live="polite"><b id="sbNum">01</b> / 03</span><span class="bar" id="bars"></span></div>
+        <button class="arw" id="sbPrev" aria-label="이전 컷"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="arw" id="sbNext" aria-label="다음 컷"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+    <div class="sb-view"><div class="sb-track" id="sbTrack"></div></div>
+  </div>
+  <div class="pno"><span>스토리보드</span><span><b>04</b> / 04</span></div>
+</section>
+
+<dialog id="lb" aria-label="스토리보드 컷 크게 보기">
+  <button class="lb-close" id="lbClose" aria-label="닫기">✕</button>
+  <img id="lbImg" alt="">
+  <p class="lb-cap" id="lbCap"></p>
+</dialog>
+
+<script>
+  // [시간, 문구, 대사·내레이션 여부]
+  const SHOTS = [
+    [1.0, '문을 닫고 정면으로 회전하는 PV5', 0], [3.5, '차가 내 일상에 맞춰 변한다면 어떨까요?', 1], [6.5, '꽃집 앞에 정차', 0], [10.5, '꽃집 사장이 운전해 출발', 0],
+    [13.0, '키 큰 화분도 쏙 들어가는 트렁크', 0], [15.0, '어머 고마워요', 1], [17.5, '어디든지 이동할 수 있는 나만의 캠핑장,', 1], [20.5, '시트를 접은 여유로운 폴딩 트렁크', 0],
+    [24.0, '천천히 타세요~ · 차가 넓네~', 1], [27.5, '3대 가족과 반려견, 7인승 패밀리 시트', 0], [32.5, '이 모든 일상이 단 하나의 공간에서.', 1], [38.0, 'Kia PV5 · Movement that inspires', 0],
+  ];
+  const PER = 4, NP = Math.ceil(SHOTS.length / PER);
+  const tc = (t) => `00:${t.toFixed(1).padStart(4, '0')}`;
+  const nn = (i) => String(i + 1).padStart(2, '0');
+  const cap = (s) => (s[2] ? `“${s[1]}”` : s[1]);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 소리: 1페이지에서만 버튼, 다른 페이지로 가면 음소거
+  const main = document.getElementById('main'), snd = document.getElementById('sound');
+  const setSnd = (on) => { main.muted = !on; snd.classList.toggle('on', on); snd.setAttribute('aria-pressed', String(on)); snd.setAttribute('aria-label', on ? '영상 소리 끄기' : '영상 소리 켜기'); };
+  let first = true;
+  snd.onclick = () => { const on = main.muted; if (on && first) { main.currentTime = 0; first = false; } setSnd(on); if (on) main.play().catch(() => {}); };
+  if (reduce) main.pause();
+  const coverSec = document.getElementById('cover');
+  const syncSound = () => {
+    const r = coverSec.getBoundingClientRect();
+    const onCover = r.bottom > innerHeight * 0.5 && r.top < innerHeight * 0.5;
+    snd.classList.toggle('off', !onCover); snd.tabIndex = onCover ? 0 : -1;
+    if (!onCover && !main.muted) setSnd(false);
+  };
+  addEventListener('scroll', syncSound, { passive: true }); addEventListener('resize', syncSound); syncSound();
+
+  // 스토리보드 + 크게 보기
+  const track = document.getElementById('sbTrack'), barsEl = document.getElementById('bars'), lb = document.getElementById('lb');
+  for (let p = 0; p < NP; p++) {
+    const cells = SHOTS.slice(p * PER, p * PER + PER).map((s, k) => {
+      const i = p * PER + k;
+      return `<button class="frame" data-i="${i}"><img src="frames/c${nn(i)}.jpg" alt="${nn(i)} ${s[1]}" loading="lazy">
+        <span class="capl"><span class="n">${nn(i)}</span><span class="tc">${tc(s[0])}</span><span class="cp${s[2] ? ' v' : ''}">${cap(s)}</span></span></button>`;
+    }).join('');
+    track.insertAdjacentHTML('beforeend', `<div class="sb-page"><div class="grid">${cells}</div></div>`);
+    barsEl.insertAdjacentHTML('beforeend', `<button aria-label="${p * PER + 1}–${p * PER + PER}컷"></button>`);
+  }
+  track.addEventListener('click', (e) => {
+    const f = e.target.closest('.frame'); if (!f) return;
+    const i = +f.dataset.i, s = SHOTS[i], img = document.getElementById('lbImg');
+    img.src = `frames/c${nn(i)}.jpg`; img.alt = s[1];
+    document.getElementById('lbCap').innerHTML = `<span class="tc">${nn(i)} · ${tc(s[0])}</span>${cap(s)}`;
+    lb.showModal();
+  });
+  document.getElementById('lbClose').onclick = () => lb.close();
+  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+  const bars = [...barsEl.children], prevB = document.getElementById('sbPrev'), nextB = document.getElementById('sbNext'), pagesSb = [...track.children];
+  let slide = 0;
+  const setSlide = (i) => {
+    slide = Math.max(0, Math.min(NP - 1, i));
+    track.style.transform = `translateX(${-100 * slide}%)`;
+    bars.forEach((b, k) => b.classList.toggle('on', k === slide));
+    document.getElementById('sbNum').textContent = nn(slide);
+    prevB.disabled = slide === 0; nextB.disabled = slide === NP - 1;
+    const wide = matchMedia('(min-width: 1101px)').matches;
+    pagesSb.forEach((pg, k) => (pg.inert = wide && k !== slide));
+  };
+  prevB.onclick = () => setSlide(slide - 1);
+  nextB.onclick = () => setSlide(slide + 1);
+  bars.forEach((b, k) => (b.onclick = () => setSlide(k)));
+  setSlide(0);
+  matchMedia('(min-width: 1101px)').addEventListener('change', () => setSlide(slide));
+
+  // 등장 애니메이션
+  const secs = [...document.querySelectorAll('section')];
+  const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add('on')), { threshold: 0.35 });
+  secs.forEach((s) => io.observe(s));
+
+  // 데스크톱: 휠 한 번 / 키 한 번 = 한 페이지 (스토리보드에서는 컷을 먼저 넘김)
+  const sbSec = document.getElementById('storyboard');
+  const desk = matchMedia('(min-width: 1101px) and (min-height: 640px)');
+  let lock = false, acc = 0;
+  const current = () => secs.reduce((best, p, i) => (Math.abs(p.getBoundingClientRect().top) < Math.abs(secs[best].getBoundingClientRect().top) ? i : best), 0);
+  const sbActive = () => desk.matches && secs[current()] === sbSec;
+  const go = (dir) => {
+    lock = true;
+    if (sbActive() && slide + dir >= 0 && slide + dir <= NP - 1) { setSlide(slide + dir); setTimeout(() => { lock = false; acc = 0; }, 750); return; }
+    secs[Math.max(0, Math.min(secs.length - 1, current() + dir))].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    setTimeout(() => { lock = false; acc = 0; }, 950);
+  };
+  addEventListener('wheel', (e) => {
+    if (!desk.matches || lb.open) return;
+    e.preventDefault(); if (lock) return;
+    acc += e.deltaY; if (Math.abs(acc) > 30) go(acc > 0 ? 1 : -1);
+  }, { passive: false });
+  addEventListener('keydown', (e) => {
+    if (!desk.matches || lb.open) return;
+    if (['ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); if (!lock) go(1); }
+    if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); if (!lock) go(-1); }
+    if (sbActive() && e.key === 'ArrowRight') { e.preventDefault(); setSlide(slide + 1); }
+    if (sbActive() && e.key === 'ArrowLeft') { e.preventDefault(); setSlide(slide - 1); }
+  });
+</script>
+</body>
+</html>
